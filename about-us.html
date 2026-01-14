@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Tech Services</title>
+  <title>About Us - RELIATECH Digital Solutions</title>
   <style>
     /* ========== THEME VARIABLES ========== */
     :root {
@@ -43,78 +43,95 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* ========== HEADER ========== */
+    /* ========== HEADER & NAV (HYBRID READY) ========== */
     header {
       background: var(--header-bg);
       color: var(--text-color);
       padding: 1.5rem 1rem;
       position: sticky;
       top: 0;
-      z-index: 999;
-      transition: padding 0.3s ease, transform 0.3s ease;
-      height: 120px; /* Initial header height */
+      z-index: 1000;
+      transition: padding 0.3s ease;
+      min-height: 100px;
     }
 
     /* Header style when scrolling down */
     header.shrink {
-      padding: 0.6rem 1rem; /* Reduced padding */
-      transform: scaleY(0.7); /* Shrink the header smoothly */
+      padding: 0.6rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .header-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: visible;
     }
 
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--text-color);
+    .nav-section {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
-    nav a {
+    .logo-link {
       color: var(--text-color);
-      margin: 0 1rem;
       text-decoration: none;
-      position: relative;
-    }
-
-    nav a.active {
       font-weight: bold;
-      border-bottom: 2px solid var(--text-color);
+      font-size: 1.2rem;
     }
 
-    /* Dropdown menu styles */
+    /* --- DROPDOWN LOGIC --- */
     .dropdown {
       position: relative;
       display: inline-block;
-      color: var(--text-color);
+      cursor: pointer;
     }
 
     .dropdown-content {
-      display: none;
+      display: none; 
       position: absolute;
+      top: 100%;
+      left: 0;
       background-color: var(--dropdown-bg);
-      min-width: 160px;
-      z-index: 1;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+      z-index: 2000;
       border-radius: 4px;
+    }
+
+    /* PC Hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Mobile JavaScript Toggle Class */
+    .dropdown-content.show {
+      display: block !important;
     }
 
     .dropdown-content a {
       color: var(--text-color);
-      padding: 0.75rem 1rem;
+      padding: 12px 16px;
       text-decoration: none;
       display: block;
+      text-align: left;
     }
 
     .dropdown-content a:hover {
       background-color: var(--dropdown-hover);
     }
 
-    .dropdown:hover .dropdown-content {
-      display: block;
+    /* Logo Image Controls */
+    .center-image img {
+      height: 80px;
+      transition: height 0.3s ease;
+    }
+
+    header.shrink .center-image img {
+      height: 50px;
     }
 
     /* Theme toggle button */
@@ -127,21 +144,6 @@
       cursor: pointer;
       transition: background 0.3s ease, color 0.3s ease;
     }
-
-    /* Logo image styling */
-    .center-image img {
-      height: 100px;
-      max-height: 120px;
-      object-fit: contain;
-      transition: height 0.3s ease;
-    }
-
-    /* Smaller logo when header shrinks */
-    header.shrink .center-image img {
-      height: 60px;
-    }
-
-    
 
     /* ========== SERVICE SECTION ========== */
     .section {
@@ -157,14 +159,14 @@
 
     .card {
       display: flex;
-      align-items: flex-start; /* Align text at the top */
+      align-items: flex-start;
       gap: 2rem;
       width: 80%;
       background: var(--card-bg);
       color: var(--text-color);
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .card:nth-child(even) {
@@ -172,7 +174,7 @@
     }
 
     .card img {
-      width: 60%;
+      width: 40%;
       max-width: 500px;
       border-radius: 8px;
     }
@@ -182,7 +184,7 @@
     }
 
     h3 {
-      margin-bottom: 1.5rem; /* Adds a blank line (space) after all headers */
+      margin-bottom: 1.5rem;
     }
 
     /* ========== ABOUT US SECTION ========== */
@@ -211,7 +213,7 @@
     }
 
     .owner img {
-      max-width: 100%;
+      max-width: 300px;
       border-radius: 50%;
       margin-bottom: 1rem;
     }
@@ -219,17 +221,15 @@
     .owner h3 {
       font-size: 1.8rem;
       font-weight: bold;
-      margin-bottom: 1.5rem; /* Adds a blank line (space) after owner headers */
+      margin-bottom: 1.5rem;
     }
 
     .owner p {
       text-align: justify;
       font-size: 1rem;
       line-height: 1.5;
-      max-width: 50%; /* Narrower text block */
-      margin: 0 auto; /* Center the text */
-      padding-left: 1rem; /* Optional: adds some space for readability */
-      padding-right: 1rem; /* Optional: adds some space for readability */
+      max-width: 80%; 
+      margin: 0 auto;
     }
 
     /* ========== RESPONSIVE ========== */
@@ -237,25 +237,29 @@
       .card {
         flex-direction: column !important;
         text-align: center;
+        width: 95%;
       }
 
       .card img {
         width: 100%;
         max-width: 100%;
-        height: auto;
       }
 
       .owners {
         flex-direction: column;
-        gap: 2rem;
+        gap: 3rem;
       }
 
       .owner {
         width: 100%;
       }
+      
+      .owner p {
+        max-width: 95%;
+      }
 
-      header.shrink {
-        height: 80px; /* Adjust header height when scrolling */
+      .center-image img {
+        height: 60px;
       }
     }
   </style>
@@ -263,31 +267,27 @@
 
 <body>
 
-<!-- HEADER -->
 <header id="header">
   <div class="header-container">
-    <!-- Left navigation -->
-    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
-      <a href="index.html" class="logo">Home</a>
+    <div class="nav-section">
+      <a href="index.html" class="logo-link">Home</a>
       <div class="dropdown">
         <span>Service Types ▾</span>
         <div class="dropdown-content">
-          <a href="services.html">Device Services</a>
-          <a href="#services">On-Site Services</a>
-          <a href="#services">3D Printing</a>
+          <a href="Device-Services.HTML">Device Services</a>
+          <a href="On-Site.HTML">On-Site Services</a>
+          <a href="3dprints.html">3D Printing</a>
         </div>
       </div>
     </div>
 
-    <!-- Center logo -->
     <div class="center-image">
        <a href="index.html">
        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
        </a>    
     </div>
 
-    <!-- Right navigation and theme toggle -->
-    <div class="nav-section" style="justify-content: flex-end;">
+    <div class="nav-section">
       <div class="dropdown">
         <span>More ▾</span>
         <div class="dropdown-content">
@@ -300,15 +300,8 @@
   </div>
 </header>
 
-<!-- HERO SECTION -->
-<section class="hero" id="hero">
-  <!-- Removed Welcome Text -->
-</section>
-
-<!-- SERVICES SECTION -->
 <section class="section" id="services">
   <div class="services">
-    <!-- Technical Experience -->
     <div class="card">
       <img src="https://images.pexels.com/photos/2582931/pexels-photo-2582931.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Technical Experience">
       <div class="text">
@@ -319,36 +312,33 @@
       </div>
     </div>
 
-    <!-- What We Have To Offer -->
     <div class="card">
       <img src="https://images.pexels.com/photos/6804585/pexels-photo-6804585.jpeg?auto=compress&cs=tinysrgb&w=600" alt="What We Have To Offer">
       <div class="text">
         <h3>What We Have To Offer</h3>
-	<p style="text-align: justify;">
-        <p>We provide a wide range of computer-related services, including repair, networking, and 3D printing. Our experienced team specializes in computer repair and maintenance, networking setup and security, and a variety of 3D printing options. </p>
+        <p style="text-align: justify;">
+          We provide a wide range of computer-related services, including repair, networking, and 3D printing. Our experienced team specializes in computer repair and maintenance, networking setup and security, and a variety of 3D printing options.
+        </p>
       </div>
     </div>
 
-    <!-- Satisfaction Guaranteed! -->
     <div class="card">
       <img src="https://images.pexels.com/photos/30554826/pexels-photo-30554826/free-photo-of-close-up-of-a-futuristic-3d-printer-in-action.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Satisfaction Guaranteed!">
       <div class="text">
         <h3>Satisfaction Guaranteed!</h3>
-	<p style="text-align: justify;">
-        <p>We welcome your questions, feedback, and concerns. Contact us through our website's form or email us at reliatechdigitalsolutions@gmail.com. Our team will respond promptly. We value your opinion and aim to provide excellent customer service. Thank you for visiting our website, and we look forward to hearing from you!</p>
- 	</div>
+        <p style="text-align: justify;">
+          We welcome your questions, feedback, and concerns. Contact us through our website's form or email us at reliatechdigitalsolutions@gmail.com. Our team will respond promptly. We value your opinion and aim to provide excellent customer service. Thank you for visiting our website, and we look forward to hearing from you!
+        </p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT US SECTION -->
 <section class="about-us">
   <h2>ABOUT US</h2>
 </section>
 
-<!-- OWNERS SECTION -->
 <section class="owners">
-  <!-- Left Owner - Wilfredo Mendivil -->
   <div class="owner">
     <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-44bbe63.png/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:365,h:365,cg:true" alt="Wilfredo Mendivil">
     <h3>Wilfredo Mendivil</h3>
@@ -363,7 +353,6 @@
     </p>
   </div>
 
-  <!-- Right Owner - Tony Flota -->
   <div class="owner">
     <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/ton.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:365,h:365,cg:true" alt="Tony Flota">
     <h3>Tony Flota</h3>
@@ -379,23 +368,52 @@
   </div>
 </section>
 
+<footer style="padding: 2rem; text-align: center; opacity: 0.7; font-size: 0.9rem;">
+  <p>© 2025 RELIATECH Digital Solutions — All Rights Reserved</p>
+</footer>
+
 <script>
-  // Header shrink effect on scroll
-  const header = document.getElementById("header");
-  window.addEventListener("scroll", function () {
-    if (window.scrollY > 50) {
-      header.classList.add("shrink");
-    } else {
-      header.classList.remove("shrink");
-    }
+  // Shrink header on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    header.classList.toggle('shrink', window.scrollY > 80);
   });
 
-  // Theme toggle functionality
-  document.getElementById('themeToggle').addEventListener('click', function () {
+  // Theme toggle
+  document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
+  });
+
+  // Hybrid Toggle Logic for Dropdowns (Mobile & Desktop)
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', function(e) {
+      if (window.innerWidth <= 1024) { 
+        const content = this.querySelector('.dropdown-content');
+        const isShowing = content.classList.contains('show');
+
+        // Close other open menus
+        document.querySelectorAll('.dropdown-content').forEach(nav => {
+          nav.classList.remove('show');
+        });
+
+        if (!isShowing) {
+          content.classList.add('show');
+          e.preventDefault(); 
+        }
+        e.stopPropagation();
+      }
+    });
+  });
+
+  // Close menus when clicking background
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.classList.remove('show');
+    });
   });
 </script>
 
 </body>
 </html>
+
 

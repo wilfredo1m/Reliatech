@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Tech Services</title>
+  <title>Contact Us - RELIATECH Digital Solutions</title>
   <style>
     /* ========== THEME VARIABLES ========== */
     :root {
@@ -43,88 +43,95 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* ========== HEADER ========== */
+    /* ========== HEADER & NAV (MATCHED TO BRAND) ========== */
     header {
       background: var(--header-bg);
       color: var(--text-color);
       padding: 1.5rem 1rem;
-      transition: padding 0.3s ease;
       position: sticky;
       top: 0;
-      z-index: 999;
+      z-index: 1000;
+      transition: padding 0.3s ease;
+      min-height: 100px;
     }
 
     /* Header style when scrolling down */
     header.shrink {
-      padding: 0.1rem 0.5rem;
+      padding: 0.6rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .header-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: visible;
     }
 
-    /* Left section (Home and Services) */
-    .nav-left {
+    .nav-section {
       display: flex;
-      gap: 2rem;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--text-color);
-      text-decoration: none;
-    }
-
-    nav a {
-      color: var(--text-color);
-      margin: 0 1rem;
-      text-decoration: none;
-      position: relative;
-    }
-
-    nav a.active {
-      font-weight: bold;
-      border-bottom: 2px solid var(--text-color);
-    }
-
-    /* Right section (More and Theme Toggle) */
-    .nav-right {
-      display: flex;
-      justify-content: flex-end;
       align-items: center;
+      gap: 1.5rem;
     }
 
+    /* Home Button Formatting */
+    .logo-link {
+      text-decoration: none;
+      color: var(--text-color) !important;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* --- DROPDOWN LOGIC --- */
     .dropdown {
       position: relative;
       display: inline-block;
+      cursor: pointer;
     }
 
     .dropdown-content {
-      display: none;
+      display: none; 
       position: absolute;
+      top: 100%;
+      left: 0;
       background-color: var(--dropdown-bg);
-      min-width: 160px;
-      z-index: 1;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+      z-index: 2000;
       border-radius: 4px;
+    }
+
+    /* Desktop Hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Mobile JavaScript Toggle Class */
+    .dropdown-content.show {
+      display: block !important;
     }
 
     .dropdown-content a {
       color: var(--text-color);
-      padding: 0.75rem 1rem;
+      padding: 12px 16px;
       text-decoration: none;
       display: block;
+      text-align: left;
     }
 
     .dropdown-content a:hover {
       background-color: var(--dropdown-hover);
     }
 
-    .dropdown:hover .dropdown-content {
-      display: block;
+    .logo-container img {
+      height: 80px;
+      transition: height 0.3s ease;
+    }
+
+    header.shrink .logo-container img {
+      height: 50px;
     }
 
     #themeToggle {
@@ -137,18 +144,15 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .logo-container img {
-      height: 100px;
-      max-height: 120px;
-      object-fit: contain;
-      transition: height 0.3s ease;
-    }
-
     /* ========== CONTACT SECTION ========== */
     .contact-section {
       background-color: var(--card-bg);
       padding: 4rem 2rem;
       text-align: center;
+      max-width: 900px;
+      margin: 2rem auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .contact-section h2 {
@@ -158,15 +162,35 @@
 
     .contact-section p {
       font-size: 1.2rem;
+      line-height: 1.6;
       margin-bottom: 1.5rem;
     }
 
     .contact-email {
       color: #785b6f;
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       margin-top: 20px;
       display: inline-block;
+      text-decoration: none;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: row;
+      }
+      .logo-container img {
+        height: 60px;
+      }
+      .contact-section {
+        margin: 1rem;
+        padding: 2rem 1rem;
+      }
     }
 
   </style>
@@ -174,31 +198,27 @@
 
 <body>
 
-<!-- HEADER -->
 <header id="header">
   <div class="header-container">
-    <!-- Left section (home, services) -->
-    <div class="nav-left">
-      <a href="index.html" class="logo">Home</a>
+    <div class="nav-section">
+      <a href="index.html" class="logo-link">Home</a>
       <div class="dropdown">
-        <span>Services ▾</span>
+        <span>Service Types ▾</span>
         <div class="dropdown-content">
-          <a href="services.html">Device Services</a>
-          <a href="on-site-services.html">On-Site Services</a>
-          <a href="3d-printing.html">3D Printing</a>
+          <a href="Device-Services.HTML">Device Services</a>
+          <a href="On-Site.HTML">On-Site Services</a>
+          <a href="3dprints.html">3D Printing</a>
         </div>
       </div>
     </div>
 
-    <!-- Centered Logo -->
     <div class="logo-container">
       <a href="index.html">
-        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="RELIATECH Logo">
       </a>
     </div>
 
-    <!-- Right section (more, toggle) -->
-    <div class="nav-right">
+    <div class="nav-section">
       <div class="dropdown">
         <span>More ▾</span>
         <div class="dropdown-content">
@@ -211,7 +231,6 @@
   </div>
 </header>
 
-<!-- CONTACT SECTION -->
 <section class="contact-section">
   <h2>Contact Us</h2>
   <p>Our contact page provides an easy way to get in touch with our team for all your computer repair needs. You can select the conversation button with your name, email, phone number, and a brief message detailing the issue you are experiencing. Alternatively, you can contact us directly via the email provided on the page. Our team will respond promptly to your inquiries and provide the necessary support to get your computer up and running again.</p>
@@ -223,11 +242,44 @@
   <a href="mailto:reliatechdigitalsolutions@gmail.com" class="contact-email">reliatechdigitalsolutions@gmail.com</a>
 </section>
 
-<!-- ========== JAVASCRIPT FUNCTIONALITY ========== -->
 <script>
+  // Shrink header on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    header.classList.toggle('shrink', window.scrollY > 80);
+  });
+
   // Toggle light/dark theme
   document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
+  });
+
+  // Hybrid Toggle Logic for Dropdowns (Mobile & Desktop)
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', function(e) {
+      if (window.innerWidth <= 1024) { 
+        const content = this.querySelector('.dropdown-content');
+        const isShowing = content.classList.contains('show');
+
+        // Close other open menus
+        document.querySelectorAll('.dropdown-content').forEach(nav => {
+          nav.classList.remove('show');
+        });
+
+        if (!isShowing) {
+          content.classList.add('show');
+          e.preventDefault(); 
+        }
+        e.stopPropagation();
+      }
+    });
+  });
+
+  // Close menus when clicking background
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.classList.remove('show');
+    });
   });
 </script>
 

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Tech Services</title>
+  <style>
+    /* ========== THEME VARIABLES ========== */
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --card-bg: #111;
+      --button-bg: #444;
+      --button-hover: #666;
+      --header-bg: #222;
+      --dropdown-bg: #333;
+      --dropdown-hover: #444;
+    }
+
+    /* Light theme override variables */
+    .light-theme {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --card-bg: #f9f9f9;
+      --button-bg: #e0e0e0;
+      --button-hover: #cccccc;
+      --header-bg: #f0f0f0;
+      --dropdown-bg: #ffffff;
+      --dropdown-hover: #e0e0e0;
+    }
+
+    /* ========== GENERAL STYLES ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      background: var(--header-bg);
+      color: var(--text-color);
+      padding: 1.5rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      transition: padding 0.3s ease, transform 0.3s ease;
+      height: 120px;
+    }
+
+    /* Header style when scrolling down */
+    header.shrink {
+      padding: 0.6rem 1rem;
+      transform: scaleY(0.7);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    nav a {
+      color: var(--text-color);
+      margin: 0 1rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    /* ========== SERVICE SECTION STYLES ========== */
+    .service-header {
+      text-align: center; /* Center headers */
+      margin-bottom: 1rem;
+    }
+
+    .service-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .service-column {
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    /* Ensure that paragraphs and list items are justified */
+    p, ul {
+      text-align: justify;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-container">
+    <!-- Left navigation -->
+    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
+      <a href="#hero" class="logo">Home</a>
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="#services">Technical Experience</a>
+          <a href="#services">On-Site Services</a>
+          <a href="#services">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center logo -->
+    <div class="center-image">
+       <a href="index.html">
+       <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+       </a>    
+    </div>
+
+    <!-- Right navigation and theme toggle -->
+    <div class="nav-section" style="justify-content: flex-end;">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="#about">About Us</a>
+          <a href="#owners">Our Team</a>
+        </div>
+      </div>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="service-section">
+  <!-- On-Site Services Section -->
+  <div class="service-column">
+    <div class="service-header">
+      <h2>On-Site Services</h2>
+    </div>
+    <p>Some of our services require on-site support and may take longer to schedule. Our team is prepared to handle these on-site services and will work with you to schedule a convenient time for the necessary work to be completed. Wait time is subject to availability. The cost of the project is proportional to its scale.</p>
+  </div>
+
+  <!-- MENU / PRICE LIST Section -->
+  <div class="service-column">
+    <div class="service-header">
+      <h2>MENU / PRICE LIST</h2>
+    </div>
+    <p>Our service pricing varies depending on the scale and complexity of the project. For an accurate quote, please contact us directly.</p>
+  </div>
+
+  <!-- Network Setup Section -->
+  <div class="service-column">
+    <div class="service-header">
+      <h2>Network Setup</h2>
+    </div>
+    <ul>
+      <li>Router Configuration: Configuring network routers to ensure secure and reliable communication.</li>
+      <li>Firewall Setup: Implementing security protocols to protect against unauthorized access.</li>
+      <li>Device Connectivity: Ensuring seamless communication between all devices on the network.</li>
+      <li>Network Monitoring: Continuous monitoring to ensure optimal performance.</li>
+      <li>VPN Configuration: Setting up secure virtual private networks for remote work.</li>
+    </ul>
+  </div>
+
+  <!-- Station Setup Section -->
+  <div class="service-column">
+    <div class="service-header">
+      <h2>Station Setup</h2>
+    </div>
+    <ul>
+      <li>Workspace Design: Customizing workstations for optimal productivity.</li>
+      <li>Equipment Selection: Recommending hardware that fits your needs.</li>
+      <li>Software Installation: Installing necessary software and tools for operations.</li>
+      <li>Environmental Optimization: Ensuring a productive and comfortable workspace.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SCRIPT TO HANDLE SCROLLING AND SHAKING FIX -->
+<script>
+  // Shrinking the header on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 100) {
+      header.classList.add('shrink');
+    } else {
+      header.classList.remove('shrink');
+    }
+  });
+
+  // Theme toggle functionality
+  const themeToggleButton = document.getElementById('themeToggle');
+  themeToggleButton.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+  });
+</script>
+
+</body>
+</html>

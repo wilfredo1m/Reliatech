@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Tech Services</title>
+  <style>
+    /* THEME VARIABLES */
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --card-bg: #111;
+      --button-bg: #444;
+      --button-hover: #666;
+      --header-bg: #222;
+      --dropdown-bg: #333;
+      --dropdown-hover: #444;
+    }
+
+    .light-theme {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --card-bg: #f9f9f9;
+      --button-bg: #e0e0e0;
+      --button-hover: #cccccc;
+      --header-bg: #f0f0f0;
+      --dropdown-bg: #ffffff;
+      --dropdown-hover: #e0e0e0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--header-bg);
+      color: var(--text-color);
+      padding: 2rem 1rem; /* Increased padding for larger header */
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      transition: padding 0.3s ease, transform 0.3s ease;
+      height: auto; /* Remove fixed height to allow more space for larger text */
+    }
+
+    header.shrink {
+      padding: 1rem 1rem; /* Adjust padding when shrinking */
+      transform: scaleY(0.7);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 2rem; /* Increased font size for logo */
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .nav-section span {
+      font-size: 1.5rem; /* Increased font size for dropdown text */
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      color: var(--text-color);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--dropdown-bg);
+      min-width: 160px;
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 1rem 1.5rem; /* Increased padding */
+      text-decoration: none;
+      display: block;
+      font-size: 1.2rem; /* Increased font size for dropdown items */
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Price List Section */
+    .price-list {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      margin-top: 2rem;
+      color: var(--text-color);
+      border-radius: 8px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .price-list h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .price-list p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .price-list h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .price-list ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .price-list li {
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .price-list strong {
+      font-weight: bold;
+    }
+
+    /* Table Styling */
+    .price-list table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--header-bg);
+      color: var(--text-color);
+      font-size: 1.2rem;
+    }
+
+    td {
+      background-color: var(--dropdown-bg);
+      font-size: 1.2rem;
+    }
+
+    tr:nth-child(even) td {
+      background-color: var(--card-bg);
+    }
+
+    td strong {
+      font-weight: bold;
+    }
+
+    /* Dark Mode Heading Colors */
+    body:not(.light-theme) .price-list h2,
+    body:not(.light-theme) .price-list h3 {
+      color: #785b6f;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .price-list {
+        padding: 1rem;
+      }
+
+      .price-list h2 {
+        font-size: 1.5rem;
+      }
+
+      .price-list h3 {
+        font-size: 1.2rem;
+      }
+
+      .price-list li, .price-list td {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-container">
+    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
+      <a href="#hero" class="logo">Home</a>
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="#services">Technical Experience</a>
+          <a href="#services">On-Site Services</a>
+          <a href="#services">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-image">
+      <a href="index.html">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+      </a>    
+    </div>
+
+    <div class="nav-section" style="justify-content: flex-end;">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="#about">About Us</a>
+          <a href="#owners">Our Team</a>
+        </div>
+      </div>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+  </div>
+</header>
+
+<!-- Price List Section -->
+<div class="price-list">
+  <h2>Device Services</h2>
+  <p>All jobs take around 3-5 business days from the day we receive the device.</p>
+  <p>Subject to change based on the availability of parts if there is hardware that needs to be replaced.</p>
+
+  <h3>Additional Fees</h3>
+  <ul>
+    <li><strong>Rush Service</strong>: 2-3 business days - $50</li>
+    <li><strong>Same Day</strong>: 1 business day - $100</li>
+  </ul>
+</div>
+
+<!-- Software Services Price List Section -->
+<div class="price-list">
+  <h2>Software Services</h2>
+  <p>Below are the detailed software services and their pricing:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Description</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Diagnostic</strong></td>
+        <td>Assess the issues with the device and advise on services that can be done to alleviate the issue.</td>
+        <td>$40.00</td>
+      </tr>
+      <tr>
+        <td><strong>Clean Install of Operating System</strong></td>
+        <td>Erasing all data on a computer's hard drive and installing a fresh copy of the OS from scratch.</td>
+        <td>$100.00</td>
+      </tr>
+      <tr>
+        <td><strong>Data Backup</strong></td>
+        <td>Creating a copy of digital information to protect against loss, based on the amount of data.</td>
+        <td>$40.00-$100.00</td>
+      </tr>
+      <tr>
+        <td><strong>Virus Removal</strong></td>
+        <td>Eliminate malicious software from a computer.</td>
+        <td>$80.00</td>
+      </tr>
+      <tr>
+        <td><strong>Software Installation</strong></td>
+        <td>Installing programs such as Google Chrome, Creative Cloud, etc.</td>
+        <td>$10.00</td>
+      </tr>
+      <tr>
+        <td><strong>Data Recovery</strong></td>
+        <td>Restoring lost or damaged data from inaccessible devices.</td>
+        <td>$100.00</td>
+      </tr>
+      <tr>
+        <td><strong>Tune-Up</strong></td>
+        <td>Optimizing device performance by removing unused files and updating software.</td>
+        <td>$80.00</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Hardware Services Price List Section -->
+<div class="price-list">
+  <h2>Hardware Services</h2>
+  <p>Below are the detailed hardware services and their pricing:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Description</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Hardware Upgrade/Replacement</strong></td>
+        <td>Installing new components to improve device performance or replace faulty parts.</td>
+        <td>$40.00</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SCRIPT TO HANDLE SCROLLING AND THEME TOGGLE -->
+<script>
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 100) {
+      header.classList.add('shrink');
+    } else {
+      header.classList.remove('shrink');
+    }
+  });
+
+  const themeToggleButton = document.getElementById('themeToggle');
+  themeToggleButton.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+  });
+</script>
+
+</body>
+</html>

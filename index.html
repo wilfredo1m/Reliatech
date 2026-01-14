@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Tech Services</title>
+  <style>
+    /* ========== THEME VARIABLES ========== */
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --card-bg: #111;
+      --button-bg: #444;
+      --button-hover: #666;
+      --header-bg: #222;
+      --dropdown-bg: #333;
+      --dropdown-hover: #444;
+    }
+
+    /* Light theme override variables */
+    .light-theme {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --card-bg: #f9f9f9;
+      --button-bg: #e0e0e0;
+      --button-hover: #cccccc;
+      --header-bg: #f0f0f0;
+      --dropdown-bg: #ffffff;
+      --dropdown-hover: #e0e0e0;
+    }
+
+    /* ========== GENERAL STYLES ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      background: var(--header-bg);
+      color: var(--text-color);
+      padding: 1.5rem 1rem;
+      transition: padding 0.3s ease;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    /* Header style when scrolling down */
+    header.shrink {
+      padding: 0.1rem 0.5rem;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    nav a {
+      color: var(--text-color);
+      margin: 0 1rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    nav a.active {
+      font-weight: bold;
+      border-bottom: 2px solid var(--text-color);
+    }
+
+    /* Dropdown menu styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      color: var(--text-color);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--dropdown-bg);
+      min-width: 160px;
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Theme toggle button */
+    #themeToggle {
+      background: none;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Logo image styling */
+    .center-image img {
+      height: 100px;
+      max-height: 120px;
+      object-fit: contain;
+      transition: height 0.3s ease;
+    }
+
+    /* Smaller logo when header shrinks */
+    header.shrink .center-image img {
+      height: 60px;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+      background: #1a1a1a;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    /* ========== SERVICE SECTION ========== */
+    .section {
+      padding: 2rem 1rem;
+    }
+
+    .services {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      width: 80%;
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .card img {
+      width: 60%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+
+    .card .text {
+      flex: 1;
+    }
+
+    .card .text button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background-color: var(--button-bg);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .card .text button:hover {
+      background-color: var(--button-hover);
+    }
+
+    /* ========== CAROUSEL SECTION ========== */
+    .carousel-container {
+      position: relative;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .carousel {
+      display: flex;
+      width: 300vw;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-slide {
+      position: relative;
+      width: 100vw;
+      height: 60vh;
+      flex-shrink: 0;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Caption over image */
+    .caption {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .caption h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .caption p {
+      font-size: 1rem;
+    }
+
+    /* Carousel indicators */
+    .indicators {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .indicators span {
+      width: 12px;
+      height: 12px;
+      background-color: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .indicators span.active {
+      background-color: #555;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .card {
+        flex-direction: column !important;
+        text-align: center;
+      }
+
+      .card img {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-container">
+    <!-- Left navigation -->
+    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
+      <a href="#hero" class="logo">Home</a>
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="services.html">Device Services</a>
+          <a href="#services">On-Site Services</a>
+          <a href="#services">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center logo -->
+    <div class="center-image">
+       <a href="index.html">
+       <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+       </a>    
+    </div>
+
+    <!-- Right navigation and theme toggle -->
+    <div class="nav-section" style="justify-content: flex-end;">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+  </div>
+</header>
+
+<!-- CAROUSEL -->
+<section class="carousel-container">
+  <div class="carousel" id="carousel">
+    <!-- Slide 1 -->
+    <div class="carousel-slide">
+      <img src="https://images.pexels.com/photos/2588757/pexels-photo-2588757.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=1920" alt="On-Site Services 1">
+      <div class="caption">
+        <h2>ON-SITE SERVICES</h2>
+        <p>Diagnosing, Repairs, and Upgrades</p>
+      </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="carousel-slide">
+      <img src="https://images.pexels.com/photos/117729/pexels-photo-117729.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=1920" alt="On-Site Services 2">
+      <div class="caption">
+        <h2>ON-SITE SERVICES</h2>
+        <p>Network, Smart Device, Printer, and Home Office Setup</p>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="carousel-slide">
+      <img src="https://images.pexels.com/photos/2225617/pexels-photo-2225617.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=1920" alt="3D Prints">
+      <div class="caption">
+        <h2>3D PRINTS</h2>
+        <p>MagSafe Compatible Prints, Affordable Pricing, and Custom Orders</p>
+      </div>
+    </div>
+  </div>
+  <div class="indicators">
+    <span onclick="goToSlide(0)" class="active"></span>
+    <span onclick="goToSlide(1)"></span>
+    <span onclick="goToSlide(2)"></span>
+  </div>
+</section>
+
+<!-- HERO SECTION -->
+<section class="hero" id="hero">
+  <h2>Welcome to Your Tech Hub</h2>
+  <p>Professional services for devices, networks, and 3D printing.</p>
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="section" id="services">
+  <h2 style="text-align:center;">Our Services</h2>
+  <div class="services">
+    <!-- Device Services -->
+    <div class="card">
+      <img src="https://img1.wsimg.com/isteam/stock/103434/:/cr=t:15.03%25,l:0%25,w:100%25,h:69.93%25/rs=w:600,h:300,cg:true" alt="Device Services">
+      <div class="text">
+        <h3>Device Services</h3>
+        <p>We offer comprehensive computer repair and maintenance services to ensure your device runs smoothly. Our services include diagnostic, virus removal, tune-up, clean OS re-install, hardware repair, software installation, data recovery, and data backup. Our team is committed to providing reliable and efficient services to keep your device in top condition.</p>
+        <button onclick="location.href='https://www.yourtechcompany.com/device-services'">Find Out More</button>
+      </div>
+    </div>
+    <!-- On-Site Services -->
+    <div class="card">
+      <img src="https://media.istockphoto.com/id/1347880350/photo/shot-of-two-young-technicians-using-a-digital-tablet-while-working-in-a-server-room.webp?b=1&s=612x612&w=0&k=20&c=AMbJyegky2XfdhIaVuA8HmcvBkyPCIKVk3mefNITRQU=" alt="On-Site Services">
+      <div class="text">
+        <h3>On-Site Services</h3>
+        <p>We provide services such as replacing routers and installing access points, troubleshooting network issues, and setting up home offices. We also offer email configuration, printer setup, and training to help you get the most out of your technology. Our team is here to provide expert support for all your computer-related needs.</p>
+        <button onclick="location.href='https://www.yourtechcompany.com/on-site-services'">Find Out More</button>
+      </div>
+    </div>
+    <!-- 3D Printing -->
+    <div class="card">
+      <img src="https://media.istockphoto.com/id/1459229120/photo/3d-printer-printing-prototypes.webp?b=1&s=612x612&w=0&k=20&c=-Zsx7HEYMDzRbjauf1DMQRB8m_GjDX-1YHXj9CXKh2c=" alt="3D Printing">
+      <div class="text">
+        <h3>3D Printing</h3>
+        <p>We offer 3D printing services to create custom orders tailored to your specific needs. We can produce a wide range of objects, including phone stands designed for MagSafe. Our team is equipped with the latest 3D printing technology to ensure high-quality results for every project. Whether you need a one-of-a-kind item or a large production run, we are here to help bring your ideas to life.</p>
+        <button onclick="location.href='https://www.yourtechcompany.com/3d-printing'">Find Out More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="text-align:center;">© 2025 Your Tech Company — All Rights Reserved</p>
+</footer>
+
+<!-- ========== JAVASCRIPT FUNCTIONALITY ========== -->
+<script>
+  // Carousel Slide Logic
+  let currentIndex = 0;
+  const carousel = document.getElementById("carousel");
+  const dots = document.querySelectorAll('.indicators span');
+  const totalSlides = dots.length;
+
+  function goToSlide(index) {
+    currentIndex = index;
+    carousel.style.transform = `translateX(-${index * 100}vw)`;
+    updateDots();
+  }
+
+  function updateDots() {
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[currentIndex].classList.add('active');
+  }
+
+  function autoSlide() {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    goToSlide(currentIndex);
+  }
+
+  setInterval(autoSlide, 5000); // Change slide every 5 seconds
+
+  // Toggle light/dark theme
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+  });
+
+  // Header shrink on scroll
+  const header = document.querySelector('header');
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      header.classList.toggle('shrink', window.scrollY > 60);
+    }, 50);
+  });
+
+  // Update active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+
+  function updateActiveLink() {
+    const scrollY = window.scrollY;
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100;
+      const sectionHeight = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink);
+  window.addEventListener('load', updateActiveLink);
+</script>
+
+</body>
+</html>

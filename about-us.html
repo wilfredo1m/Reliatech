@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Tech Services</title>
+  <style>
+    /* ========== THEME VARIABLES ========== */
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --card-bg: #111;
+      --button-bg: #444;
+      --button-hover: #666;
+      --header-bg: #222;
+      --dropdown-bg: #333;
+      --dropdown-hover: #444;
+    }
+
+    /* Light theme override variables */
+    .light-theme {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --card-bg: #f9f9f9;
+      --button-bg: #e0e0e0;
+      --button-hover: #cccccc;
+      --header-bg: #f0f0f0;
+      --dropdown-bg: #ffffff;
+      --dropdown-hover: #e0e0e0;
+    }
+
+    /* ========== GENERAL STYLES ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      background: var(--header-bg);
+      color: var(--text-color);
+      padding: 1.5rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      transition: padding 0.3s ease, transform 0.3s ease;
+      height: 120px; /* Initial header height */
+    }
+
+    /* Header style when scrolling down */
+    header.shrink {
+      padding: 0.6rem 1rem; /* Reduced padding */
+      transform: scaleY(0.7); /* Shrink the header smoothly */
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    nav a {
+      color: var(--text-color);
+      margin: 0 1rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    nav a.active {
+      font-weight: bold;
+      border-bottom: 2px solid var(--text-color);
+    }
+
+    /* Dropdown menu styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      color: var(--text-color);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--dropdown-bg);
+      min-width: 160px;
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Theme toggle button */
+    #themeToggle {
+      background: none;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Logo image styling */
+    .center-image img {
+      height: 100px;
+      max-height: 120px;
+      object-fit: contain;
+      transition: height 0.3s ease;
+    }
+
+    /* Smaller logo when header shrinks */
+    header.shrink .center-image img {
+      height: 60px;
+    }
+
+    
+
+    /* ========== SERVICE SECTION ========== */
+    .section {
+      padding: 2rem 1rem;
+    }
+
+    .services {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .card {
+      display: flex;
+      align-items: flex-start; /* Align text at the top */
+      gap: 2rem;
+      width: 80%;
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .card img {
+      width: 60%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+
+    .card .text {
+      flex: 1;
+    }
+
+    h3 {
+      margin-bottom: 1.5rem; /* Adds a blank line (space) after all headers */
+    }
+
+    /* ========== ABOUT US SECTION ========== */
+    .about-us {
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .about-us h2 {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    /* ========== OWNERS SECTION ========== */
+    .owners {
+      display: flex;
+      justify-content: space-around;
+      padding: 3rem 1rem;
+    }
+
+    .owner {
+      width: 45%;
+      text-align: center;
+    }
+
+    .owner img {
+      max-width: 100%;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+
+    .owner h3 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem; /* Adds a blank line (space) after owner headers */
+    }
+
+    .owner p {
+      text-align: justify;
+      font-size: 1rem;
+      line-height: 1.5;
+      max-width: 50%; /* Narrower text block */
+      margin: 0 auto; /* Center the text */
+      padding-left: 1rem; /* Optional: adds some space for readability */
+      padding-right: 1rem; /* Optional: adds some space for readability */
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .card {
+        flex-direction: column !important;
+        text-align: center;
+      }
+
+      .card img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .owners {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .owner {
+        width: 100%;
+      }
+
+      header.shrink {
+        height: 80px; /* Adjust header height when scrolling */
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-container">
+    <!-- Left navigation -->
+    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
+      <a href="#hero" class="logo">Home</a>
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="services.html">Device Services</a>
+          <a href="#services">On-Site Services</a>
+          <a href="#services">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center logo -->
+    <div class="center-image">
+       <a href="index.html">
+       <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+       </a>    
+    </div>
+
+    <!-- Right navigation and theme toggle -->
+    <div class="nav-section" style="justify-content: flex-end;">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero" id="hero">
+  <!-- Removed Welcome Text -->
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="section" id="services">
+  <div class="services">
+    <!-- Technical Experience -->
+    <div class="card">
+      <img src="https://images.pexels.com/photos/2582931/pexels-photo-2582931.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Technical Experience">
+      <div class="text">
+        <h3>Technical Experience</h3>
+        <p style="text-align: justify;">
+          We're a team of tech professionals with vast knowledge and experience in areas like web dev, software engineering, networking, cloud computing, and cybersecurity. Our up-to-date skills enable us to provide innovative solutions that surpass our client's expectations. Whether it's a complex project or advice on tech trends, we've got you covered. Contact us to learn more about our technical expertise and how we can help you achieve your goals.
+        </p>
+      </div>
+    </div>
+
+    <!-- What We Have To Offer -->
+    <div class="card">
+      <img src="https://images.pexels.com/photos/6804585/pexels-photo-6804585.jpeg?auto=compress&cs=tinysrgb&w=600" alt="What We Have To Offer">
+      <div class="text">
+        <h3>What We Have To Offer</h3>
+	<p style="text-align: justify;">
+        <p>We provide a wide range of computer-related services, including repair, networking, and 3D printing. Our experienced team specializes in computer repair and maintenance, networking setup and security, and a variety of 3D printing options. </p>
+      </div>
+    </div>
+
+    <!-- Satisfaction Guaranteed! -->
+    <div class="card">
+      <img src="https://images.pexels.com/photos/30554826/pexels-photo-30554826/free-photo-of-close-up-of-a-futuristic-3d-printer-in-action.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Satisfaction Guaranteed!">
+      <div class="text">
+        <h3>Satisfaction Guaranteed!</h3>
+	<p style="text-align: justify;">
+        <p>We welcome your questions, feedback, and concerns. Contact us through our website's form or email us at reliatechdigitalsolutions@gmail.com. Our team will respond promptly. We value your opinion and aim to provide excellent customer service. Thank you for visiting our website, and we look forward to hearing from you!</p>
+ 	</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT US SECTION -->
+<section class="about-us">
+  <h2>ABOUT US</h2>
+</section>
+
+<!-- OWNERS SECTION -->
+<section class="owners">
+  <!-- Left Owner - Wilfredo Mendivil -->
+  <div class="owner">
+    <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-44bbe63.png/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:365,h:365,cg:true" alt="Wilfredo Mendivil">
+    <h3>Wilfredo Mendivil</h3>
+    <p>
+      I am a highly skilled computer repair technician with over 10 years of experience in the field. 
+      <br><br>
+      I am a proud graduate of California State University, Long Beach, with a major in Computer Science and a minor in Cyber Security. 
+      <br><br>
+      My Experience in CSULB has given me a well-rounded skill set from programming, and networking, to cyber security that I utilize in the field daily.
+      <br><br>
+      Over the past 10 years, I have gained extensive hands-on experience repairing a wide variety of computer systems. From diagnosing hardware issues to removing malware and viruses, I am confident in my ability to handle any problem that comes my way.
+    </p>
+  </div>
+
+  <!-- Right Owner - Tony Flota -->
+  <div class="owner">
+    <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/ton.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:365,h:365,cg:true" alt="Tony Flota">
+    <h3>Tony Flota</h3>
+    <p>
+      I am a highly skilled IT professional with 5 years of experience in the field. I am certified in an array of IT-related certifications spanning from Microsoft 365, Google IT support, and Comp Tia IT Fundamentals. 
+      <br><br>
+      Throughout my career, I have gained extensive hands-on experience in desktop support, I am confident in my ability to handle any IT-related issue that comes my way. 
+      <br><br>
+      I have a proven track record of delivering high-quality, reliable IT services to my clients. 
+      <br><br>
+      My certifications in Microsoft 365, Google IT support, and Comp Tia IT Fundamentals have given me a solid foundation in various areas of IT, including network security, and troubleshooting.  
+    </p>
+  </div>
+</section>
+
+<script>
+  // Header shrink effect on scroll
+  const header = document.getElementById("header");
+  window.addEventListener("scroll", function () {
+    if (window.scrollY > 50) {
+      header.classList.add("shrink");
+    } else {
+      header.classList.remove("shrink");
+    }
+  });
+
+  // Theme toggle functionality
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    document.body.classList.toggle('light-theme');
+  });
+</script>
+
+</body>
+</html>

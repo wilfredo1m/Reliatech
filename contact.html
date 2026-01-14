@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Tech Services</title>
+  <style>
+    /* ========== THEME VARIABLES ========== */
+    :root {
+      --bg-color: #000;
+      --text-color: #fff;
+      --card-bg: #111;
+      --button-bg: #444;
+      --button-hover: #666;
+      --header-bg: #222;
+      --dropdown-bg: #333;
+      --dropdown-hover: #444;
+    }
+
+    /* Light theme override variables */
+    .light-theme {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --card-bg: #f9f9f9;
+      --button-bg: #e0e0e0;
+      --button-hover: #cccccc;
+      --header-bg: #f0f0f0;
+      --dropdown-bg: #ffffff;
+      --dropdown-hover: #e0e0e0;
+    }
+
+    /* ========== GENERAL STYLES ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      background: var(--header-bg);
+      color: var(--text-color);
+      padding: 1.5rem 1rem;
+      transition: padding 0.3s ease;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    /* Header style when scrolling down */
+    header.shrink {
+      padding: 0.1rem 0.5rem;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Left section (Home and Services) */
+    .nav-left {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-color);
+      text-decoration: none;
+    }
+
+    nav a {
+      color: var(--text-color);
+      margin: 0 1rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    nav a.active {
+      font-weight: bold;
+      border-bottom: 2px solid var(--text-color);
+    }
+
+    /* Right section (More and Theme Toggle) */
+    .nav-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--dropdown-bg);
+      min-width: 160px;
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    #themeToggle {
+      background: none;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .logo-container img {
+      height: 100px;
+      max-height: 120px;
+      object-fit: contain;
+      transition: height 0.3s ease;
+    }
+
+    /* ========== CONTACT SECTION ========== */
+    .contact-section {
+      background-color: var(--card-bg);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .contact-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-section p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-email {
+      color: #785b6f;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-container">
+    <!-- Left section (home, services) -->
+    <div class="nav-left">
+      <a href="index.html" class="logo">Home</a>
+      <div class="dropdown">
+        <span>Services ▾</span>
+        <div class="dropdown-content">
+          <a href="services.html">Device Services</a>
+          <a href="on-site-services.html">On-Site Services</a>
+          <a href="3d-printing.html">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Centered Logo -->
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+      </a>
+    </div>
+
+    <!-- Right section (more, toggle) -->
+    <div class="nav-right">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+  </div>
+</header>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+  <h2>Contact Us</h2>
+  <p>Our contact page provides an easy way to get in touch with our team for all your computer repair needs. You can select the conversation button with your name, email, phone number, and a brief message detailing the issue you are experiencing. Alternatively, you can contact us directly via the email provided on the page. Our team will respond promptly to your inquiries and provide the necessary support to get your computer up and running again.</p>
+  <p>Please give us around 48 hours to respond to your email.</p>
+
+  <h3>Email Us Directly</h3>
+  <p>If you prefer to email us, feel free to send a message to:</p>
+
+  <a href="mailto:reliatechdigitalsolutions@gmail.com" class="contact-email">reliatechdigitalsolutions@gmail.com</a>
+</section>
+
+<!-- ========== JAVASCRIPT FUNCTIONALITY ========== -->
+<script>
+  // Toggle light/dark theme
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+  });
+</script>
+
+</body>
+</html>

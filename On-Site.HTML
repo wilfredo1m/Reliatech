@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>On-Site Services - Your Tech Services</title>
+  <title>On-Site Services - RELIATECH Digital Solutions</title>
   <style>
     /* ========== THEME VARIABLES ========== */
     :root {
@@ -42,38 +42,74 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* ========== HEADER & DROPDOWN LOGIC ========== */
+    /* ========== HEADER & DROPDOWN (CONSISTENT SPACING) ========== */
     header {
       background: var(--header-bg);
       color: var(--text-color);
-      padding: 1.5rem 1rem;
+      padding: 2rem 1rem; /* Matched to Device Services spacing */
       position: sticky;
       top: 0;
-      z-index: 1000;
-      transition: padding 0.3s ease;
-      min-height: 100px;
+      z-index: 999;
+      transition: padding 0.3s ease, transform 0.3s ease;
+      height: auto; /* Remove fixed height to allow more space for larger text */
     }
 
-    header.shrink {
-      padding: 0.6rem 1rem;
+     header.shrink {
+      padding: 1rem 1rem; /* Adjust padding when shrinking */
+      transform: scaleY(0.7);
     }
 
     .header-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      overflow: visible; /* Required for dropdown to pop out */
+      flex-wrap: wrap;
     }
 
-    .nav-section {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
+    .logo {
+      font-size: 2rem; /* Increased font size for logo */
+      font-weight: bold;
+      color: var(--text-color);
     }
 
-    /* --- DROPDOWN FIX --- */
+    .nav-section span {
+      font-size: 1.5rem; /* Increased font size for dropdown text */
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      color: var(--text-color);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--dropdown-bg);
+      min-width: 160px;
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 1rem 1.5rem; /* Increased padding */
+      text-decoration: none;
+      display: block;
+      font-size: 1.2rem; /* Increased font size for dropdown items */
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+
+
+    /* --- DROPDOWN LOGIC (FIXES THE LEAKING LINKS) --- */
     .dropdown {
       position: relative;
       display: inline-block;
@@ -81,7 +117,7 @@
     }
 
     .dropdown-content {
-      display: none; /* Hides the links shown in your screenshot */
+      display: none; /* Keeps links hidden inside the menu */
       position: absolute;
       top: 100%;
       left: 0;
@@ -93,7 +129,7 @@
     }
 
     .dropdown:hover .dropdown-content {
-      display: block; /* Shows links ONLY on hover */
+      display: block; /* Links only show on hover */
     }
 
     .dropdown-content a {
@@ -108,8 +144,9 @@
       background-color: var(--dropdown-hover);
     }
 
+    /* Logo Image (Matched to Device Services) */
     .center-image img {
-      height: 80px;
+      height: 80px; 
       transition: height 0.3s ease;
     }
 
@@ -146,7 +183,13 @@
       margin-bottom: 1.5rem;
     }
 
+    .service-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
     p, ul {
+      text-align: justify;
       line-height: 1.6;
       margin-bottom: 1rem;
     }
@@ -166,8 +209,8 @@
 
 <header id="header">
   <div class="header-container">
-    <div class="nav-section">
-      <a href="index.html" style="color:var(--text-color); text-decoration:none; font-weight:bold;">Home</a> 
+    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
+      <a href="index.html" class="logo-link">Home</a> 
       <div class="dropdown">
         <span>Service Types ▾</span>
         <div class="dropdown-content">
@@ -180,7 +223,7 @@
 
     <div class="center-image">
        <a href="index.html">
-       <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+       <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="RELIATECH Logo">
        </a>    
     </div>
 
@@ -198,20 +241,25 @@
 </header>
 
 
-
 <div class="service-section">
   <div class="service-column">
-    <div class="service-header"><h2>On-Site Services</h2></div>
+    <div class="service-header">
+      <h2>On-Site Services</h2>
+    </div>
     <p>Some of our services require on-site support and may take longer to schedule. Our team is prepared to handle these on-site services and will work with you to schedule a convenient time for the necessary work to be completed. Wait time is subject to availability. The cost of the project is proportional to its scale.</p>
   </div>
 
   <div class="service-column">
-    <div class="service-header"><h2>MENU / PRICE LIST</h2></div>
+    <div class="service-header">
+      <h2>MENU / PRICE LIST</h2>
+    </div>
     <p>Our service pricing varies depending on the scale and complexity of the project. For an accurate quote, please contact us directly.</p>
   </div>
 
   <div class="service-column">
-    <div class="service-header"><h2>Network Setup</h2></div>
+    <div class="service-header">
+      <h2>Network Setup</h2>
+    </div>
     <ul>
       <li>Router Configuration: Configuring network routers to ensure secure and reliable communication.</li>
       <li>Firewall Setup: Implementing security protocols to protect against unauthorized access.</li>
@@ -222,7 +270,9 @@
   </div>
 
   <div class="service-column">
-    <div class="service-header"><h2>Station Setup</h2></div>
+    <div class="service-header">
+      <h2>Station Setup</h2>
+    </div>
     <ul>
       <li>Workspace Design: Customizing workstations for optimal productivity.</li>
       <li>Equipment Selection: Recommending hardware that fits your needs.</li>
@@ -231,6 +281,10 @@
     </ul>
   </div>
 </div>
+
+<footer style="padding: 2rem; text-align: center; opacity: 0.7; font-size: 0.9rem;">
+  <p>© 2025 RELIATECH Digital Solutions — All Rights Reserved</p>
+</footer>
 
 <script>
   window.addEventListener('scroll', () => {

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Tech Services</title>
+  <title>Device Services - RELIATECH Digital Solutions</title>
   <style>
-    /* THEME VARIABLES */
+    /* ========== THEME VARIABLES ========== */
     :root {
       --bg-color: #000;
       --text-color: #fff;
@@ -28,6 +28,7 @@
       --dropdown-hover: #e0e0e0;
     }
 
+    /* ========== GENERAL STYLES ========== */
     * {
       margin: 0;
       padding: 0;
@@ -41,71 +42,108 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
+    /* ========== HEADER & NAV (MATCHED TO ON-SITE) ========== */
     header {
       background: var(--header-bg);
       color: var(--text-color);
-      padding: 2rem 1rem; /* Increased padding for larger header */
+      padding: 2rem 1rem; 
       position: sticky;
       top: 0;
-      z-index: 999;
-      transition: padding 0.3s ease, transform 0.3s ease;
-      height: auto; /* Remove fixed height to allow more space for larger text */
+      z-index: 1000;
+      transition: padding 0.3s ease;
     }
 
     header.shrink {
-      padding: 1rem 1rem; /* Adjust padding when shrinking */
-      transform: scaleY(0.7);
+      padding: 1rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .header-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: visible; 
     }
 
-    .logo {
-      font-size: 2rem; /* Increased font size for logo */
+    .nav-section {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* Home Button Formatting */
+    .logo-link {
+      text-decoration: none;
+      color: var(--text-color) !important;
       font-weight: bold;
-      color: var(--text-color);
+      font-size: 1.5rem;
     }
 
     .nav-section span {
-      font-size: 1.5rem; /* Increased font size for dropdown text */
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
+    /* --- DROPDOWN LOGIC --- */
     .dropdown {
       position: relative;
       display: inline-block;
-      color: var(--text-color);
     }
 
     .dropdown-content {
-      display: none;
+      display: none; 
       position: absolute;
+      top: 100%;
+      left: 0;
       background-color: var(--dropdown-bg);
-      min-width: 160px;
-      z-index: 1;
+      min-width: 220px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+      z-index: 2000;
       border-radius: 4px;
-    }
-
-    .dropdown-content a {
-      color: var(--text-color);
-      padding: 1rem 1.5rem; /* Increased padding */
-      text-decoration: none;
-      display: block;
-      font-size: 1.2rem; /* Increased font size for dropdown items */
-    }
-
-    .dropdown-content a:hover {
-      background-color: var(--dropdown-hover);
     }
 
     .dropdown:hover .dropdown-content {
       display: block;
     }
 
-    /* Price List Section */
+    /* Mobile Toggle Class */
+    .dropdown-content.show {
+      display: block !important;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 1rem 1.5rem;
+      text-decoration: none;
+      display: block;
+      font-size: 1.2rem;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .center-image img {
+      height: 80px; 
+      transition: height 0.3s ease;
+    }
+
+    header.shrink .center-image img {
+      height: 50px;
+    }
+
+    #themeToggle {
+      background: none;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* ========== PRICE LIST CONTENT STYLES ========== */
     .price-list {
       background-color: var(--card-bg);
       padding: 2rem;
@@ -115,6 +153,7 @@
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
 
     .price-list h2 {
@@ -145,10 +184,6 @@
       margin-bottom: 0.8rem;
     }
 
-    .price-list strong {
-      font-weight: bold;
-    }
-
     /* Table Styling */
     .price-list table {
       width: 100%;
@@ -176,65 +211,48 @@
       background-color: var(--card-bg);
     }
 
-    td strong {
-      font-weight: bold;
-    }
-
     /* Dark Mode Heading Colors */
     body:not(.light-theme) .price-list h2,
     body:not(.light-theme) .price-list h3 {
       color: #785b6f;
     }
 
-    /* Responsive Styles */
     @media (max-width: 768px) {
-      .price-list {
-        padding: 1rem;
-      }
-
-      .price-list h2 {
-        font-size: 1.5rem;
-      }
-
-      .price-list h3 {
-        font-size: 1.2rem;
-      }
-
-      .price-list li, .price-list td {
-        font-size: 1rem;
-      }
+      .price-list { padding: 1rem; }
+      .price-list h2 { font-size: 1.5rem; }
+      .price-list h3 { font-size: 1.2rem; }
+      .price-list li, .price-list td { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header id="header">
   <div class="header-container">
-    <div class="nav-section" style="display: flex; align-items: center; gap: 1rem;">
-      <a href="index.html" class="logo">Home</a>
+    <div class="nav-section">
+      <a href="index.html" class="logo-link">Home</a>
       <div class="dropdown">
         <span>Service Types ▾</span>
         <div class="dropdown-content">
           <a href="Device-Services.HTML">Device Services</a>
           <a href="On-Site.HTML">On-Site Services</a>
-          <a href="#services">3D Printing</a>
+          <a href="index.html#services">3D Printing</a>
         </div>
       </div>
     </div>
 
     <div class="center-image">
       <a href="index.html">
-        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Centered Logo">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="RELIATECH Logo">
       </a>    
     </div>
 
-    <div class="nav-section" style="justify-content: flex-end;">
+    <div class="nav-section">
       <div class="dropdown">
         <span>More ▾</span>
         <div class="dropdown-content">
-          <a href="#about">About Us</a>
-          <a href="#owners">Our Team</a>
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Our Team</a>
         </div>
       </div>
       <button id="themeToggle">Toggle Theme</button>
@@ -242,7 +260,8 @@
   </div>
 </header>
 
-<!-- Price List Section -->
+
+
 <div class="price-list">
   <h2>Device Services</h2>
   <p>All jobs take around 3-5 business days from the day we receive the device.</p>
@@ -255,7 +274,6 @@
   </ul>
 </div>
 
-<!-- Software Services Price List Section -->
 <div class="price-list">
   <h2>Software Services</h2>
   <p>Below are the detailed software services and their pricing:</p>
@@ -308,7 +326,6 @@
   </table>
 </div>
 
-<!-- Hardware Services Price List Section -->
 <div class="price-list">
   <h2>Hardware Services</h2>
   <p>Below are the detailed hardware services and their pricing:</p>
@@ -331,24 +348,46 @@
   </table>
 </div>
 
-<!-- SCRIPT TO HANDLE SCROLLING AND THEME TOGGLE -->
+<footer style="padding: 2rem; text-align: center; opacity: 0.7; font-size: 0.9rem;">
+  <p>© 2025 RELIATECH Digital Solutions — All Rights Reserved</p>
+</footer>
+
 <script>
   window.addEventListener('scroll', () => {
     const header = document.querySelector('header');
-    if (window.scrollY > 100) {
-      header.classList.add('shrink');
-    } else {
-      header.classList.remove('shrink');
-    }
+    header.classList.toggle('shrink', window.scrollY > 80);
   });
 
-  const themeToggleButton = document.getElementById('themeToggle');
-  themeToggleButton.addEventListener('click', () => {
+  document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
+  });
+
+  // Hybrid Toggle Logic for Mobile
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', function(e) {
+      if (window.innerWidth <= 1024) {
+        const content = this.querySelector('.dropdown-content');
+        const isAlreadyShowing = content.classList.contains('show');
+
+        document.querySelectorAll('.dropdown-content').forEach(nav => {
+          nav.classList.remove('show');
+        });
+
+        if (!isAlreadyShowing) {
+          content.classList.add('show');
+          e.preventDefault(); 
+        }
+        e.stopPropagation();
+      }
+    });
+  });
+
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.classList.remove('show');
+    });
   });
 </script>
 
 </body>
 </html>
-
-

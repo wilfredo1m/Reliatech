@@ -28,7 +28,11 @@
       --dropdown-hover: #e0e0e0;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: sans-serif;
@@ -36,13 +40,13 @@
       color: var(--text-color);
     }
 
-    /* HEADER  */
+    /* ===== HEADER (FIXED TO MATCH INDEX) ===== */
     header {
       background: var(--header-bg);
       padding: 1.5rem 1rem;
       position: sticky;
       top: 0;
-      z-index: 999;
+      z-index: 1000;
       transition: 0.3s;
     }
 
@@ -54,6 +58,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: visible;
     }
 
     .nav-section {
@@ -64,7 +71,7 @@
 
     .logo {
       font-weight: bold;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       color: var(--text-color);
       text-decoration: none;
     }
@@ -79,6 +86,7 @@
       background: var(--dropdown-bg);
       border-radius: 6px;
       min-width: 160px;
+      z-index: 2000;
     }
 
     .dropdown-content a {
@@ -98,6 +106,11 @@
 
     .center-image img {
       height: 90px;
+      transition: 0.3s ease;
+    }
+
+    header.shrink .center-image img {
+      height: 50px;
     }
 
     #themeToggle {
@@ -108,13 +121,13 @@
       cursor: pointer;
     }
 
-    /* PAGE TITLE */
+    /* ===== HERO ===== */
     .hero {
       text-align: center;
       padding: 3rem 1rem;
     }
 
-    /* PRODUCT GRID */
+    /* ===== PRODUCTS ===== */
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -177,7 +190,7 @@
 
 <header id="header">
   <div class="header-container">
-    
+
     <!-- LEFT -->
     <div class="nav-section">
       <a href="index.html" class="logo">Home</a>
@@ -205,7 +218,7 @@
   </div>
 </header>
 
-<!-- TITLE -->
+<!-- HERO -->
 <section class="hero">
   <h1>3D Printing Services</h1>
   <p>Custom prints, affordable pricing, and fast turnaround.</p>

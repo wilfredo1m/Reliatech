@@ -40,7 +40,7 @@
       color: var(--text-color);
     }
 
-    /* ===== HEADER (FIXED TO MATCH INDEX) ===== */
+    /* ===== HEADER FIXED ===== */
     header {
       background: var(--header-bg);
       padding: 1.5rem 1rem;
@@ -104,9 +104,11 @@
       display: block;
     }
 
+    /* ===== CLICKABLE LOGO FIX ===== */
     .center-image img {
       height: 90px;
       transition: 0.3s ease;
+      display: block;
     }
 
     header.shrink .center-image img {
@@ -205,9 +207,11 @@
       </div>
     </div>
 
-    <!-- CENTER -->
+    <!-- CENTER (FIXED LOGO) -->
     <div class="center-image">
-      <img src="YOUR-LOGO-HERE.png" alt="Logo">
+      <a href="index.html">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png" alt="Logo">
+      </a>
     </div>
 
     <!-- RIGHT -->
@@ -258,12 +262,10 @@
 </footer>
 
 <script>
-  // Theme toggle
   document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
   });
 
-  // Header shrink
   window.addEventListener('scroll', () => {
     document.getElementById('header')
       .classList.toggle('shrink', window.scrollY > 50);

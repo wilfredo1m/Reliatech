@@ -28,11 +28,7 @@
       --dropdown-hover: #e0e0e0;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: sans-serif;
@@ -40,18 +36,23 @@
       color: var(--text-color);
     }
 
-    /* ===== HEADER FIXED ===== */
+    /* =======================
+       HEADER (EXACT COPY FROM INDEX)
+    ======================= */
+
     header {
       background: var(--header-bg);
+      color: var(--text-color);
       padding: 1.5rem 1rem;
+      transition: padding 0.3s ease;
       position: sticky;
       top: 0;
       z-index: 1000;
-      transition: 0.3s;
     }
 
     header.shrink {
       padding: 0.6rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .header-container {
@@ -65,50 +66,53 @@
 
     .nav-section {
       display: flex;
-      gap: 1rem;
       align-items: center;
+      gap: 1.5rem;
     }
 
-    .logo {
-      font-weight: bold;
-      font-size: 1.2rem;
+    .logo-link {
       color: var(--text-color);
       text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
     }
 
     .dropdown {
       position: relative;
+      display: inline-block;
+      cursor: pointer;
     }
 
     .dropdown-content {
       display: none;
       position: absolute;
-      background: var(--dropdown-bg);
-      border-radius: 6px;
-      min-width: 160px;
+      top: 100%;
+      left: 0;
+      background-color: var(--dropdown-bg);
+      min-width: 200px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
       z-index: 2000;
-    }
-
-    .dropdown-content a {
-      display: block;
-      padding: 10px;
-      color: var(--text-color);
-      text-decoration: none;
-    }
-
-    .dropdown-content a:hover {
-      background: var(--dropdown-hover);
+      border-radius: 4px;
     }
 
     .dropdown:hover .dropdown-content {
       display: block;
     }
 
-    /* ===== CLICKABLE LOGO FIX ===== */
-    .center-image img {
-      height: 90px;
-      transition: 0.3s ease;
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 12px 16px;
+      text-decoration: none;
       display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--dropdown-hover);
+    }
+
+    .center-image img {
+      height: 80px;
+      transition: height 0.3s ease;
     }
 
     header.shrink .center-image img {
@@ -116,20 +120,23 @@
     }
 
     #themeToggle {
-      border: 1px solid var(--text-color);
       background: none;
+      border: 1px solid var(--text-color);
       color: var(--text-color);
-      padding: 6px 10px;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
       cursor: pointer;
     }
 
-    /* ===== HERO ===== */
+    /* =======================
+       PAGE CONTENT
+    ======================= */
+
     .hero {
       text-align: center;
       padding: 3rem 1rem;
     }
 
-    /* ===== PRODUCTS ===== */
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -190,45 +197,49 @@
 
 <body>
 
+<!-- ===================== HEADER (UNCHANGED FROM INDEX) ===================== -->
 <header id="header">
   <div class="header-container">
-
-    <!-- LEFT -->
     <div class="nav-section">
-      <a href="index.html" class="logo">Home</a>
+      <a href="#hero" class="logo-link">Home</a>
 
       <div class="dropdown">
         <span>Service Types ▾</span>
         <div class="dropdown-content">
-          <a href="index.html#services">Device Services</a>
-          <a href="index.html#services">On-Site Services</a>
+          <a href="Device-Services.HTML">Device Services</a>
+          <a href="On-Site.HTML">On-Site Services</a>
           <a href="3dprints.html">3D Printing</a>
         </div>
       </div>
     </div>
 
-    <!-- CENTER (FIXED LOGO) -->
     <div class="center-image">
       <a href="index.html">
         <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Logo">
       </a>
     </div>
 
-    <!-- RIGHT -->
     <div class="nav-section">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+
       <button id="themeToggle">Toggle Theme</button>
     </div>
-
   </div>
 </header>
 
-<!-- HERO -->
+<!-- ===================== PAGE ===================== -->
+
 <section class="hero">
   <h1>3D Printing Services</h1>
   <p>Custom prints, affordable pricing, and fast turnaround.</p>
 </section>
 
-<!-- PRODUCTS -->
 <section class="products">
 
   <div class="product-card">
@@ -268,7 +279,7 @@
 
   window.addEventListener('scroll', () => {
     document.getElementById('header')
-      .classList.toggle('shrink', window.scrollY > 50);
+      .classList.toggle('shrink', window.scrollY > 80);
   });
 </script>
 

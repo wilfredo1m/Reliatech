@@ -371,7 +371,8 @@ header{
 
 <script>
 
-/* LIGHTBOX */
+/* ================= LIGHTBOX ================= */
+
 const lightbox=document.getElementById("lightbox");
 const lightImg=document.getElementById("lightbox-img");
 
@@ -384,7 +385,9 @@ document.querySelectorAll(".product-card img").forEach(img=>{
 
 lightbox.onclick=()=>lightbox.style.display="none";
 
-/* TOAST */
+
+/* ================= TOAST ================= */
+
 const toast=document.getElementById("toast");
 
 function showToast(msg){
@@ -393,7 +396,16 @@ function showToast(msg){
   setTimeout(()=>toast.classList.remove("show"),1200);
 }
 
-/* CART */
+
+/* ================= THEME TOGGLE (FIXED) ================= */
+
+document.getElementById("themeToggle")?.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+});
+
+
+/* ================= CART ================= */
+
 let cart=[];
 
 const drawer=document.getElementById("drawer");
@@ -414,7 +426,8 @@ overlay.onclick=()=>{
   overlay.classList.remove("show");
 };
 
-/* ADD */
+
+/* ADD TO CART */
 document.querySelectorAll(".order-btn").forEach(btn=>{
   btn.onclick=()=>{
     cart.push({
@@ -429,7 +442,8 @@ document.querySelectorAll(".order-btn").forEach(btn=>{
   };
 });
 
-/* UPDATE */
+
+/* UPDATE CART */
 function update(){
   let box=document.getElementById("cart-items");
   let total=0;
@@ -452,6 +466,7 @@ function update(){
         </div>
 
         <span class="remove" onclick="removeItem(${i})">Remove</span>
+
         <p>$${t.toFixed(2)}</p>
       </div>
     `;
@@ -466,6 +481,5 @@ function dec(i){if(cart[i].qty>1){cart[i].qty--;update();}}
 function removeItem(i){cart.splice(i,1);update();}
 
 </script>
-
 </body>
 </html>

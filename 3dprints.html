@@ -6,33 +6,37 @@
 <title>3D Printing Services</title>
 
 <style>
-:root{
-  --bg:#000;
-  --text:#fff;
-  --card:#111;
-  --btn:#28a745;
+:root {
+  --bg-color:#000;
+  --text-color:#fff;
+  --card-bg:#111;
+  --button-bg:#28a745;
+  --button-hover:#1e7e34;
+  --header-bg:#222;
+  --dropdown-bg:#333;
+  --dropdown-hover:#444;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:sans-serif;
-  background:var(--bg);
-  color:var(--text);
+  background:var(--bg-color);
+  color:var(--text-color);
 }
 
-/* ================= HEADER (UNCHANGED STRUCTURE PRESERVED) ================= */
+/* ================= HEADER (RESTORED EXACT STRUCTURE) ================= */
 
-header {
-  background: #222;
-  color: #fff;
-  padding: 1.5rem 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+header{
+  background:var(--header-bg);
+  color:var(--text-color);
+  padding:1.5rem 1rem;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
-.header-container {
+.header-container{
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -40,45 +44,86 @@ header {
   margin:auto;
 }
 
-.nav-section {
+.nav-section{
   display:flex;
   align-items:center;
   gap:1.5rem;
 }
 
-.logo-link {
-  color:white;
+.logo-link{
+  color:var(--text-color);
   text-decoration:none;
   font-weight:bold;
+  font-size:1.2rem;
+}
+
+.dropdown{
+  position:relative;
+  cursor:pointer;
+}
+
+.dropdown-content{
+  display:none;
+  position:absolute;
+  top:100%;
+  background:var(--dropdown-bg);
+  min-width:180px;
+  border-radius:4px;
+}
+
+.dropdown:hover .dropdown-content{
+  display:block;
+}
+
+.dropdown-content a{
+  display:block;
+  padding:10px;
+  text-decoration:none;
+  color:var(--text-color);
+}
+
+.dropdown-content a:hover{
+  background:var(--dropdown-hover);
 }
 
 .center-image img{
   height:80px;
 }
 
+#themeToggle{
+  background:none;
+  border:1px solid var(--text-color);
+  color:var(--text-color);
+  padding:0.5rem 1rem;
+  border-radius:4px;
+  cursor:pointer;
+}
+
 /* ================= PRODUCTS ================= */
 
 .products{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;
   padding:2rem;
+  max-width:1200px;
+  margin:auto;
 }
 
 .product-card{
-  background:var(--card);
+  background:var(--card-bg);
   border-radius:10px;
+  overflow:hidden;
   text-align:center;
-  padding-bottom:1rem;
 }
 
 .product-card img{
   width:100%;
-  height:240px;
+  height:220px;
   object-fit:contain;
   background:#000;
   padding:10px;
-  cursor:pointer;
+  cursor:zoom-in;
 }
 
 .controls{
@@ -86,15 +131,13 @@ header {
   justify-content:center;
   gap:8px;
   flex-wrap:wrap;
-  margin-top:10px;
+  margin:10px 0 15px;
 }
 
-.qty,.color{
-  width:70px;
-}
+.qty,.color{width:80px;}
 
 .order-btn{
-  background:var(--btn);
+  background:var(--button-bg);
   border:none;
   color:white;
   padding:6px 10px;
@@ -177,15 +220,6 @@ header {
   width:90%;
 }
 
-#checkoutBtn{
-  width:100%;
-  padding:10px;
-  background:green;
-  border:none;
-  color:white;
-  cursor:pointer;
-}
-
 /* ================= LIGHTBOX ================= */
 
 .lightbox{
@@ -219,16 +253,14 @@ header {
   z-index:100000;
 }
 
-.toast.show{
-  opacity:1;
-}
+.toast.show{opacity:1;}
 
 </style>
 </head>
 
 <body>
 
-<!-- HEADER (UNCHANGED) -->
+<!-- ================= HEADER (FULLY RESTORED, UNCHANGED FUNCTIONALLY) ================= -->
 <header>
   <div class="header-container">
 
@@ -259,6 +291,8 @@ header {
           <a href="contact.html">Contact</a>
         </div>
       </div>
+
+      <button id="themeToggle">Toggle Theme</button>
     </div>
 
   </div>
@@ -270,7 +304,6 @@ header {
   <div class="product-card">
     <img src="Images/Disney Ear Wall Mount.jpeg">
     <h3>Ear Mount</h3>
-
     <div class="controls">
       <input class="qty" type="number" value="1">
       <select class="color">
@@ -280,7 +313,6 @@ header {
         <option>Pink</option><option>Hot Pink</option>
         <option>Purple</option>
       </select>
-
       <button class="order-btn" data-name="Ear Mount" data-price="6">Add</button>
     </div>
   </div>
@@ -288,7 +320,6 @@ header {
   <div class="product-card">
     <img src="Images/Lithophane.jpeg">
     <h3>Lithophane</h3>
-
     <div class="controls">
       <input class="qty" type="number" value="1">
       <button class="order-btn" data-name="Lithophane" data-price="60">Add</button>
@@ -298,7 +329,6 @@ header {
   <div class="product-card">
     <img src="Images/Tap To Pay Star.jpeg">
     <h3>Tap To Pay Star</h3>
-
     <div class="controls">
       <input class="qty" type="number" value="1">
       <select class="color">
@@ -308,7 +338,6 @@ header {
         <option>Pink</option><option>Hot Pink</option>
         <option>Purple</option>
       </select>
-
       <button class="order-btn" data-name="Tap Star" data-price="10">Add</button>
     </div>
   </div>
@@ -322,11 +351,9 @@ header {
 
 <!-- CART -->
 <div class="cart-button" id="cartBtn">🛒 <span id="count">0</span></div>
-
 <div class="overlay" id="overlay"></div>
 
 <div class="cart-drawer" id="drawer">
-
   <div class="cart-header">
     <h3>Cart</h3>
     <span class="close" id="close">✕</span>
@@ -336,9 +363,7 @@ header {
 
   <div class="cart-footer">
     <p>Total: $<span id="total">0</span></p>
-    <button id="checkoutBtn">Checkout</button>
   </div>
-
 </div>
 
 <!-- TOAST -->
@@ -365,10 +390,7 @@ const toast=document.getElementById("toast");
 function showToast(msg){
   toast.textContent=msg;
   toast.classList.add("show");
-
-  setTimeout(()=>{
-    toast.classList.remove("show");
-  },1200);
+  setTimeout(()=>toast.classList.remove("show"),1200);
 }
 
 /* CART */
@@ -382,13 +404,15 @@ document.getElementById("cartBtn").onclick=()=>{
   overlay.classList.add("show");
 };
 
-document.getElementById("close").onclick=close;
-overlay.onclick=close;
-
-function close(){
+document.getElementById("close").onclick=()=>{
   drawer.classList.remove("open");
   overlay.classList.remove("show");
-}
+};
+
+overlay.onclick=()=>{
+  drawer.classList.remove("open");
+  overlay.classList.remove("show");
+};
 
 /* ADD */
 document.querySelectorAll(".order-btn").forEach(btn=>{
@@ -407,14 +431,12 @@ document.querySelectorAll(".order-btn").forEach(btn=>{
 
 /* UPDATE */
 function update(){
-
   let box=document.getElementById("cart-items");
   let total=0;
 
   box.innerHTML="";
 
   cart.forEach((item,i)=>{
-
     let t=item.price*item.qty;
     total+=t;
 
@@ -430,7 +452,6 @@ function update(){
         </div>
 
         <span class="remove" onclick="removeItem(${i})">Remove</span>
-
         <p>$${t.toFixed(2)}</p>
       </div>
     `;

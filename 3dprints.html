@@ -21,11 +21,11 @@ body{
   color:var(--text);
 }
 
-/* ================= HEADER (RESTORED EXACT STYLE) ================= */
+/* ================= HEADER (YOUR ORIGINAL STRUCTURE RESTORED) ================= */
 
 header {
-  background: var(--header-bg, #222);
-  color: var(--text-color, #fff);
+  background: #222;
+  color: #fff;
   padding: 1.5rem 1rem;
   transition: padding 0.3s ease;
   position: sticky;
@@ -51,13 +51,38 @@ header {
   color: white;
   text-decoration: none;
   font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  background: #333;
+  min-width: 180px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
 }
 
 .center-image img {
   height: 80px;
 }
 
-/* ================= GRID ================= */
+/* ================= PRODUCTS ================= */
 
 .products{
   display:grid;
@@ -82,7 +107,6 @@ header {
   cursor:zoom-in;
 }
 
-/* CONTROLS */
 .controls{
   display:flex;
   justify-content:center;
@@ -114,7 +138,6 @@ header {
   border-radius:50px;
   cursor:pointer;
   z-index:10000;
-  font-weight:bold;
 }
 
 /* ================= DRAWER ================= */
@@ -146,15 +169,13 @@ header {
 .cart-header{
   display:flex;
   justify-content:space-between;
-  align-items:center;
 }
 
 .close{
   cursor:pointer;
-  font-size:20px;
 }
 
-/* CART ITEMS */
+/* ITEMS */
 .cart-item{
   border-bottom:1px solid #333;
   padding:10px 0;
@@ -164,12 +185,11 @@ header {
   display:flex;
   gap:8px;
   align-items:center;
-  margin-top:5px;
 }
 
 .qty-btn{
   background:#333;
-  color:white;
+  color:#fff;
   border:none;
   padding:2px 8px;
   cursor:pointer;
@@ -178,8 +198,8 @@ header {
 .remove{
   color:red;
   cursor:pointer;
+  display:block;
   margin-top:5px;
-  display:inline-block;
 }
 
 /* FOOTER */
@@ -197,14 +217,13 @@ header {
   color:white;
   cursor:pointer;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER (UNCHANGED STRUCTURE) ================= -->
-<header id="header">
+<!-- ================= HEADER (RESTORED EXACT STRUCTURE) ================= -->
+<header>
   <div class="header-container">
 
     <div class="nav-section">
@@ -239,7 +258,7 @@ header {
   </div>
 </header>
 
-<!-- PRODUCTS -->
+<!-- ================= PRODUCTS (STAR RESTORED) ================= -->
 <section class="products">
 
   <div class="product-card">
@@ -255,7 +274,6 @@ header {
         <option>Pink</option><option>Hot Pink</option>
         <option>Purple</option>
       </select>
-
       <button class="order-btn" data-name="Ear Mount" data-price="6">Add</button>
     </div>
   </div>
@@ -270,10 +288,31 @@ header {
     </div>
   </div>
 
+  <!-- ⭐ RESTORED STAR SECTION -->
+  <div class="product-card">
+    <img src="Images/Tap To Pay Star.jpeg">
+    <h3>Tap To Pay Star</h3>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1">
+
+      <select class="color">
+        <option>Red</option><option>Blue</option>
+        <option>White</option><option>Black</option>
+        <option>Yellow</option><option>Green</option>
+        <option>Pink</option><option>Hot Pink</option>
+        <option>Purple</option>
+      </select>
+
+      <button class="order-btn" data-name="Tap Star" data-price="10">Add</button>
+    </div>
+  </div>
+
 </section>
 
-<!-- CART -->
+<!-- ================= CART ================= -->
 <div class="cart-button" id="cartBtn">🛒 <span id="count">0</span></div>
+
 <div class="overlay" id="overlay"></div>
 
 <div class="cart-drawer" id="drawer">
@@ -296,7 +335,7 @@ header {
 
 let cart=[];
 
-/* OPEN/CLOSE */
+/* OPEN / CLOSE */
 const drawer=document.getElementById("drawer");
 const overlay=document.getElementById("overlay");
 
@@ -326,7 +365,7 @@ document.querySelectorAll(".order-btn").forEach(btn=>{
   };
 });
 
-/* UPDATE */
+/* UPDATE CART */
 function update(){
 
   let box=document.getElementById("cart-items");
@@ -361,23 +400,10 @@ function update(){
   document.getElementById("count").innerText=cart.length;
 }
 
-/* CART CONTROLS */
-function inc(i){
-  cart[i].qty++;
-  update();
-}
-
-function dec(i){
-  if(cart[i].qty>1){
-    cart[i].qty--;
-    update();
-  }
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  update();
-}
+/* CONTROLS */
+function inc(i){ cart[i].qty++; update(); }
+function dec(i){ if(cart[i].qty>1){ cart[i].qty--; update(); } }
+function removeItem(i){ cart.splice(i,1); update(); }
 
 </script>
 

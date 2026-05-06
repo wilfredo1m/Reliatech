@@ -6,37 +6,27 @@
 <title>3D Printing Services</title>
 
 <style>
-:root {
-  --bg-color:#000;
-  --text-color:#fff;
-  --card-bg:#111;
-  --button-bg:#28a745;
-  --button-hover:#1e7e34;
-  --header-bg:#222;
-  --dropdown-bg:#333;
-}
-
-.light-theme {
-  --bg-color:#fff;
-  --text-color:#000;
-  --card-bg:#f4f4f4;
-  --header-bg:#eee;
-  --button-bg:#007bff;
-  --button-hover:#0056b3;
+:root{
+  --bg:#000;
+  --text:#fff;
+  --card:#111;
+  --btn:#28a745;
+  --btnh:#1e7e34;
+  --header:#222;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:sans-serif;
-  background:var(--bg-color);
-  color:var(--text-color);
+  background:var(--bg);
+  color:var(--text);
 }
 
-/* ================= HEADER (RESTORED) ================= */
+/* ================= HEADER (RESTORED WORKING) ================= */
 
 header{
-  background:var(--header-bg);
+  background:var(--header);
   padding:1.5rem 1rem;
   position:sticky;
   top:0;
@@ -58,26 +48,24 @@ header.shrink{
 
 .nav-section{
   display:flex;
+  gap:1rem;
   align-items:center;
-  gap:1.5rem;
 }
 
 .logo-link{
-  color:var(--text-color);
+  color:#fff;
   text-decoration:none;
   font-weight:bold;
 }
 
 .dropdown{
   position:relative;
-  cursor:pointer;
 }
 
 .dropdown-content{
   display:none;
   position:absolute;
-  background:var(--dropdown-bg);
-  min-width:180px;
+  background:#333;
 }
 
 .dropdown:hover .dropdown-content{
@@ -87,85 +75,54 @@ header.shrink{
 .dropdown-content a{
   display:block;
   padding:10px;
-  color:var(--text-color);
+  color:white;
   text-decoration:none;
-}
-
-.dropdown-content a:hover{
-  opacity:0.7;
 }
 
 .center-image img{
   height:70px;
-  transition:.3s;
-}
-
-header.shrink .center-image img{
-  height:45px;
 }
 
 #themeToggle{
-  background:none;
-  border:1px solid var(--text-color);
-  color:var(--text-color);
   padding:.5rem 1rem;
+  border:1px solid white;
+  background:none;
+  color:white;
   cursor:pointer;
 }
 
-/* ================= PAGE ================= */
+/* ================= PRODUCTS ================= */
 
 .hero{
   text-align:center;
-  padding:2rem 1rem;
+  padding:2rem;
 }
 
-/* GRID */
 .products{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:1.5rem;
   padding:2rem;
-  max-width:1200px;
-  margin:auto;
 }
 
-/* CARD */
 .product-card{
-  background:var(--card-bg);
-  border-radius:12px;
-  overflow:hidden;
+  background:var(--card);
+  border-radius:10px;
   text-align:center;
+  overflow:hidden;
   padding-bottom:1rem;
-  transition:.2s;
 }
 
-.product-card:hover{
-  transform:translateY(-5px);
-}
-
-/* IMAGE FIX */
 .product-card img{
   width:100%;
   height:240px;
   object-fit:contain;
-  background:var(--card-bg);
+  background:#000;
   padding:10px;
   cursor:zoom-in;
 }
 
-/* TEXT */
-.product-card p{
-  font-size:.9rem;
-  opacity:.85;
-  padding:0 10px;
-}
-
-.price{
-  font-weight:bold;
-  margin:10px 0;
-}
-
-/* CONTROLS */
+/* controls */
 .controls{
   display:flex;
   justify-content:center;
@@ -173,30 +130,28 @@ header.shrink .center-image img{
   margin-top:10px;
 }
 
-.qty{
-  width:60px;
-  text-align:center;
+.qty,.material{
+  width:70px;
 }
 
 .order-btn{
-  background:var(--button-bg);
+  background:var(--btn);
   border:none;
-  color:#fff;
+  color:white;
   padding:6px 10px;
-  border-radius:6px;
   cursor:pointer;
 }
 
 .order-btn:hover{
-  background:var(--button-hover);
+  background:var(--btnh);
 }
 
-/* LIGHTBOX */
+/* ================= LIGHTBOX ================= */
+
 .lightbox{
   display:none;
   position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
+  inset:0;
   background:rgba(0,0,0,.95);
   justify-content:center;
   align-items:center;
@@ -222,20 +177,54 @@ header.shrink .center-image img{
   cursor:pointer;
 }
 
+/* ================= CART ================= */
+
+.cart{
+  position:fixed;
+  right:0;
+  top:0;
+  width:280px;
+  height:100%;
+  background:#111;
+  padding:15px;
+  overflow-y:auto;
+  border-left:2px solid #333;
+}
+
+.cart-item{
+  border-bottom:1px solid #333;
+  padding:10px 0;
+}
+
+.cart-footer{
+  position:absolute;
+  bottom:20px;
+  width:90%;
+}
+
+#checkoutBtn{
+  width:100%;
+  padding:10px;
+  background:green;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER RESTORED ================= -->
+<!-- HEADER (FULL RESTORED) -->
 <header id="header">
   <div class="header-container">
 
     <div class="nav-section">
-      <a href="index.html" class="logo-link">Home</a>
+      <a class="logo-link" href="index.html">Home</a>
 
       <div class="dropdown">
-        <span>Service Types ▾</span>
+        <span>Services ▾</span>
         <div class="dropdown-content">
           <a href="Device-Services.HTML">Device Services</a>
           <a href="On-Site.HTML">On-Site Services</a>
@@ -245,16 +234,14 @@ header.shrink .center-image img{
     </div>
 
     <div class="center-image">
-      <a href="index.html">
-        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png">
-      </a>
+      <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png">
     </div>
 
     <div class="nav-section">
       <div class="dropdown">
         <span>More ▾</span>
         <div class="dropdown-content">
-          <a href="about-us.html">About Us</a>
+          <a href="about-us.html">About</a>
           <a href="contact.html">Contact</a>
         </div>
       </div>
@@ -265,77 +252,102 @@ header.shrink .center-image img{
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
 <section class="hero">
   <h1>3D Printing Services</h1>
-  <p>Custom prints, fast turnaround, affordable pricing</p>
 </section>
 
-<!-- ================= PRODUCTS ================= -->
+<!-- PRODUCTS (STAR RESTORED) -->
 <section class="products">
 
   <div class="product-card">
     <img src="Images/Disney Ear Wall Mount.jpeg">
     <h3>Disney Ear Wall Mount</h3>
     <p>Wall mount for Disney ears.</p>
-    <div class="price">$6</div>
-
     <div class="controls">
-      <input class="qty" type="number" value="1" min="1">
-      <button class="order-btn" data-name="Disney Ear Wall Mount">Order</button>
+      <input class="qty" type="number" value="1">
+      <select class="material">
+        <option value="1">PLA</option>
+        <option value="1.2">PETG</option>
+        <option value="1.5">Resin</option>
+      </select>
+      <button class="order-btn" data-name="Disney Ear Wall Mount" data-price="6">Add</button>
     </div>
   </div>
 
   <div class="product-card">
     <img src="Images/Lithophane.jpeg">
     <h3>Lithophane</h3>
-    <p>Custom backlit lithophane prints.</p>
-    <div class="price">$60+</div>
-
+    <p>Custom lithophane prints.</p>
     <div class="controls">
-      <input class="qty" type="number" value="1" min="1">
-      <button class="order-btn" data-name="Lithophane">Order</button>
+      <input class="qty" type="number" value="1">
+      <select class="material">
+        <option value="1">PLA</option>
+        <option value="1.2">PETG</option>
+        <option value="1.5">Resin</option>
+      </select>
+      <button class="order-btn" data-name="Lithophane" data-price="60">Add</button>
+    </div>
+  </div>
+
+  <!-- ⭐ RESTORED STAR PRODUCT -->
+  <div class="product-card">
+    <img src="Images/Tap To Pay Star.jpeg">
+    <h3>Tap To Pay Star</h3>
+    <p>Stylized tap-to-pay stand design.</p>
+    <div class="controls">
+      <input class="qty" type="number" value="1">
+      <select class="material">
+        <option value="1">PLA</option>
+        <option value="1.2">PETG</option>
+        <option value="1.5">Resin</option>
+      </select>
+      <button class="order-btn" data-name="Tap To Pay Star" data-price="10">Add</button>
     </div>
   </div>
 
 </section>
 
-<!-- ================= LIGHTBOX ================= -->
+<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
   <span class="close">&times;</span>
   <img id="lightbox-img">
 </div>
 
+<!-- CART -->
+<div class="cart">
+  <h3>Cart</h3>
+  <div id="cart-items"></div>
+  <div class="cart-footer">
+    <p>Total: $<span id="total">0</span></p>
+    <button id="checkoutBtn">Checkout</button>
+  </div>
+</div>
+
 <script>
 
-/* HEADER FUNCTIONALITY (RESTORED) */
-document.getElementById('themeToggle').addEventListener('click', () => {
-  document.body.classList.toggle('light-theme');
-});
+/* HEADER */
+document.getElementById("themeToggle").onclick=()=>{
+  document.body.classList.toggle("light-theme");
+};
 
-window.addEventListener('scroll', () => {
-  document.getElementById('header')
-    .classList.toggle('shrink', window.scrollY > 80);
+window.addEventListener("scroll",()=>{
+  document.getElementById("header")
+  .classList.toggle("shrink",window.scrollY>80);
 });
 
 /* LIGHTBOX */
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightbox-img");
+const lightbox=document.getElementById("lightbox");
+const lightboxImg=document.getElementById("lightbox-img");
+let imgs=[...document.querySelectorAll(".product-card img")];
+let i=0;
 
-let images = [...document.querySelectorAll(".product-card img")];
-let index = 0;
-
-images.forEach((img,i)=>{
-  img.addEventListener("click",()=>{
-    index=i;
+imgs.forEach((img,index)=>{
+  img.onclick=()=>{
+    i=index;
     lightbox.style.display="flex";
     lightboxImg.src=img.src;
-  });
+  };
 });
-
-document.querySelector(".close").onclick=()=>{
-  lightbox.style.display="none";
-};
 
 lightbox.onclick=(e)=>{
   if(e.target===lightbox) lightbox.style.display="none";
@@ -345,38 +357,46 @@ lightboxImg.onclick=()=>{
   lightboxImg.classList.toggle("zoomed");
 };
 
-/* SWIPE */
-let startX=0;
+/* CART */
+let cart=[];
 
-lightbox.addEventListener("touchstart",e=>{
-  startX=e.touches[0].clientX;
-});
-
-lightbox.addEventListener("touchend",e=>{
-  let endX=e.changedTouches[0].clientX;
-
-  if(startX-endX>50 && index<images.length-1){
-    index++;
-    lightboxImg.src=images[index].src;
-  }
-
-  if(endX-startX>50 && index>0){
-    index--;
-    lightboxImg.src=images[index].src;
-  }
-});
-
-/* ORDER BUTTON */
 document.querySelectorAll(".order-btn").forEach(btn=>{
-  btn.addEventListener("click",()=>{
+  btn.onclick=()=>{
     let name=btn.dataset.name;
+    let price=parseFloat(btn.dataset.price);
     let qty=btn.parentElement.querySelector(".qty").value;
+    let mult=btn.parentElement.querySelector(".material").value;
 
-    let formURL="YOUR_GOOGLE_FORM_LINK_HERE";
-
-    window.open(formURL,"_blank");
-  });
+    cart.push({name,price,qty,mult});
+    updateCart();
+  };
 });
+
+function updateCart(){
+  let box=document.getElementById("cart-items");
+  let total=0;
+
+  box.innerHTML="";
+
+  cart.forEach((c,i)=>{
+    let cost=c.price*c.qty*c.mult;
+    total+=cost;
+
+    box.innerHTML+=`
+      <div class="cart-item">
+        <p>${c.name}</p>
+        <p>$${cost.toFixed(2)}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText=total.toFixed(2);
+}
+
+/* CHECKOUT */
+document.getElementById("checkoutBtn").onclick=()=>{
+  alert("Checkout coming next step (Stripe or Google Form)");
+};
 
 </script>
 

@@ -7,7 +7,7 @@
 
 <style>
 
-/* ================= THEME (MATCHES YOUR WORKING PAGE EXACTLY) ================= */
+/* ================= THEME ================= */
 
 :root {
   --bg-color:#000;
@@ -21,25 +21,25 @@
 }
 
 body.light-theme {
-  --bg-color:#ffffff;
-  --text-color:#000000;
-  --card-bg:#f9f9f9;
+  --bg-color:#fff;
+  --text-color:#000;
+  --card-bg:#f4f4f4;
   --button-bg:#007bff;
   --button-hover:#0056b3;
   --header-bg:#f0f0f0;
-  --dropdown-bg:#ffffff;
-  --dropdown-hover:#e0e0e0;
+  --dropdown-bg:#fff;
+  --dropdown-hover:#e6e6e6;
 }
 
-/* FORCE VARIABLES TO APPLY PROPERLY */
 body {
+  margin:0;
   font-family:sans-serif;
   background:var(--bg-color);
   color:var(--text-color);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:0.3s ease;
 }
 
-/* ================= HEADER (UNCHANGED SAFE COPY) ================= */
+/* ================= HEADER (UNCHANGED STRUCTURE) ================= */
 
 header {
   background:var(--header-bg);
@@ -70,18 +70,23 @@ header {
   font-weight:bold;
 }
 
-/* dropdown */
+/* ================= DROPDOWNS (RESTORED) ================= */
+
 .dropdown {
   position:relative;
+  cursor:pointer;
 }
 
 .dropdown-content {
   display:none;
   position:absolute;
   top:100%;
+  left:0;
   background:var(--dropdown-bg);
   min-width:180px;
   border-radius:4px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  z-index:2000;
 }
 
 .dropdown:hover .dropdown-content {
@@ -126,6 +131,8 @@ header {
   background:var(--card-bg);
   border-radius:10px;
   text-align:center;
+  overflow:hidden;
+  padding-bottom:1rem;
 }
 
 .product-card img {
@@ -135,6 +142,38 @@ header {
   background:#000;
   padding:10px;
   cursor:zoom-in;
+}
+
+.product-card h3 {
+  margin:0.5rem 0;
+}
+
+.product-card p {
+  font-size:0.9rem;
+  opacity:0.85;
+  padding:0 10px;
+}
+
+/* ================= CONTROLS ================= */
+
+.controls {
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.qty, .color {
+  width:80px;
+}
+
+.order-btn {
+  background:var(--button-bg);
+  border:none;
+  color:white;
+  padding:6px 10px;
+  cursor:pointer;
 }
 
 /* ================= CART ================= */
@@ -148,6 +187,54 @@ header {
   border-radius:50px;
   cursor:pointer;
   z-index:10000;
+}
+
+.overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  z-index:9998;
+}
+
+.cart-drawer {
+  position:fixed;
+  top:0;
+  right:-360px;
+  width:340px;
+  height:100%;
+  background:#111;
+  padding:15px;
+  transition:0.3s;
+  z-index:9999;
+  overflow-y:auto;
+}
+
+.cart-drawer.open { right:0; }
+.overlay.show { display:block; }
+
+.cart-item {
+  border-bottom:1px solid #333;
+  padding:10px 0;
+}
+
+.qty-controls {
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.qty-btn {
+  background:#333;
+  color:#fff;
+  border:none;
+  padding:2px 8px;
+  cursor:pointer;
+}
+
+.remove {
+  color:red;
+  cursor:pointer;
 }
 
 /* ================= LIGHTBOX ================= */
@@ -180,11 +267,10 @@ header {
   border-radius:6px;
   opacity:0;
   transition:0.3s;
+  z-index:100000;
 }
 
-.toast.show {
-  opacity:1;
-}
+.toast.show { opacity:1; }
 
 </style>
 </head>
@@ -197,6 +283,7 @@ header {
 
     <div class="nav-section">
       <a href="index.html" class="logo-link">Home</a>
+
       <div class="dropdown">
         <span>Service Types ▾</span>
         <div class="dropdown-content">
@@ -233,17 +320,49 @@ header {
 
   <div class="product-card">
     <img src="Images/Disney Ear Wall Mount.jpeg">
-    <h3>Ear Mount</h3>
+    <h3>Disney Ear Wall Mount</h3>
+    <p>Wall-mounted Disney ear display holder.</p>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1">
+      <select class="color">
+        <option>Red</option><option>Blue</option>
+        <option>White</option><option>Black</option>
+        <option>Yellow</option><option>Green</option>
+        <option>Pink</option><option>Hot Pink</option>
+        <option>Purple</option>
+      </select>
+      <button class="order-btn" data-name="Ear Mount" data-price="6">Add</button>
+    </div>
   </div>
 
   <div class="product-card">
     <img src="Images/Lithophane.jpeg">
     <h3>Lithophane</h3>
+    <p>Custom backlit photo lithophanes.</p>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1">
+      <button class="order-btn" data-name="Lithophane" data-price="60">Add</button>
+    </div>
   </div>
 
   <div class="product-card">
     <img src="Images/Tap To Pay Star.jpeg">
-    <h3>Tap Star</h3>
+    <h3>Tap To Pay Star</h3>
+    <p>Stylized NFC tap-to-pay stand.</p>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1">
+      <select class="color">
+        <option>Red</option><option>Blue</option>
+        <option>White</option><option>Black</option>
+        <option>Yellow</option><option>Green</option>
+        <option>Pink</option><option>Hot Pink</option>
+        <option>Purple</option>
+      </select>
+      <button class="order-btn" data-name="Tap Star" data-price="10">Add</button>
+    </div>
   </div>
 
 </section>
@@ -253,19 +372,23 @@ header {
   <img id="lightbox-img">
 </div>
 
+<!-- CART -->
+<div class="cart-button" id="cartBtn">🛒 <span id="count">0</span></div>
+<div class="overlay" id="overlay"></div>
+
+<div class="cart-drawer" id="drawer"></div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 
-/* ================= THEME FIX (THIS WAS THE ISSUE) ================= */
-
+/* THEME FIX */
 document.getElementById("themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
 });
 
-/* ================= LIGHTBOX ================= */
-
+/* LIGHTBOX */
 const lightbox=document.getElementById("lightbox");
 const lightImg=document.getElementById("lightbox-img");
 
@@ -277,6 +400,78 @@ document.querySelectorAll(".product-card img").forEach(img=>{
 });
 
 lightbox.onclick=()=>lightbox.style.display="none";
+
+/* TOAST */
+const toast=document.getElementById("toast");
+function showToast(msg){
+  toast.textContent=msg;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),1200);
+}
+
+/* CART */
+let cart=[];
+const drawer=document.getElementById("drawer");
+const overlay=document.getElementById("overlay");
+
+document.getElementById("cartBtn").onclick=()=>{
+  drawer.classList.add("open");
+  overlay.classList.add("show");
+};
+
+overlay.onclick=()=>{
+  drawer.classList.remove("open");
+  overlay.classList.remove("show");
+};
+
+/* ADD */
+document.querySelectorAll(".order-btn").forEach(btn=>{
+  btn.onclick=()=>{
+    cart.push({
+      name:btn.dataset.name,
+      price:+btn.dataset.price,
+      qty:+btn.parentElement.querySelector(".qty").value,
+      color:btn.parentElement.querySelector(".color")?.value || "N/A"
+    });
+    showToast("Added to cart");
+    update();
+  };
+});
+
+/* UPDATE */
+function update(){
+  let box=document.getElementById("drawer");
+  let total=0;
+
+  box.innerHTML="";
+
+  cart.forEach((item,i)=>{
+    let t=item.price*item.qty;
+    total+=t;
+
+    box.innerHTML+=`
+      <div class="cart-item">
+        <p><b>${item.name}</b></p>
+        <p>${item.color}</p>
+
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="dec(${i})">-</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" onclick="inc(${i})">+</button>
+        </div>
+
+        <span class="remove" onclick="removeItem(${i})">Remove</span>
+        <p>$${t}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("count").innerText=cart.length;
+}
+
+function inc(i){cart[i].qty++;update();}
+function dec(i){if(cart[i].qty>1){cart[i].qty--;update();}}
+function removeItem(i){cart.splice(i,1);update();}
 
 </script>
 

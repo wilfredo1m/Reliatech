@@ -13,7 +13,6 @@
   --btn:#28a745;
 }
 
-/* BASE */
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -22,22 +21,44 @@ body{
   color:var(--text);
 }
 
-/* HEADER */
-header{
-  background:#222;
-  padding:1.5rem;
-  position:sticky;
-  top:0;
-  z-index:1000;
+/* ================= HEADER (RESTORED EXACT STYLE) ================= */
+
+header {
+  background: var(--header-bg, #222);
+  color: var(--text-color, #fff);
+  padding: 1.5rem 1rem;
+  transition: padding 0.3s ease;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.header-container{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* GRID */
+.nav-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.center-image img {
+  height: 80px;
+}
+
+/* ================= GRID ================= */
+
 .products{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -45,7 +66,6 @@ header{
   padding:2rem;
 }
 
-/* CARDS */
 .product-card{
   background:var(--card);
   border-radius:10px;
@@ -72,8 +92,7 @@ header{
 }
 
 .qty,.color{
-  width:80px;
-  padding:4px;
+  width:70px;
 }
 
 .order-btn{
@@ -84,23 +103,8 @@ header{
   cursor:pointer;
 }
 
-/* LIGHTBOX */
-.lightbox{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.95);
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-}
+/* ================= CART BUTTON ================= */
 
-.lightbox img{
-  max-width:90%;
-  max-height:85%;
-}
-
-/* CART BUTTON */
 .cart-button{
   position:fixed;
   top:20px;
@@ -110,9 +114,11 @@ header{
   border-radius:50px;
   cursor:pointer;
   z-index:10000;
+  font-weight:bold;
 }
 
-/* CART DRAWER */
+/* ================= DRAWER ================= */
+
 .overlay{
   position:fixed;
   inset:0;
@@ -124,12 +130,12 @@ header{
 .cart-drawer{
   position:fixed;
   top:0;
-  right:-350px;
-  width:320px;
+  right:-360px;
+  width:340px;
   height:100%;
   background:#111;
   padding:15px;
-  transition:0.3s;
+  transition:0.3s ease;
   z-index:9999;
   overflow-y:auto;
 }
@@ -140,13 +146,43 @@ header{
 .cart-header{
   display:flex;
   justify-content:space-between;
+  align-items:center;
 }
 
+.close{
+  cursor:pointer;
+  font-size:20px;
+}
+
+/* CART ITEMS */
 .cart-item{
   border-bottom:1px solid #333;
   padding:10px 0;
 }
 
+.qty-controls{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:5px;
+}
+
+.qty-btn{
+  background:#333;
+  color:white;
+  border:none;
+  padding:2px 8px;
+  cursor:pointer;
+}
+
+.remove{
+  color:red;
+  cursor:pointer;
+  margin-top:5px;
+  display:inline-block;
+}
+
+/* FOOTER */
 .cart-footer{
   position:absolute;
   bottom:20px;
@@ -161,30 +197,57 @@ header{
   color:white;
   cursor:pointer;
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header>
+<!-- ================= HEADER (UNCHANGED STRUCTURE) ================= -->
+<header id="header">
   <div class="header-container">
-    <a href="index.html" style="color:white;text-decoration:none;">Home</a>
-    <h2>3D Printing Services</h2>
+
+    <div class="nav-section">
+      <a href="index.html" class="logo-link">Home</a>
+
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="Device-Services.HTML">Device Services</a>
+          <a href="On-Site.HTML">On-Site Services</a>
+          <a href="3dprints.html">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-image">
+      <a href="index.html">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png">
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </header>
 
 <!-- PRODUCTS -->
 <section class="products">
 
-  <!-- MOUNT -->
   <div class="product-card">
     <img src="Images/Disney Ear Wall Mount.jpeg">
-    <h3>Disney Ear Mount</h3>
+    <h3>Ear Mount</h3>
 
     <div class="controls">
       <input class="qty" type="number" value="1">
-
       <select class="color">
         <option>Red</option><option>Blue</option>
         <option>White</option><option>Black</option>
@@ -197,7 +260,6 @@ header{
     </div>
   </div>
 
-  <!-- LITHOPHANE -->
   <div class="product-card">
     <img src="Images/Lithophane.jpeg">
     <h3>Lithophane</h3>
@@ -208,42 +270,17 @@ header{
     </div>
   </div>
 
-  <!-- STAR -->
-  <div class="product-card">
-    <img src="Images/Tap To Pay Star.jpeg">
-    <h3>Tap To Pay Star</h3>
-
-    <div class="controls">
-      <input class="qty" type="number" value="1">
-
-      <select class="color">
-        <option>Red</option><option>Blue</option>
-        <option>White</option><option>Black</option>
-        <option>Yellow</option><option>Green</option>
-        <option>Pink</option><option>Hot Pink</option>
-        <option>Purple</option>
-      </select>
-
-      <button class="order-btn" data-name="Tap Star" data-price="10">Add</button>
-    </div>
-  </div>
-
 </section>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox">
-  <img id="lightbox-img">
-</div>
-
 <!-- CART -->
-<div class="cart-button" id="cartBtn">🛒 <span id="cartCount">0</span></div>
-
+<div class="cart-button" id="cartBtn">🛒 <span id="count">0</span></div>
 <div class="overlay" id="overlay"></div>
 
 <div class="cart-drawer" id="drawer">
+
   <div class="cart-header">
     <h3>Cart</h3>
-    <span id="close">✕</span>
+    <span class="close" id="close">✕</span>
   </div>
 
   <div id="cart-items"></div>
@@ -252,26 +289,14 @@ header{
     <p>Total: $<span id="total">0</span></p>
     <button id="checkoutBtn">Checkout</button>
   </div>
+
 </div>
 
 <script>
 
-/* LIGHTBOX */
-const lightbox=document.getElementById("lightbox");
-const lightImg=document.getElementById("lightbox-img");
-
-document.querySelectorAll("img").forEach(img=>{
-  img.onclick=()=>{
-    lightbox.style.display="flex";
-    lightImg.src=img.src;
-  };
-});
-
-lightbox.onclick=()=>lightbox.style.display="none";
-
-/* CART */
 let cart=[];
 
+/* OPEN/CLOSE */
 const drawer=document.getElementById("drawer");
 const overlay=document.getElementById("overlay");
 
@@ -280,10 +305,10 @@ document.getElementById("cartBtn").onclick=()=>{
   overlay.classList.add("show");
 };
 
-document.getElementById("close").onclick=closeCart;
-overlay.onclick=closeCart;
+document.getElementById("close").onclick=close;
+overlay.onclick=close;
 
-function closeCart(){
+function close(){
   drawer.classList.remove("open");
   overlay.classList.remove("show");
 }
@@ -291,39 +316,67 @@ function closeCart(){
 /* ADD */
 document.querySelectorAll(".order-btn").forEach(btn=>{
   btn.onclick=()=>{
-    let name=btn.dataset.name;
-    let price=+btn.dataset.price;
-    let qty=btn.parentElement.querySelector(".qty").value;
-    let colorEl=btn.parentElement.querySelector(".color");
-    let color=colorEl?colorEl.value:"N/A";
-
-    cart.push({name,price,qty,color});
+    cart.push({
+      name:btn.dataset.name,
+      price:+btn.dataset.price,
+      qty:+btn.parentElement.querySelector(".qty").value,
+      color:btn.parentElement.querySelector(".color")?.value || "N/A"
+    });
     update();
   };
 });
 
 /* UPDATE */
 function update(){
+
   let box=document.getElementById("cart-items");
   let total=0;
 
   box.innerHTML="";
 
-  cart.forEach(i=>{
-    let t=i.price*i.qty;
-    total+=t;
+  cart.forEach((item,i)=>{
+
+    let itemTotal=item.price*item.qty;
+    total+=itemTotal;
 
     box.innerHTML+=`
       <div class="cart-item">
-        <p><b>${i.name}</b></p>
-        <p>${i.color}</p>
-        <p>${i.qty} x $${i.price}</p>
+        <p><b>${item.name}</b></p>
+        <p>${item.color}</p>
+
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="dec(${i})">-</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" onclick="inc(${i})">+</button>
+        </div>
+
+        <span class="remove" onclick="removeItem(${i})">Remove</span>
+
+        <p>$${itemTotal.toFixed(2)}</p>
       </div>
     `;
   });
 
   document.getElementById("total").innerText=total.toFixed(2);
-  document.getElementById("cartCount").innerText=cart.length;
+  document.getElementById("count").innerText=cart.length;
+}
+
+/* CART CONTROLS */
+function inc(i){
+  cart[i].qty++;
+  update();
+}
+
+function dec(i){
+  if(cart[i].qty>1){
+    cart[i].qty--;
+    update();
+  }
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  update();
 }
 
 </script>

@@ -15,6 +15,7 @@
   --header:#222;
 }
 
+/* BASIC RESET */
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -23,7 +24,7 @@ body{
   color:var(--text);
 }
 
-/* ================= HEADER (RESTORED WORKING) ================= */
+/* ================= HEADER ================= */
 
 header{
   background:var(--header);
@@ -48,12 +49,12 @@ header.shrink{
 
 .nav-section{
   display:flex;
-  gap:1rem;
   align-items:center;
+  gap:1rem;
 }
 
 .logo-link{
-  color:#fff;
+  color:white;
   text-decoration:none;
   font-weight:bold;
 }
@@ -66,6 +67,7 @@ header.shrink{
   display:none;
   position:absolute;
   background:#333;
+  min-width:180px;
 }
 
 .dropdown:hover .dropdown-content{
@@ -84,33 +86,40 @@ header.shrink{
 }
 
 #themeToggle{
-  padding:.5rem 1rem;
-  border:1px solid white;
   background:none;
+  border:1px solid white;
   color:white;
+  padding:.5rem 1rem;
   cursor:pointer;
 }
 
-/* ================= PRODUCTS ================= */
+/* ================= HERO ================= */
 
 .hero{
   text-align:center;
   padding:2rem;
 }
 
+/* ================= GRID ================= */
+
 .products{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:1.5rem;
   padding:2rem;
+
+  /* IMPORTANT FIX so cart doesn't overlap */
+  padding-right:340px;
 }
+
+/* ================= CARD ================= */
 
 .product-card{
   background:var(--card);
   border-radius:10px;
   text-align:center;
-  overflow:hidden;
   padding-bottom:1rem;
+  overflow:hidden;
 }
 
 .product-card img{
@@ -122,16 +131,18 @@ header.shrink{
   cursor:zoom-in;
 }
 
-/* controls */
+/* CONTROLS */
 .controls{
   display:flex;
   justify-content:center;
   gap:8px;
+  flex-wrap:wrap;
   margin-top:10px;
 }
 
-.qty,.material{
-  width:70px;
+.qty,.color{
+  width:80px;
+  padding:4px;
 }
 
 .order-btn{
@@ -162,7 +173,6 @@ header.shrink{
   max-width:90%;
   max-height:85%;
   object-fit:contain;
-  cursor:zoom-in;
 }
 
 .lightbox img.zoomed{
@@ -183,7 +193,7 @@ header.shrink{
   position:fixed;
   right:0;
   top:0;
-  width:280px;
+  width:320px;
   height:100%;
   background:#111;
   padding:15px;
@@ -206,8 +216,8 @@ header.shrink{
   width:100%;
   padding:10px;
   background:green;
-  color:white;
   border:none;
+  color:white;
   cursor:pointer;
 }
 
@@ -216,12 +226,12 @@ header.shrink{
 
 <body>
 
-<!-- HEADER (FULL RESTORED) -->
+<!-- HEADER -->
 <header id="header">
   <div class="header-container">
 
     <div class="nav-section">
-      <a class="logo-link" href="index.html">Home</a>
+      <a href="index.html" class="logo-link">Home</a>
 
       <div class="dropdown">
         <span>Services ▾</span>
@@ -238,69 +248,79 @@ header.shrink{
     </div>
 
     <div class="nav-section">
-      <div class="dropdown">
-        <span>More ▾</span>
-        <div class="dropdown-content">
-          <a href="about-us.html">About</a>
-          <a href="contact.html">Contact</a>
-        </div>
-      </div>
-
       <button id="themeToggle">Toggle Theme</button>
     </div>
 
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <h1>3D Printing Services</h1>
 </section>
 
-<!-- PRODUCTS (STAR RESTORED) -->
+<!-- PRODUCTS -->
 <section class="products">
 
+  <!-- MOUNT -->
   <div class="product-card">
     <img src="Images/Disney Ear Wall Mount.jpeg">
     <h3>Disney Ear Wall Mount</h3>
-    <p>Wall mount for Disney ears.</p>
+    <p>Wall mount display.</p>
+
     <div class="controls">
       <input class="qty" type="number" value="1">
-      <select class="material">
-        <option value="1">PLA</option>
-        <option value="1.2">PETG</option>
-        <option value="1.5">Resin</option>
+
+      <!-- COLOR -->
+      <select class="color">
+        <option>Red</option>
+        <option>Blue</option>
+        <option>White</option>
+        <option>Black</option>
+        <option>Yellow</option>
+        <option>Green</option>
+        <option>Pink</option>
+        <option>Hot Pink</option>
+        <option>Purple</option>
       </select>
+
       <button class="order-btn" data-name="Disney Ear Wall Mount" data-price="6">Add</button>
     </div>
   </div>
 
+  <!-- LITHOPHANE (NO COLOR) -->
   <div class="product-card">
     <img src="Images/Lithophane.jpeg">
     <h3>Lithophane</h3>
     <p>Custom lithophane prints.</p>
+
     <div class="controls">
       <input class="qty" type="number" value="1">
-      <select class="material">
-        <option value="1">PLA</option>
-        <option value="1.2">PETG</option>
-        <option value="1.5">Resin</option>
-      </select>
       <button class="order-btn" data-name="Lithophane" data-price="60">Add</button>
     </div>
   </div>
 
-  <!-- ⭐ RESTORED STAR PRODUCT -->
+  <!-- STAR -->
   <div class="product-card">
     <img src="Images/Tap To Pay Star.jpeg">
     <h3>Tap To Pay Star</h3>
-    <p>Stylized tap-to-pay stand design.</p>
+    <p>Payment stand design.</p>
+
     <div class="controls">
       <input class="qty" type="number" value="1">
-      <select class="material">
-        <option value="1">PLA</option>
-        <option value="1.2">PETG</option>
-        <option value="1.5">Resin</option>
+
+      <select class="color">
+        <option>Red</option>
+        <option>Blue</option>
+        <option>White</option>
+        <option>Black</option>
+        <option>Yellow</option>
+        <option>Green</option>
+        <option>Pink</option>
+        <option>Hot Pink</option>
+        <option>Purple</option>
       </select>
+
       <button class="order-btn" data-name="Tap To Pay Star" data-price="10">Add</button>
     </div>
   </div>
@@ -317,6 +337,7 @@ header.shrink{
 <div class="cart">
   <h3>Cart</h3>
   <div id="cart-items"></div>
+
   <div class="cart-footer">
     <p>Total: $<span id="total">0</span></p>
     <button id="checkoutBtn">Checkout</button>
@@ -338,12 +359,13 @@ window.addEventListener("scroll",()=>{
 /* LIGHTBOX */
 const lightbox=document.getElementById("lightbox");
 const lightboxImg=document.getElementById("lightbox-img");
-let imgs=[...document.querySelectorAll(".product-card img")];
-let i=0;
 
-imgs.forEach((img,index)=>{
+let imgs=[...document.querySelectorAll(".product-card img")];
+let index=0;
+
+imgs.forEach((img,i)=>{
   img.onclick=()=>{
-    i=index;
+    index=i;
     lightbox.style.display="flex";
     lightboxImg.src=img.src;
   };
@@ -365,9 +387,11 @@ document.querySelectorAll(".order-btn").forEach(btn=>{
     let name=btn.dataset.name;
     let price=parseFloat(btn.dataset.price);
     let qty=btn.parentElement.querySelector(".qty").value;
-    let mult=btn.parentElement.querySelector(".material").value;
+    let colorEl=btn.parentElement.querySelector(".color");
 
-    cart.push({name,price,qty,mult});
+    let color=colorEl?colorEl.value:"N/A";
+
+    cart.push({name,price,qty,color});
     updateCart();
   };
 });
@@ -378,13 +402,14 @@ function updateCart(){
 
   box.innerHTML="";
 
-  cart.forEach((c,i)=>{
-    let cost=c.price*c.qty*c.mult;
+  cart.forEach(c=>{
+    let cost=c.price*c.qty;
     total+=cost;
 
     box.innerHTML+=`
       <div class="cart-item">
         <p>${c.name}</p>
+        <p>Color: ${c.color}</p>
         <p>$${cost.toFixed(2)}</p>
       </div>
     `;
@@ -395,7 +420,7 @@ function updateCart(){
 
 /* CHECKOUT */
 document.getElementById("checkoutBtn").onclick=()=>{
-  alert("Checkout coming next step (Stripe or Google Form)");
+  alert("Next step: Stripe or Google Form checkout");
 };
 
 </script>

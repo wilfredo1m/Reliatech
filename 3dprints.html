@@ -6,6 +6,8 @@
 <title>3D Printing Services</title>
 
 <style>
+/* ================= THEME ================= */
+
 :root {
   --bg-color:#000;
   --text-color:#fff;
@@ -17,17 +19,32 @@
   --dropdown-hover:#444;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+body.light-theme {
+  --bg-color:#fff;
+  --text-color:#000;
+  --card-bg:#f4f4f4;
+  --button-bg:#007bff;
+  --button-hover:#0056b3;
+  --header-bg:#f0f0f0;
+  --dropdown-bg:#fff;
+  --dropdown-hover:#e6e6e6;
+}
 
-body{
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
   font-family:sans-serif;
   background:var(--bg-color);
   color:var(--text-color);
 }
 
-/* ================= HEADER (RESTORED EXACT STRUCTURE) ================= */
+/* ================= HEADER (UNCHANGED STRUCTURE) ================= */
 
-header{
+header {
   background:var(--header-bg);
   color:var(--text-color);
   padding:1.5rem 1rem;
@@ -36,7 +53,7 @@ header{
   z-index:1000;
 }
 
-.header-container{
+.header-container {
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -44,25 +61,24 @@ header{
   margin:auto;
 }
 
-.nav-section{
+.nav-section {
   display:flex;
   align-items:center;
   gap:1.5rem;
 }
 
-.logo-link{
+.logo-link {
   color:var(--text-color);
   text-decoration:none;
   font-weight:bold;
-  font-size:1.2rem;
 }
 
-.dropdown{
+.dropdown {
   position:relative;
   cursor:pointer;
 }
 
-.dropdown-content{
+.dropdown-content {
   display:none;
   position:absolute;
   top:100%;
@@ -71,26 +87,26 @@ header{
   border-radius:4px;
 }
 
-.dropdown:hover .dropdown-content{
+.dropdown:hover .dropdown-content {
   display:block;
 }
 
-.dropdown-content a{
+.dropdown-content a {
   display:block;
   padding:10px;
   text-decoration:none;
   color:var(--text-color);
 }
 
-.dropdown-content a:hover{
+.dropdown-content a:hover {
   background:var(--dropdown-hover);
 }
 
-.center-image img{
+.center-image img {
   height:80px;
 }
 
-#themeToggle{
+#themeToggle {
   background:none;
   border:1px solid var(--text-color);
   color:var(--text-color);
@@ -101,7 +117,7 @@ header{
 
 /* ================= PRODUCTS ================= */
 
-.products{
+.products {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:2rem;
@@ -110,14 +126,14 @@ header{
   margin:auto;
 }
 
-.product-card{
+.product-card {
   background:var(--card-bg);
   border-radius:10px;
-  overflow:hidden;
   text-align:center;
+  overflow:hidden;
 }
 
-.product-card img{
+.product-card img {
   width:100%;
   height:220px;
   object-fit:contain;
@@ -126,7 +142,7 @@ header{
   cursor:zoom-in;
 }
 
-.controls{
+.controls {
   display:flex;
   justify-content:center;
   gap:8px;
@@ -134,9 +150,11 @@ header{
   margin:10px 0 15px;
 }
 
-.qty,.color{width:80px;}
+.qty,.color {
+  width:80px;
+}
 
-.order-btn{
+.order-btn {
   background:var(--button-bg);
   border:none;
   color:white;
@@ -146,7 +164,7 @@ header{
 
 /* ================= CART ================= */
 
-.cart-button{
+.cart-button {
   position:fixed;
   top:20px;
   right:20px;
@@ -157,7 +175,7 @@ header{
   z-index:10000;
 }
 
-.overlay{
+.overlay {
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.5);
@@ -165,7 +183,7 @@ header{
   z-index:9998;
 }
 
-.cart-drawer{
+.cart-drawer {
   position:fixed;
   top:0;
   right:-360px;
@@ -178,28 +196,35 @@ header{
   overflow-y:auto;
 }
 
-.cart-drawer.open{right:0;}
-.overlay.show{display:block;}
+.cart-drawer.open {
+  right:0;
+}
 
-.cart-header{
+.overlay.show {
+  display:block;
+}
+
+.cart-header {
   display:flex;
   justify-content:space-between;
 }
 
-.close{cursor:pointer;}
+.close {
+  cursor:pointer;
+}
 
-.cart-item{
+.cart-item {
   border-bottom:1px solid #333;
   padding:10px 0;
 }
 
-.qty-controls{
+.qty-controls {
   display:flex;
   gap:8px;
   align-items:center;
 }
 
-.qty-btn{
+.qty-btn {
   background:#333;
   color:#fff;
   border:none;
@@ -207,22 +232,16 @@ header{
   cursor:pointer;
 }
 
-.remove{
+.remove {
   color:red;
   cursor:pointer;
   display:block;
   margin-top:5px;
 }
 
-.cart-footer{
-  position:absolute;
-  bottom:20px;
-  width:90%;
-}
-
 /* ================= LIGHTBOX ================= */
 
-.lightbox{
+.lightbox {
   display:none;
   position:fixed;
   inset:0;
@@ -232,14 +251,14 @@ header{
   z-index:99999;
 }
 
-.lightbox img{
+.lightbox img {
   max-width:90%;
   max-height:90%;
 }
 
 /* ================= TOAST ================= */
 
-.toast{
+.toast {
   position:fixed;
   bottom:30px;
   left:50%;
@@ -253,14 +272,16 @@ header{
   z-index:100000;
 }
 
-.toast.show{opacity:1;}
+.toast.show {
+  opacity:1;
+}
 
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER (FULLY RESTORED, UNCHANGED FUNCTIONALLY) ================= -->
+<!-- ================= HEADER ================= -->
 <header>
   <div class="header-container">
 
@@ -360,10 +381,6 @@ header{
   </div>
 
   <div id="cart-items"></div>
-
-  <div class="cart-footer">
-    <p>Total: $<span id="total">0</span></p>
-  </div>
 </div>
 
 <!-- TOAST -->
@@ -371,8 +388,12 @@ header{
 
 <script>
 
-/* ================= LIGHTBOX ================= */
+/* THEME TOGGLE (FIXED) */
+document.getElementById("themeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+});
 
+/* LIGHTBOX */
 const lightbox=document.getElementById("lightbox");
 const lightImg=document.getElementById("lightbox-img");
 
@@ -385,9 +406,7 @@ document.querySelectorAll(".product-card img").forEach(img=>{
 
 lightbox.onclick=()=>lightbox.style.display="none";
 
-
-/* ================= TOAST ================= */
-
+/* TOAST */
 const toast=document.getElementById("toast");
 
 function showToast(msg){
@@ -396,38 +415,23 @@ function showToast(msg){
   setTimeout(()=>toast.classList.remove("show"),1200);
 }
 
-
-/* ================= THEME TOGGLE (FIXED) ================= */
-
-document.getElementById("themeToggle")?.addEventListener("click", () => {
-  document.body.classList.toggle("light-theme");
-});
-
-
-/* ================= CART ================= */
-
+/* CART */
 let cart=[];
 
-const drawer=document.getElementById("drawer");
-const overlay=document.getElementById("overlay");
-
 document.getElementById("cartBtn").onclick=()=>{
-  drawer.classList.add("open");
-  overlay.classList.add("show");
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("overlay").classList.add("show");
 };
 
-document.getElementById("close").onclick=()=>{
-  drawer.classList.remove("open");
-  overlay.classList.remove("show");
-};
+document.getElementById("close").onclick=closeCart;
+document.getElementById("overlay").onclick=closeCart;
 
-overlay.onclick=()=>{
-  drawer.classList.remove("open");
-  overlay.classList.remove("show");
-};
+function closeCart(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
 
-
-/* ADD TO CART */
+/* ADD */
 document.querySelectorAll(".order-btn").forEach(btn=>{
   btn.onclick=()=>{
     cart.push({
@@ -442,8 +446,7 @@ document.querySelectorAll(".order-btn").forEach(btn=>{
   };
 });
 
-
-/* UPDATE CART */
+/* UPDATE */
 function update(){
   let box=document.getElementById("cart-items");
   let total=0;
@@ -472,7 +475,6 @@ function update(){
     `;
   });
 
-  document.getElementById("total").innerText=total.toFixed(2);
   document.getElementById("count").innerText=cart.length;
 }
 
@@ -481,5 +483,6 @@ function dec(i){if(cart[i].qty>1){cart[i].qty--;update();}}
 function removeItem(i){cart.splice(i,1);update();}
 
 </script>
+
 </body>
 </html>

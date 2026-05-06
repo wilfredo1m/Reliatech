@@ -1,254 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>3D Printing Services</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>3D Printing Services</title>
 
-  <style>
-    :root {
-      --bg-color: #000;
-      --text-color: #fff;
-      --card-bg: #111;
-      --button-bg: #28a745;
-      --button-hover: #1e7e34;
-      --header-bg: #222;
-      --dropdown-bg: #333;
-      --dropdown-hover: #444;
-    }
+<style>
+:root {
+  --bg-color:#000;
+  --text-color:#fff;
+  --card-bg:#111;
+  --button-bg:#28a745;
+  --button-hover:#1e7e34;
+  --header-bg:#222;
+  --dropdown-bg:#333;
+}
 
-    .light-theme {
-      --bg-color: #ffffff;
-      --text-color: #000;
-      --card-bg: #f9f9f9;
-      --button-bg: #007bff;
-      --button-hover: #0056b3;
-      --header-bg: #f0f0f0;
-      --dropdown-bg: #fff;
-      --dropdown-hover: #e0e0e0;
-    }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+body{
+  font-family:sans-serif;
+  background:var(--bg-color);
+  color:var(--text-color);
+}
 
-    body {
-      font-family: sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-    }
+/* HEADER */
+header{
+  background:var(--header-bg);
+  padding:1rem;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
 
-    header {
-      background: var(--header-bg);
-      padding: 1.5rem 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+/* HERO */
+.hero{
+  text-align:center;
+  padding:2rem 1rem;
+}
 
-    .header-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+/* GRID (Shopify style) */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+  padding:2rem;
+  max-width:1200px;
+  margin:auto;
+}
 
-    .nav-section {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
+/* PRODUCT CARD */
+.product-card{
+  background:var(--card-bg);
+  border-radius:12px;
+  overflow:hidden;
+  text-align:center;
+  padding-bottom:1rem;
+  transition:transform .2s;
+}
 
-    .dropdown {
-      position: relative;
-    }
+.product-card:hover{
+  transform:translateY(-5px);
+}
 
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background: var(--dropdown-bg);
-      min-width: 180px;
-    }
+/* IMAGE (NO CROPPING) */
+.product-card img{
+  width:100%;
+  height:240px;
+  object-fit:contain;
+  background:#000;
+  padding:10px;
+  cursor:zoom-in;
+}
 
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
+/* TEXT */
+.product-card h3{
+  margin:10px 0;
+}
 
-    .dropdown-content a {
-      display: block;
-      padding: 10px;
-      color: var(--text-color);
-      text-decoration: none;
-    }
+.product-card p{
+  font-size:0.9rem;
+  opacity:0.85;
+  padding:0 10px;
+}
 
-    .dropdown-content a:hover {
-      background: var(--dropdown-hover);
-    }
+.price{
+  font-weight:bold;
+  margin:10px 0;
+}
 
-    #themeToggle {
-      background: none;
-      border: 1px solid var(--text-color);
-      color: var(--text-color);
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-    }
+/* CONTROLS */
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+}
 
-    .hero {
-      text-align: center;
-      padding: 3rem 1rem;
-    }
+.qty{
+  width:60px;
+  text-align:center;
+}
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
+.order-btn{
+  background:var(--button-bg);
+  border:none;
+  color:#fff;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
-    .product-card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      text-align: center;
-      overflow: hidden;
-      transition: transform 0.2s ease;
-    }
+.order-btn:hover{
+  background:var(--button-hover);
+}
 
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
+/* LIGHTBOX */
+.lightbox{
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.95);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  flex-direction:column;
+}
 
-    /* ✅ FIXED IMAGE (NO CROPPING) */
-    .product-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: contain;
-      background: var(--card-bg);
-      padding: 10px;
-      cursor: pointer;
-    }
+.lightbox img{
+  max-width:90%;
+  max-height:80%;
+  object-fit:contain;
+  transition:transform .2s;
+  cursor:zoom-in;
+}
 
-    .price {
-      font-weight: bold;
-      margin: 1rem 0;
-    }
+.lightbox img.zoomed{
+  transform:scale(1.8);
+  cursor:zoom-out;
+}
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: var(--header-bg);
-    }
-
-    /* ================= LIGHTBOX ================= */
-
-    .lightbox {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-    }
-
-    .lightbox .close {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+.close{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:40px;
+  cursor:pointer;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="header-container">
-    <div class="nav-section">
-      <a href="index.html">Home</a>
-    </div>
-
-    <button id="themeToggle">Toggle Theme</button>
-  </div>
+  <h2>Reliatech 3D Printing</h2>
 </header>
 
 <section class="hero">
   <h1>3D Printing Services</h1>
+  <p>Custom prints, fast turnaround, affordable pricing</p>
 </section>
 
 <section class="products">
 
+  <!-- PRODUCT 1 -->
   <div class="product-card">
-    <img src="Images/Disney Ear Wall Mount.jpeg" alt="Disney Ear Wall Mount">
+    <img src="Images/Disney Ear Wall Mount.jpeg">
     <h3>Disney Ear Wall Mount</h3>
-    <p>Clean wall-mounted holder for displaying your Disney ears.</p>
+    <p>Wall mount for Disney ears.</p>
     <div class="price">$6</div>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1" min="1">
+      <button class="order-btn" data-name="Disney Ear Wall Mount">Order</button>
+    </div>
   </div>
 
+  <!-- PRODUCT 2 -->
   <div class="product-card">
-    <img src="Images/Lithophane.jpeg" alt="Lithophane">
+    <img src="Images/Lithophane.jpeg">
     <h3>Lithophane Print</h3>
-    <p>Custom 3D printed lithophanes that reveal images when backlit. Select 4 images to send me that are big enough to capture all the details of the image.</p>
+    <p>Custom backlit image lithophanes.</p>
     <div class="price">$60+</div>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1" min="1">
+      <button class="order-btn" data-name="Lithophane">Order</button>
+    </div>
   </div>
 
+  <!-- PRODUCT 3 -->
   <div class="product-card">
-    <img src="Images/Tap To Pay Star.jpeg" alt="Tap To Pay Star">
+    <img src="Images/Tap To Pay Star.jpeg">
     <h3>Tap To Pay Star</h3>
-    <p>Stylized stand for tap-to-pay devices with a unique design.</p>
+    <p>Stylized payment stand.</p>
     <div class="price">$10</div>
+
+    <div class="controls">
+      <input class="qty" type="number" value="1" min="1">
+      <button class="order-btn" data-name="Tap To Pay Star">Order</button>
+    </div>
   </div>
 
 </section>
 
-<footer>
-  © 2025 Reliatech
-</footer>
-
-<!-- ✅ LIGHTBOX -->
-<div id="lightbox" class="lightbox">
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
   <span class="close">&times;</span>
-  <img id="lightbox-img" src="">
+  <img id="lightbox-img">
 </div>
 
 <script>
-  // theme toggle
-  document.getElementById('themeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('light-theme');
-  });
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const images = [...document.querySelectorAll(".product-card img")];
 
-  // lightbox logic
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const closeBtn = document.querySelector(".lightbox .close");
+let index = 0;
 
-  document.querySelectorAll(".product-card img").forEach(img => {
-    img.addEventListener("click", () => {
-      lightbox.style.display = "flex";
-      lightboxImg.src = img.src;
-    });
+/* OPEN IMAGE */
+images.forEach((img,i)=>{
+  img.addEventListener("click",()=>{
+    index=i;
+    lightbox.style.display="flex";
+    lightboxImg.src=img.src;
   });
+});
 
-  closeBtn.addEventListener("click", () => {
-    lightbox.style.display = "none";
-  });
+/* CLOSE */
+document.querySelector(".close").onclick=()=>{
+  lightbox.style.display="none";
+};
 
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) {
-      lightbox.style.display = "none";
-    }
+/* CLICK OUTSIDE */
+lightbox.onclick=(e)=>{
+  if(e.target===lightbox){
+    lightbox.style.display="none";
+  }
+};
+
+/* ZOOM */
+lightboxImg.onclick=()=>{
+  lightboxImg.classList.toggle("zoomed");
+};
+
+/* SWIPE */
+let startX=0;
+
+lightbox.addEventListener("touchstart",(e)=>{
+  startX=e.touches[0].clientX;
+});
+
+lightbox.addEventListener("touchend",(e)=>{
+  let endX=e.changedTouches[0].clientX;
+
+  if(startX-endX>50 && index<images.length-1){
+    index++;
+    lightboxImg.src=images[index].src;
+  }
+
+  if(endX-startX>50 && index>0){
+    index--;
+    lightboxImg.src=images[index].src;
+  }
+});
+
+/* ORDER BUTTON → GOOGLE FORM */
+document.querySelectorAll(".order-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    let name=btn.dataset.name;
+    let qty=btn.parentElement.querySelector(".qty").value;
+
+    let url="YOUR_FORM_LINK_HERE";
+
+    window.open(url+"?entry.123="+name+"&entry.456="+qty,"_blank");
   });
+});
 </script>
 
 </body>

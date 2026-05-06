@@ -381,14 +381,35 @@ header {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100000; justify-content:center; align-items:center;">
+  <div style="background:var(--card-bg); padding:20px; border-radius:10px; width:300px; color:var(--text-color);">
+
+    <h3>Checkout</h3>
+
+    <input id="custName" placeholder="Full Name" style="width:100%; margin:5px 0; padding:8px;">
+    <input id="custEmail" placeholder="Email" style="width:100%; margin:5px 0; padding:8px;">
+    <input id="custPhone" placeholder="Phone Number" style="width:100%; margin:5px 0; padding:8px;">
+
+    <button onclick="submitOrder()" style="margin-top:10px; width:100%; padding:10px; background:#28a745; color:white; border:none;">
+      Submit Order
+    </button>
+
+    <button onclick="closeCheckout()" style="margin-top:5px; width:100%; padding:8px;">
+      Cancel
+    </button>
+
+  </div>
+</div>
+  
 <script>
 
-/* THEME FIX */
+/* ================= THEME ================= */
 document.getElementById("themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
 });
 
-/* LIGHTBOX */
+/* ================= LIGHTBOX ================= */
 const lightbox=document.getElementById("lightbox");
 const lightImg=document.getElementById("lightbox-img");
 
@@ -398,10 +419,9 @@ document.querySelectorAll(".product-card img").forEach(img=>{
     lightImg.src=img.src;
   };
 });
-
 lightbox.onclick=()=>lightbox.style.display="none";
 
-/* TOAST */
+/* ================= TOAST ================= */
 const toast=document.getElementById("toast");
 function showToast(msg){
   toast.textContent=msg;
@@ -409,7 +429,7 @@ function showToast(msg){
   setTimeout(()=>toast.classList.remove("show"),1200);
 }
 
-/* CART */
+/* ================= CART ================= */
 let cart=[];
 const drawer=document.getElementById("drawer");
 const overlay=document.getElementById("overlay");
@@ -424,7 +444,7 @@ overlay.onclick=()=>{
   overlay.classList.remove("show");
 };
 
-/* ADD */
+/* ADD TO CART */
 document.querySelectorAll(".order-btn").forEach(btn=>{
   btn.onclick=()=>{
     cart.push({
@@ -438,12 +458,15 @@ document.querySelectorAll(".order-btn").forEach(btn=>{
   };
 });
 
-/* UPDATE */
+/* UPDATE CART UI */
 function update(){
   let box=document.getElementById("drawer");
   let total=0;
 
-  box.innerHTML="";
+  box.innerHTML=`
+    <h3>Cart</h3>
+    <hr>
+  `;
 
   cart.forEach((item,i)=>{
     let t=item.price*item.qty;
@@ -452,19 +475,27 @@ function update(){
     box.innerHTML+=`
       <div class="cart-item">
         <p><b>${item.name}</b></p>
-        <p>${item.color}</p>
+        <p>Color: ${item.color}</p>
 
         <div class="qty-controls">
-          <button class="qty-btn" onclick="dec(${i})">-</button>
+          <button onclick="dec(${i})">-</button>
           <span>${item.qty}</span>
-          <button class="qty-btn" onclick="inc(${i})">+</button>
+          <button onclick="inc(${i})">+</button>
         </div>
 
-        <span class="remove" onclick="removeItem(${i})">Remove</span>
         <p>$${t}</p>
+        <span class="remove" onclick="removeItem(${i})">Remove</span>
       </div>
     `;
   });
+
+  box.innerHTML+=`
+    <hr>
+    <h3>Total: $${total}</h3>
+    <button onclick="openCheckout()" style="width:100%; padding:10px; background:#28a745; color:white; border:none;">
+      Checkout
+    </button>
+  `;
 
   document.getElementById("count").innerText=cart.length;
 }
@@ -472,6 +503,46 @@ function update(){
 function inc(i){cart[i].qty++;update();}
 function dec(i){if(cart[i].qty>1){cart[i].qty--;update();}}
 function removeItem(i){cart.splice(i,1);update();}
+
+/* ================= CHECKOUT MODAL ================= */
+
+function openCheckout(){
+  document.getElementById("checkoutModal").style.display="flex";
+}
+
+function closeCheckout(){
+  document.getElementById("checkoutModal").style.display="none";
+}
+
+/* ================= SEND TO GOOGLE SHEETS ================= */
+
+function submitOrder(){
+
+  let name=document.getElementById("custName").value;
+  let email=document.getElementById("custEmail").value;
+  let phone=document.getElementById("custPhone").value;
+
+  if(!name || !email || !phone){
+    alert("Please fill all fields");
+    return;
+  }
+
+  let order={
+    name,email,phone,
+    items:cart,
+    total:cart.reduce((sum,i)=>sum+i.price*i.qty,0)
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
+    method:"POST",
+    body:JSON.stringify(order)
+  });
+
+  alert("Order submitted!");
+  cart=[];
+  update();
+  closeCheckout();
+}
 
 </script>
 

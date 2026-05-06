@@ -16,6 +16,15 @@
   --dropdown-bg:#333;
 }
 
+.light-theme {
+  --bg-color:#fff;
+  --text-color:#000;
+  --card-bg:#f4f4f4;
+  --header-bg:#eee;
+  --button-bg:#007bff;
+  --button-hover:#0056b3;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -24,22 +33,93 @@ body{
   color:var(--text-color);
 }
 
-/* HEADER */
+/* ================= HEADER (RESTORED) ================= */
+
 header{
   background:var(--header-bg);
-  padding:1rem;
+  padding:1.5rem 1rem;
   position:sticky;
   top:0;
   z-index:1000;
+  transition:.3s;
 }
 
-/* HERO */
+header.shrink{
+  padding:.5rem 1rem;
+}
+
+.header-container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  max-width:1200px;
+  margin:auto;
+}
+
+.nav-section{
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
+}
+
+.logo-link{
+  color:var(--text-color);
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.dropdown{
+  position:relative;
+  cursor:pointer;
+}
+
+.dropdown-content{
+  display:none;
+  position:absolute;
+  background:var(--dropdown-bg);
+  min-width:180px;
+}
+
+.dropdown:hover .dropdown-content{
+  display:block;
+}
+
+.dropdown-content a{
+  display:block;
+  padding:10px;
+  color:var(--text-color);
+  text-decoration:none;
+}
+
+.dropdown-content a:hover{
+  opacity:0.7;
+}
+
+.center-image img{
+  height:70px;
+  transition:.3s;
+}
+
+header.shrink .center-image img{
+  height:45px;
+}
+
+#themeToggle{
+  background:none;
+  border:1px solid var(--text-color);
+  color:var(--text-color);
+  padding:.5rem 1rem;
+  cursor:pointer;
+}
+
+/* ================= PAGE ================= */
+
 .hero{
   text-align:center;
   padding:2rem 1rem;
 }
 
-/* GRID (Shopify style) */
+/* GRID */
 .products{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -49,38 +129,34 @@ header{
   margin:auto;
 }
 
-/* PRODUCT CARD */
+/* CARD */
 .product-card{
   background:var(--card-bg);
   border-radius:12px;
   overflow:hidden;
   text-align:center;
   padding-bottom:1rem;
-  transition:transform .2s;
+  transition:.2s;
 }
 
 .product-card:hover{
   transform:translateY(-5px);
 }
 
-/* IMAGE (NO CROPPING) */
+/* IMAGE FIX */
 .product-card img{
   width:100%;
   height:240px;
   object-fit:contain;
-  background:#000;
+  background:var(--card-bg);
   padding:10px;
   cursor:zoom-in;
 }
 
 /* TEXT */
-.product-card h3{
-  margin:10px 0;
-}
-
 .product-card p{
-  font-size:0.9rem;
-  opacity:0.85;
+  font-size:.9rem;
+  opacity:.85;
   padding:0 10px;
 }
 
@@ -121,24 +197,21 @@ header{
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
-  background:rgba(0,0,0,0.95);
+  background:rgba(0,0,0,.95);
   justify-content:center;
   align-items:center;
   z-index:9999;
-  flex-direction:column;
 }
 
 .lightbox img{
   max-width:90%;
-  max-height:80%;
+  max-height:85%;
   object-fit:contain;
-  transition:transform .2s;
   cursor:zoom-in;
 }
 
 .lightbox img.zoomed{
   transform:scale(1.8);
-  cursor:zoom-out;
 }
 
 .close{
@@ -148,23 +221,59 @@ header{
   font-size:40px;
   cursor:pointer;
 }
+
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>Reliatech 3D Printing</h2>
+<!-- ================= HEADER RESTORED ================= -->
+<header id="header">
+  <div class="header-container">
+
+    <div class="nav-section">
+      <a href="index.html" class="logo-link">Home</a>
+
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="Device-Services.HTML">Device Services</a>
+          <a href="On-Site.HTML">On-Site Services</a>
+          <a href="3dprints.html">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-image">
+      <a href="index.html">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png">
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+
+  </div>
 </header>
 
+<!-- ================= HERO ================= -->
 <section class="hero">
   <h1>3D Printing Services</h1>
   <p>Custom prints, fast turnaround, affordable pricing</p>
 </section>
 
+<!-- ================= PRODUCTS ================= -->
 <section class="products">
 
-  <!-- PRODUCT 1 -->
   <div class="product-card">
     <img src="Images/Disney Ear Wall Mount.jpeg">
     <h3>Disney Ear Wall Mount</h3>
@@ -177,11 +286,10 @@ header{
     </div>
   </div>
 
-  <!-- PRODUCT 2 -->
   <div class="product-card">
     <img src="Images/Lithophane.jpeg">
-    <h3>Lithophane Print</h3>
-    <p>Custom backlit image lithophanes.</p>
+    <h3>Lithophane</h3>
+    <p>Custom backlit lithophane prints.</p>
     <div class="price">$60+</div>
 
     <div class="controls">
@@ -190,35 +298,33 @@ header{
     </div>
   </div>
 
-  <!-- PRODUCT 3 -->
-  <div class="product-card">
-    <img src="Images/Tap To Pay Star.jpeg">
-    <h3>Tap To Pay Star</h3>
-    <p>Stylized payment stand.</p>
-    <div class="price">$10</div>
-
-    <div class="controls">
-      <input class="qty" type="number" value="1" min="1">
-      <button class="order-btn" data-name="Tap To Pay Star">Order</button>
-    </div>
-  </div>
-
 </section>
 
-<!-- LIGHTBOX -->
+<!-- ================= LIGHTBOX ================= -->
 <div class="lightbox" id="lightbox">
   <span class="close">&times;</span>
   <img id="lightbox-img">
 </div>
 
 <script>
+
+/* HEADER FUNCTIONALITY (RESTORED) */
+document.getElementById('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('header')
+    .classList.toggle('shrink', window.scrollY > 80);
+});
+
+/* LIGHTBOX */
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
-const images = [...document.querySelectorAll(".product-card img")];
 
+let images = [...document.querySelectorAll(".product-card img")];
 let index = 0;
 
-/* OPEN IMAGE */
 images.forEach((img,i)=>{
   img.addEventListener("click",()=>{
     index=i;
@@ -227,19 +333,14 @@ images.forEach((img,i)=>{
   });
 });
 
-/* CLOSE */
 document.querySelector(".close").onclick=()=>{
   lightbox.style.display="none";
 };
 
-/* CLICK OUTSIDE */
 lightbox.onclick=(e)=>{
-  if(e.target===lightbox){
-    lightbox.style.display="none";
-  }
+  if(e.target===lightbox) lightbox.style.display="none";
 };
 
-/* ZOOM */
 lightboxImg.onclick=()=>{
   lightboxImg.classList.toggle("zoomed");
 };
@@ -247,11 +348,11 @@ lightboxImg.onclick=()=>{
 /* SWIPE */
 let startX=0;
 
-lightbox.addEventListener("touchstart",(e)=>{
+lightbox.addEventListener("touchstart",e=>{
   startX=e.touches[0].clientX;
 });
 
-lightbox.addEventListener("touchend",(e)=>{
+lightbox.addEventListener("touchend",e=>{
   let endX=e.changedTouches[0].clientX;
 
   if(startX-endX>50 && index<images.length-1){
@@ -265,17 +366,18 @@ lightbox.addEventListener("touchend",(e)=>{
   }
 });
 
-/* ORDER BUTTON → GOOGLE FORM */
+/* ORDER BUTTON */
 document.querySelectorAll(".order-btn").forEach(btn=>{
   btn.addEventListener("click",()=>{
     let name=btn.dataset.name;
     let qty=btn.parentElement.querySelector(".qty").value;
 
-    let url="YOUR_FORM_LINK_HERE";
+    let formURL="YOUR_GOOGLE_FORM_LINK_HERE";
 
-    window.open(url+"?entry.123="+name+"&entry.456="+qty,"_blank");
+    window.open(formURL,"_blank");
   });
 });
+
 </script>
 
 </body>

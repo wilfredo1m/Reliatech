@@ -21,10 +21,11 @@ body{
   color:var(--text);
 }
 
-/* ================= HEADER (UNCHANGED) ================= */
+/* ================= HEADER (UNCHANGED STRUCTURE PRESERVED) ================= */
 
 header {
   background: #222;
+  color: #fff;
   padding: 1.5rem 1rem;
   position: sticky;
   top: 0;
@@ -32,27 +33,27 @@ header {
 }
 
 .header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  max-width:1200px;
+  margin:auto;
 }
 
 .nav-section {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
 }
 
 .logo-link {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
 }
 
-.center-image img {
-  height: 80px;
+.center-image img{
+  height:80px;
 }
 
 /* ================= PRODUCTS ================= */
@@ -77,7 +78,7 @@ header {
   object-fit:contain;
   background:#000;
   padding:10px;
-  cursor:zoom-in;
+  cursor:pointer;
 }
 
 .controls{
@@ -88,7 +89,9 @@ header {
   margin-top:10px;
 }
 
-.qty,.color{width:70px;}
+.qty,.color{
+  width:70px;
+}
 
 .order-btn{
   background:var(--btn);
@@ -225,11 +228,39 @@ header {
 
 <body>
 
-<!-- HEADER -->
+<!-- HEADER (UNCHANGED) -->
 <header>
   <div class="header-container">
-    <a href="index.html" class="logo-link">Home</a>
-    <h3>3D Printing Services</h3>
+
+    <div class="nav-section">
+      <a href="index.html" class="logo-link">Home</a>
+
+      <div class="dropdown">
+        <span>Service Types ▾</span>
+        <div class="dropdown-content">
+          <a href="Device-Services.HTML">Device Services</a>
+          <a href="On-Site.HTML">On-Site Services</a>
+          <a href="3dprints.html">3D Printing</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-image">
+      <a href="index.html">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png">
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="dropdown">
+        <span>More ▾</span>
+        <div class="dropdown-content">
+          <a href="about-us.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </header>
 
@@ -295,6 +326,7 @@ header {
 <div class="overlay" id="overlay"></div>
 
 <div class="cart-drawer" id="drawer">
+
   <div class="cart-header">
     <h3>Cart</h3>
     <span class="close" id="close">✕</span>
@@ -306,6 +338,7 @@ header {
     <p>Total: $<span id="total">0</span></p>
     <button id="checkoutBtn">Checkout</button>
   </div>
+
 </div>
 
 <!-- TOAST -->
@@ -313,8 +346,7 @@ header {
 
 <script>
 
-/* ================= LIGHTBOX FIX ================= */
-
+/* LIGHTBOX */
 const lightbox=document.getElementById("lightbox");
 const lightImg=document.getElementById("lightbox-img");
 
@@ -327,8 +359,7 @@ document.querySelectorAll(".product-card img").forEach(img=>{
 
 lightbox.onclick=()=>lightbox.style.display="none";
 
-/* ================= TOAST ================= */
-
+/* TOAST */
 const toast=document.getElementById("toast");
 
 function showToast(msg){
@@ -340,8 +371,7 @@ function showToast(msg){
   },1200);
 }
 
-/* ================= CART ================= */
-
+/* CART */
 let cart=[];
 
 const drawer=document.getElementById("drawer");

@@ -36,9 +36,7 @@
       color: var(--text-color);
     }
 
-    /* =======================
-       HEADER (EXACT COPY FROM INDEX)
-    ======================= */
+    /* ================= HEADER (UNCHANGED) ================= */
 
     header {
       background: var(--header-bg);
@@ -61,7 +59,6 @@
       align-items: center;
       max-width: 1200px;
       margin: 0 auto;
-      overflow: visible;
     }
 
     .nav-section {
@@ -79,7 +76,6 @@
 
     .dropdown {
       position: relative;
-      display: inline-block;
       cursor: pointer;
     }
 
@@ -87,11 +83,8 @@
       display: none;
       position: absolute;
       top: 100%;
-      left: 0;
-      background-color: var(--dropdown-bg);
-      min-width: 200px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
-      z-index: 2000;
+      background: var(--dropdown-bg);
+      min-width: 180px;
       border-radius: 4px;
     }
 
@@ -100,14 +93,14 @@
     }
 
     .dropdown-content a {
-      color: var(--text-color);
-      padding: 12px 16px;
-      text-decoration: none;
       display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: var(--text-color);
     }
 
     .dropdown-content a:hover {
-      background-color: var(--dropdown-hover);
+      background: var(--dropdown-hover);
     }
 
     .center-image img {
@@ -128,9 +121,7 @@
       cursor: pointer;
     }
 
-    /* =======================
-       PAGE CONTENT
-    ======================= */
+    /* ================= PAGE ================= */
 
     .hero {
       text-align: center;
@@ -142,6 +133,8 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
       padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .product-card {
@@ -149,13 +142,18 @@
       border-radius: 10px;
       overflow: hidden;
       text-align: center;
-      padding-bottom: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
     }
 
     .product-card img {
       width: 100%;
       height: 220px;
       object-fit: cover;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     .product-card h3 {
@@ -181,6 +179,7 @@
       color: white;
       cursor: pointer;
       border-radius: 5px;
+      margin-bottom: 1rem;
     }
 
     .product-card button:hover {
@@ -197,11 +196,11 @@
 
 <body>
 
-<!-- ===================== HEADER (UNCHANGED FROM INDEX) ===================== -->
+<!-- HEADER -->
 <header id="header">
   <div class="header-container">
     <div class="nav-section">
-      <a href="#hero" class="logo-link">Home</a>
+      <a href="index.html" class="logo-link">Home</a>
 
       <div class="dropdown">
         <span>Service Types ▾</span>
@@ -215,7 +214,7 @@
 
     <div class="center-image">
       <a href="index.html">
-        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png/:/rs=w:270,h:104,cg:true,m/cr=w:270,h:104/qt=q:95=" alt="Logo">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png" alt="Logo">
       </a>
     </div>
 
@@ -233,8 +232,7 @@
   </div>
 </header>
 
-<!-- ===================== PAGE ===================== -->
-
+<!-- PAGE -->
 <section class="hero">
   <h1>3D Printing Services</h1>
   <p>Custom prints, affordable pricing, and fast turnaround.</p>
@@ -243,26 +241,26 @@
 <section class="products">
 
   <div class="product-card">
-    <img src="https://source.unsplash.com/400x300/?3d-print" />
-    <h3>MagSafe Phone Stand</h3>
-    <p>Compatible with MagSafe devices. Clean and durable design.</p>
+    <img src="images/disney-ear-wall-mount.jpeg" alt="Disney Ear Wall Mount">
+    <h3>Disney Ear Wall Mount</h3>
+    <p>Clean wall-mounted holder for displaying your Disney ears.</p>
     <div class="price">$15</div>
     <button>Order Now</button>
   </div>
 
   <div class="product-card">
-    <img src="https://source.unsplash.com/400x300/?prototype" />
-    <h3>Custom Prototype</h3>
-    <p>Upload your design or request a custom model build.</p>
-    <div class="price">$25+</div>
+    <img src="images/lithophane.jpeg" alt="Lithophane">
+    <h3>Lithophane Print</h3>
+    <p>Custom 3D printed lithophanes that reveal images when backlit.</p>
+    <div class="price">$20+</div>
     <button>Request Quote</button>
   </div>
 
   <div class="product-card">
-    <img src="https://source.unsplash.com/400x300/?plastic,design" />
-    <h3>Custom Parts</h3>
-    <p>Replacement or specialty parts printed to your specs.</p>
-    <div class="price">$10+</div>
+    <img src="images/tap-to-pay-star.jpeg" alt="Tap To Pay Star">
+    <h3>Tap To Pay Star</h3>
+    <p>Stylized stand for tap-to-pay devices with a unique design.</p>
+    <div class="price">$12</div>
     <button>Order Now</button>
   </div>
 

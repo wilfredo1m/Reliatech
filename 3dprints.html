@@ -390,8 +390,8 @@ header {
     <input id="custName" placeholder="Full Name" style="width:100%; margin:5px 0; padding:8px;">
     <input id="custEmail" placeholder="Email" style="width:100%; margin:5px 0; padding:8px;">
     <input id="custPhone" placeholder="Phone Number" style="width:100%; margin:5px 0; padding:8px;">
-
-    <button onclick="submitOrder()" style="margin-top:10px; width:100%; padding:10px; background:#28a745; color:white; border:none;">
+    <p id="orderStatus" style="margin-top:10px; font-size:0.9rem;"></p>
+    <button id="submitBtn" onclick="submitOrder()" style="margin-top:10px; width:100%; padding:10px; background:#28a745; color:white; border:none;">
       Submit Order
     </button>
 
@@ -518,29 +518,31 @@ function closeCheckout(){
 
 function submitOrder(){
 
-  let name=document.getElementById("custName").value;
-  let email=document.getElementById("custEmail").value;
-  let phone=document.getElementById("custPhone").value;
+  const btn = document.getElementById("submitBtn");
+  const status = document.getElementById("orderStatus");
+
+  let name = document.getElementById("custName").value;
+  let email = document.getElementById("custEmail").value;
+  let phone = document.getElementById("custPhone").value;
 
   if(!name || !email || !phone){
     alert("Please fill all fields");
     return;
   }
 
-  let order={
+  // 🔒 lock button + show processing state
+  btn.disabled = true;
+  btn.style.opacity = "0.6";
+  btn.innerText = "Processing...";
+  status.innerText = "Your order is being processed...";
+
+  let order = {
     name,
     email,
     phone,
-    items:cart,
-    total:cart.reduce((sum,i)=>sum+i.price*i.qty,0)
+    items: cart,
+    total: cart.reduce((sum,i)=>sum+i.price*i.qty,0)
   };
-
-  // 👇 CLOSE UI IMMEDIATELY
-  closeCheckout();
-  alert("Order submitted!");
-
-  cart = [];
-  update();
 
   fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
     method: "POST",
@@ -548,11 +550,40 @@ function submitOrder(){
   })
   .then(res => res.text())
   .then(data => {
-    console.log("Sheet response:", data);
+
+    console.log(data);
+
+    // ✅ success UI
+    status.innerText = "Order submitted successfully!";
+    alert("Order submitted!");
+
+    cart = [];
+    update();
+    closeCheckout();
+
+    // reset form + button after success
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerText = "Submit Order";
+    status.innerText = "";
+
+    document.getElementById("custName").value = "";
+    document.getElementById("custEmail").value = "";
+    document.getElementById("custPhone").value = "";
+
   })
   .catch(err => {
+
     console.error(err);
-    alert("Error sending to sheet: " + err.message);
+
+    // ❌ failure UI
+    status.innerText = "Error submitting order. Please try again.";
+    alert("Error submitting order");
+
+    // unlock button so user can retry
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerText = "Submit Order";
   });
 
 }

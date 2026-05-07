@@ -535,25 +535,27 @@ function submitOrder(){
     total:cart.reduce((sum,i)=>sum+i.price*i.qty,0)
   };
 
+  // 👇 CLOSE UI IMMEDIATELY
+  closeCheckout();
+  alert("Order submitted!");
+
+  cart = [];
+  update();
+
   fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
-  method: "POST",
-  body: JSON.stringify(order)
+    method: "POST",
+    body: JSON.stringify(order)
   })
   .then(res => res.text())
   .then(data => {
-    console.log(data);
+    console.log("Sheet response:", data);
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Error sending to sheet: " + err.message);
+  });
 
-  alert("Order submitted!");
-  cart = [];
-  update();
-  closeCheckout();
-})
-.catch(err => {
-  console.error(err);
-  alert("Error submitting order: " + err.message);
-});
-
-}   // ✅ THIS CLOSING BRACE IS REQUIRED
+}
 
 </script>
 

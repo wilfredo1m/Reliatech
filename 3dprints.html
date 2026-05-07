@@ -271,7 +271,17 @@ header {
 }
 
 .toast.show { opacity:1; }
-
+.spinner {
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
 </style>
 </head>
 
@@ -423,6 +433,7 @@ lightbox.onclick=()=>lightbox.style.display="none";
 
 /* ================= TOAST ================= */
 const toast=document.getElementById("toast");
+const successSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
 function showToast(msg){
   toast.textContent=msg;
   toast.classList.add("show");
@@ -530,19 +541,23 @@ function submitOrder(){
     return;
   }
 
-  // 🔒 lock button + show processing state
+  // 🔒 lock UI immediately
   btn.disabled = true;
-  btn.style.opacity = "0.6";
-  btn.innerText = "Processing...";
-  status.innerText = "Your order is being processed...";
+  btn.innerHTML = `<span class="spinner"></span> Processing...`;
+  status.style.color = "#ccc";
+  status.innerText = "Submitting your order...";
 
-  let order = {
+  const order = {
     name,
     email,
     phone,
     items: cart,
     total: cart.reduce((sum,i)=>sum+i.price*i.qty,0)
   };
+
+  // 🚀 auto-close cart immediately (requested)
+  drawer.classList.remove("open");
+  overlay.classList.remove("show");
 
   fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
     method: "POST",
@@ -553,37 +568,40 @@ function submitOrder(){
 
     console.log(data);
 
-    // ✅ success UI
-    status.innerText = "Order submitted successfully!";
-    alert("Order submitted!");
+    // 🎉 success UI
+    status.style.color = "lightgreen";
+    status.innerText = "✔ Order received!";
+
+    successSound.play().catch(()=>{}); // 🔊 sound
+
+    btn.innerHTML = "Submit Order";
+    btn.disabled = false;
 
     cart = [];
     update();
-    closeCheckout();
 
-    // reset form + button after success
-    btn.disabled = false;
-    btn.style.opacity = "1";
-    btn.innerText = "Submit Order";
-    status.innerText = "";
-
+    // reset form
     document.getElementById("custName").value = "";
     document.getElementById("custEmail").value = "";
     document.getElementById("custPhone").value = "";
+
+    // auto close modal after short delay
+    setTimeout(() => {
+      closeCheckout();
+      status.innerText = "";
+    }, 1200);
 
   })
   .catch(err => {
 
     console.error(err);
 
-    // ❌ failure UI
-    status.innerText = "Error submitting order. Please try again.";
-    alert("Error submitting order");
+    status.style.color = "red";
+    status.innerText = "Error submitting order. Try again.";
 
-    // unlock button so user can retry
+    btn.innerHTML = "Submit Order";
     btn.disabled = false;
-    btn.style.opacity = "1";
-    btn.innerText = "Submit Order";
+
   });
 
 }

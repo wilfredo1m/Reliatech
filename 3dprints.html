@@ -565,22 +565,29 @@ function submitOrder(){
   drawer.classList.remove("open");
   overlay.classList.remove("show");
 
-  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
+ fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
   method: "POST",
   body: JSON.stringify(order)
 })
-.then(res => res.json())   // ✅ IMPORTANT CHANGE
-.then(data => {
+.then(res => res.text())   // ✅ FIX: use text instead of json
+.then(text => {
+
+  let data;
+  try {
+    data = JSON.parse(text); // safely convert to JSON
+  } catch (e) {
+    console.log("Raw response:", text);
+    throw new Error("Invalid JSON from server");
+  }
 
   console.log(data);
 
   if (data.success) {
 
-    // 🎉 success UI
     status.style.color = "lightgreen";
     status.innerText = `✔ Order received! ID: ${data.orderId}`;
 
-    successSound.play().catch(()=>{}); // 🔊 sound
+    successSound.play().catch(()=>{});
 
     cart = [];
     update();
@@ -600,7 +607,7 @@ function submitOrder(){
   } else {
 
     status.style.color = "red";
-    status.innerText = "Server error: " + data.error;
+    status.innerText = "Server error: " + (data.error || "Unknown error");
 
     btn.innerHTML = "Submit Order";
     btn.disabled = false;
@@ -618,7 +625,6 @@ function submitOrder(){
   btn.disabled = false;
 
 });
-
 }
 
 </script>

@@ -533,16 +533,27 @@ function submitOrder(){
     total:cart.reduce((sum,i)=>sum+i.price*i.qty,0)
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
-    method:"POST",
-    body:JSON.stringify(order)
-  });
+fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(order)
+})
+.then(res => res.text())
+.then(data => {
+  console.log(data);
 
   alert("Order submitted!");
-  cart=[];
+
+  cart = [];
   update();
   closeCheckout();
-}
+})
+.catch(err => {
+  console.error(err);
+  alert("Error submitting order");
+});
 
 </script>
 

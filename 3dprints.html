@@ -574,57 +574,32 @@ function submitOrder(){
 })
 .then(res => res.text())
 .then(text => {
-
   console.log("RAW RESPONSE:", text);
 
-  let data;
-  try {
-    data = JSON.parse(text);
-  } catch (e) {
-    throw new Error("Server did not return valid JSON");
-  }
+  let data = JSON.parse(text);
 
   if (data.success) {
-
     status.style.color = "lightgreen";
-    status.innerText = `✔ Order received! ID: ${data.orderId}`;
-
-    successSound.play().catch(()=>{});
+    status.innerText = "✔ Order received! ID: " + data.orderId;
 
     cart = [];
     update();
 
-    document.getElementById("custName").value = "";
-    document.getElementById("custEmail").value = "";
-    document.getElementById("custPhone").value = "";
-
-    btn.innerHTML = "Submit Order";
     btn.disabled = false;
-
-    setTimeout(() => {
-      closeCheckout();
-      status.innerText = "";
-    }, 1200);
-
+    btn.innerHTML = "Submit Order";
   } else {
-
     status.style.color = "red";
-    status.innerText = "Server error: " + (data.error || "Unknown error");
-
-    btn.innerHTML = "Submit Order";
+    status.innerText = data.error || "Server error";
     btn.disabled = false;
+    btn.innerHTML = "Submit Order";
   }
-
 })
 .catch(err => {
-
   console.error(err);
-
   status.style.color = "red";
-  status.innerText = "Network error. Try again.";
-
-  btn.innerHTML = "Submit Order";
+  status.innerText = "Network error. Check Apps Script deployment.";
   btn.disabled = false;
+  btn.innerHTML = "Submit Order";
 });
 }
 

@@ -567,21 +567,22 @@ function submitOrder(){
 
  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
   method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
   body: JSON.stringify(order)
 })
-.then(async (res) => {
-  const text = await res.text();
+.then(res => res.text())
+.then(text => {
+
   console.log("RAW RESPONSE:", text);
 
+  let data;
   try {
-    return JSON.parse(text);
+    data = JSON.parse(text);
   } catch (e) {
-    throw new Error("Invalid JSON returned from Apps Script");
+    throw new Error("Server did not return valid JSON");
   }
-})
-.then(data => {
-
-  console.log(data);
 
   if (data.success) {
 
@@ -624,7 +625,6 @@ function submitOrder(){
 
   btn.innerHTML = "Submit Order";
   btn.disabled = false;
-
 });
 }
 

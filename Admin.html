@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <title>Admin Dashboard</title>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <style>
 body {
   font-family: Arial;
@@ -82,6 +86,9 @@ tr.order-row:hover {
 select {
   padding:5px;
   border-radius:5px;
+  background:#222;
+  color:#fff;
+  border:1px solid #555;
 }
 
 /* CHECKBOX */
@@ -94,31 +101,118 @@ select {
   opacity:0.7;
   font-size:12px;
 }
+
+/* LOGIN SCREEN */
+#loginScreen {
+  display:none;
+  max-width:350px;
+  margin:100px auto;
+  background:#1a1a1a;
+  padding:30px;
+  border-radius:10px;
+}
+
+#loginScreen input {
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  border:none;
+  border-radius:6px;
+  background:#222;
+  color:#fff;
+}
+
+#loginScreen button,
+#logoutBtn {
+  padding:10px 15px;
+  border:none;
+  border-radius:6px;
+  background:#28a745;
+  color:white;
+  cursor:pointer;
+}
+
+#logoutBtn {
+  background:#dc3545;
+}
+
+#error {
+  color:#ff6b6b;
+  margin-top:10px;
+}
+
+/* DASHBOARD */
+#dashboard {
+  display:none;
+}
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-  <div class="card">📦 Orders: <span id="orderCount">0</span></div>
-  <div class="card">💰 Revenue: $<span id="revenue">0</span></div>
+<!-- LOGIN -->
+<div id="loginScreen">
+
+  <h2>Admin Login</h2>
+
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <div id="error"></div>
+
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Order</th>
-      <th>Date</th>
-      <th>Name</th>
-      <th>Total</th>
-      <th>Status</th>
-    </tr>
-  </thead>
+<!-- DASHBOARD -->
+<div id="dashboard">
 
-  <tbody id="ordersTable"></tbody>
-</table>
+  <div class="topbar">
+
+    <div class="card">
+      📦 Orders: <span id="orderCount">0</span>
+    </div>
+
+    <div class="card">
+      💰 Revenue: $<span id="revenue">0</span>
+    </div>
+
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="ordersTable"></tbody>
+  </table>
+
+</div>
 
 <script>
+
+// ================= FIREBASE CONFIG =================
+
+const firebaseConfig = {
+   apiKey: "AIzaSyCp9mESjEcVQ_PX-Jv31JFTSFA0omcjfJs",
+   authDomain: "admindashboard-e7190.firebaseapp.com",
+   projectId: "admindashboard-e7190",
+   appId: "1:729683991497:web:ea1f4358fdfd9bc87c6618"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+// ================= API =================
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
@@ -128,13 +222,60 @@ let lastCount = 0;
 
 const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 
+// ================= AUTH STATE =================
+
+auth.onAuthStateChanged(user => {
+
+  if (user) {
+
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    loadAll();
+
+    setInterval(loadAll, 10000);
+
+  } else {
+
+    document.getElementById("loginScreen").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+
+  }
+
+});
+
+// ================= LOGIN =================
+
+function login() {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(err => {
+      document.getElementById("error").innerText = err.message;
+    });
+
+}
+
+// ================= LOGOUT =================
+
+function logout() {
+  auth.signOut();
+}
 
 // ================= LOAD DATA =================
+
 function loadAll() {
 
   Promise.all([
-    fetch(API_URL + "?t=" + Date.now()).then(r => r.json()),
-    fetch(API_URL + "?action=items&t=" + Date.now()).then(r => r.json())
+
+    fetch(API_URL + "?t=" + Date.now())
+      .then(r => r.json()),
+
+    fetch(API_URL + "?action=items&t=" + Date.now())
+      .then(r => r.json())
+
   ])
   .then(([orders, items]) => {
 
@@ -143,14 +284,20 @@ function loadAll() {
 
     render();
 
+  })
+  .catch(err => {
+    console.error(err);
   });
+
 }
 
+// ================= PROGRESS =================
 
-// ================= PROGRESS CALC =================
 function getProgress(orderId) {
 
-  const items = itemsCache.filter(i => i["Order ID"] === orderId);
+  const items = itemsCache.filter(
+    i => i["Order ID"] === orderId
+  );
 
   const done = items.filter(i =>
     document.querySelector(
@@ -167,8 +314,8 @@ function getProgress(orderId) {
   };
 }
 
-
 // ================= RENDER =================
+
 function render() {
 
   let html = "";
@@ -177,6 +324,7 @@ function render() {
   if (lastCount && ordersCache.length > lastCount) {
     sound.play();
   }
+
   lastCount = ordersCache.length;
 
   document.getElementById("orderCount").innerText = ordersCache.length;
@@ -191,13 +339,19 @@ function render() {
       <tr class="order-row" onclick="toggle('${order["Order ID"]}')">
 
         <td>
+
           ${order["Order ID"]}
 
           <div class="progress-wrap">
-            <div class="progress-bar" style="width:${p.percent}%"></div>
+            <div class="progress-bar"
+                 style="width:${p.percent}%">
+            </div>
           </div>
 
-          <div class="small">${p.done}/${p.total} items done</div>
+          <div class="small">
+            ${p.done}/${p.total} items done
+          </div>
+
         </td>
 
         <td>${order.Date}</td>
@@ -205,39 +359,77 @@ function render() {
         <td>$${order.Total}</td>
 
         <td onclick="event.stopPropagation()">
+
           <select onchange="updateStatus('${order["Order ID"]}',this.value)">
-            <option ${order.Status==="Pending"?"selected":""}>Pending</option>
-            <option ${order.Status==="Shipped"?"selected":""}>Shipped</option>
-            <option ${order.Status==="Done"?"selected":""}>Done</option>
+
+            <option ${order.Status==="Pending"?"selected":""}>
+              Pending
+            </option>
+
+            <option ${order.Status==="Shipped"?"selected":""}>
+              Shipped
+            </option>
+
+            <option ${order.Status==="Done"?"selected":""}>
+              Done
+            </option>
+
           </select>
+
         </td>
+
       </tr>
     `;
 
-    const items = itemsCache.filter(i => i["Order ID"] === order["Order ID"]);
+    const items = itemsCache.filter(
+      i => i["Order ID"] === order["Order ID"]
+    );
 
     items.forEach(item => {
 
       html += `
-        <tr class="item-row item-${order["Order ID"]}" style="display:none;">
+        <tr class="item-row item-${order["Order ID"]}"
+            style="display:none;">
+
           <td colspan="5">
+
             <div class="item-box">
 
               <label>
-                <input type="checkbox"
+
+                <input
+                  type="checkbox"
+
                   data-order="${item["Order ID"]}"
+
                   data-item="${item.Item}"
-                  onchange="toggleItem('${item["Order ID"]}','${item.Item}',this.checked)"
-                  ${item.Status==="Done"?"checked":""}>
-                
-                ${item.Item} <span class="small">(${item.Color})</span>
+
+                  onchange="toggleItem(
+                    '${item["Order ID"]}',
+                    '${item.Item}',
+                    this.checked
+                  )"
+
+                  ${item.Status==="Done"?"checked":""}
+                >
+
+                ${item.Item}
+                <span class="small">
+                  (${item.Color})
+                </span>
+
                 x${item.Qty}
+
               </label>
 
-              <span class="small">$${item.Subtotal}</span>
+              <span class="small">
+                $${item.Subtotal}
+              </span>
 
             </div>
+
           </td>
+
         </tr>
       `;
     });
@@ -246,72 +438,86 @@ function render() {
 
   document.getElementById("ordersTable").innerHTML = html;
   document.getElementById("revenue").innerText = revenue;
+
 }
-  
-const firebaseConfig = {
-   apiKey: "AIzaSyCp9mESjEcVQ_PX-Jv31JFTSFA0omcjfJs",
-   authDomain: "admindashboard-e7190.firebaseapp.com",
-   projectId: "admindashboard-e7190",
-   appId: "1:729683991497:web:ea1f4358fdfd9bc87c6618"
-};
 
 // ================= TOGGLE ORDER =================
+
 function toggle(orderId) {
 
-  document.querySelectorAll(".item-" + orderId).forEach(r => {
-    r.style.display = r.style.display === "none" ? "table-row" : "none";
-  });
+  document.querySelectorAll(".item-" + orderId)
+    .forEach(r => {
+
+      r.style.display =
+        r.style.display === "none"
+        ? "table-row"
+        : "none";
+
+    });
+
 }
 
+// ================= UPDATE STATUS =================
 
-// ================= STATUS =================
 function updateStatus(orderId, status) {
 
   fetch(API_URL + "?action=updateStatus", {
     method:"POST",
-    body: JSON.stringify({ orderId, status })
-  }).then(loadAll);
+    body: JSON.stringify({
+      orderId,
+      status
+    })
+  })
+  .then(loadAll);
+
 }
 
+// ================= TOGGLE ITEM =================
 
-// ================= ITEM TOGGLE =================
 function toggleItem(orderId, item, checked) {
 
   fetch(API_URL, {
+
     method:"POST",
+
     body: JSON.stringify({
+
       action:"updateItem",
       orderId,
       item,
-      status: checked ? "Done" : "Pending"
+
+      status: checked
+        ? "Done"
+        : "Pending"
+
     })
+
   })
   .then(() => checkComplete(orderId));
+
 }
 
+// ================= AUTO COMPLETE =================
 
-// ================= AUTO COMPLETE ORDER =================
 function checkComplete(orderId) {
 
-  const items = itemsCache.filter(i => i["Order ID"] === orderId);
+  const items = itemsCache.filter(
+    i => i["Order ID"] === orderId
+  );
 
   const allDone = items.every(i =>
+
     document.querySelector(
       `input[data-order="${orderId}"][data-item="${i.Item}"]:checked`
     )
+
   );
 
   if (allDone) {
     updateStatus(orderId, "Done");
   }
+
 }
-
-
-// ================= AUTO REFRESH =================
-window.onload = () => {
-  loadAll();
-  setInterval(loadAll, 10000);
-};
 
 </script>
 

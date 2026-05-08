@@ -63,6 +63,21 @@ tr.order-row:hover {
   align-items:center;
 }
 
+/* PROGRESS BAR */
+.progress-wrap {
+  margin-top:6px;
+  background:#333;
+  height:6px;
+  border-radius:5px;
+  overflow:hidden;
+}
+
+.progress-bar {
+  height:6px;
+  background:#28a745;
+  width:0%;
+}
+
 /* STATUS */
 select {
   padding:5px;
@@ -114,7 +129,7 @@ let lastCount = 0;
 const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 
 
-// ================= LOAD EVERYTHING =================
+// ================= LOAD DATA =================
 function loadAll() {
 
   Promise.all([
@@ -132,7 +147,28 @@ function loadAll() {
 }
 
 
-// ================= RENDER TABLE =================
+// ================= PROGRESS CALC =================
+function getProgress(orderId) {
+
+  const items = itemsCache.filter(i => i["Order ID"] === orderId);
+
+  const done = items.filter(i =>
+    document.querySelector(
+      `input[data-order="${orderId}"][data-item="${i.Item}"]:checked`
+    )
+  ).length;
+
+  const total = items.length;
+
+  return {
+    done,
+    total,
+    percent: total ? (done / total) * 100 : 0
+  };
+}
+
+
+// ================= RENDER =================
 function render() {
 
   let html = "";
@@ -149,12 +185,25 @@ function render() {
 
     revenue += Number(order.Total || 0);
 
+    const p = getProgress(order["Order ID"]);
+
     html += `
       <tr class="order-row" onclick="toggle('${order["Order ID"]}')">
-        <td>${order["Order ID"]}</td>
+
+        <td>
+          ${order["Order ID"]}
+
+          <div class="progress-wrap">
+            <div class="progress-bar" style="width:${p.percent}%"></div>
+          </div>
+
+          <div class="small">${p.done}/${p.total} items done</div>
+        </td>
+
         <td>${order.Date}</td>
         <td>${order.Name}</td>
         <td>$${order.Total}</td>
+
         <td onclick="event.stopPropagation()">
           <select onchange="updateStatus('${order["Order ID"]}',this.value)">
             <option ${order.Status==="Pending"?"selected":""}>Pending</option>
@@ -165,17 +214,19 @@ function render() {
       </tr>
     `;
 
-    // ITEMS (hidden by default using class)
     const items = itemsCache.filter(i => i["Order ID"] === order["Order ID"]);
 
     items.forEach(item => {
+
       html += `
         <tr class="item-row item-${order["Order ID"]}" style="display:none;">
           <td colspan="5">
             <div class="item-box">
-              
+
               <label>
                 <input type="checkbox"
+                  data-order="${item["Order ID"]}"
+                  data-item="${item.Item}"
                   onchange="toggleItem('${item["Order ID"]}','${item.Item}',this.checked)"
                   ${item.Status==="Done"?"checked":""}>
                 
@@ -198,16 +249,16 @@ function render() {
 }
 
 
-// ================= EXPAND / COLLAPSE =================
+// ================= TOGGLE ORDER =================
 function toggle(orderId) {
 
-  document.querySelectorAll(".item-" + orderId).forEach(row => {
-    row.style.display = row.style.display === "none" ? "table-row" : "none";
+  document.querySelectorAll(".item-" + orderId).forEach(r => {
+    r.style.display = r.style.display === "none" ? "table-row" : "none";
   });
 }
 
 
-// ================= UPDATE ORDER STATUS =================
+// ================= STATUS =================
 function updateStatus(orderId, status) {
 
   fetch(API_URL + "?action=updateStatus", {
@@ -217,7 +268,7 @@ function updateStatus(orderId, status) {
 }
 
 
-// ================= UPDATE ITEM =================
+// ================= ITEM TOGGLE =================
 function toggleItem(orderId, item, checked) {
 
   fetch(API_URL, {
@@ -229,7 +280,7 @@ function toggleItem(orderId, item, checked) {
       status: checked ? "Done" : "Pending"
     })
   })
-  .then(()=>checkComplete(orderId));
+  .then(() => checkComplete(orderId));
 }
 
 
@@ -238,14 +289,14 @@ function checkComplete(orderId) {
 
   const items = itemsCache.filter(i => i["Order ID"] === orderId);
 
-  const allDone = items.every(i => {
-    return document.querySelector(
-      `input[onchange*="${i.Item}"]:checked`
-    );
-  });
+  const allDone = items.every(i =>
+    document.querySelector(
+      `input[data-order="${orderId}"][data-item="${i.Item}"]:checked`
+    )
+  );
 
   if (allDone) {
-    updateStatus(orderId,"Done");
+    updateStatus(orderId, "Done");
   }
 }
 

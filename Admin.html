@@ -9,6 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <style>
+
 body {
   font-family: Arial;
   background:#111;
@@ -17,7 +18,8 @@ body {
   padding:20px;
 }
 
-/* LOGIN SCREEN */
+/* LOGIN */
+
 #loginScreen {
   max-width:400px;
   margin:100px auto;
@@ -47,11 +49,13 @@ body {
 }
 
 /* DASHBOARD */
+
 #dashboard {
   display:none;
 }
 
-/* TOP BAR */
+/* TOPBAR */
+
 .topbar {
   display:flex;
   justify-content:space-between;
@@ -68,12 +72,14 @@ body {
 }
 
 /* TABLE */
+
 table {
   width:100%;
   border-collapse:collapse;
 }
 
-th, td {
+th,
+td {
   border:1px solid #333;
   padding:10px;
 }
@@ -91,7 +97,8 @@ tr.order-row:hover {
   background:#1d1d1d;
 }
 
-/* ITEM ROWS */
+/* ITEMS */
+
 .item-row {
   background:#0f0f0f;
 }
@@ -104,7 +111,8 @@ tr.order-row:hover {
   align-items:center;
 }
 
-/* PROGRESS BAR */
+/* PROGRESS */
+
 .progress-wrap {
   margin-top:6px;
   background:#333;
@@ -121,6 +129,7 @@ tr.order-row:hover {
 }
 
 /* STATUS */
+
 select {
   padding:5px;
   border-radius:5px;
@@ -130,21 +139,26 @@ select {
 }
 
 /* CHECKBOX */
+
 .item-box input {
   transform: scale(1.2);
   margin-right:10px;
 }
 
+/* SMALL */
+
 .small {
   opacity:0.7;
   font-size:12px;
 }
+
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
+
 <div id="loginScreen">
 
   <h2>Admin Login</h2>
@@ -158,16 +172,19 @@ select {
 </div>
 
 <!-- DASHBOARD -->
+
 <div id="dashboard">
 
   <div class="topbar">
 
     <div class="card">
-      📦 Orders: <span id="orderCount">0</span>
+      📦 Orders:
+      <span id="orderCount">0</span>
     </div>
 
     <div class="card">
-      💰 Revenue: $<span id="revenue">0</span>
+      💰 Revenue:
+      $<span id="revenue">0.00</span>
     </div>
 
     <button id="logoutBtn" onclick="logout()">
@@ -179,6 +196,7 @@ select {
   <table>
 
     <thead>
+
       <tr>
         <th>Order</th>
         <th>Date</th>
@@ -186,6 +204,7 @@ select {
         <th>Total</th>
         <th>Status</th>
       </tr>
+
     </thead>
 
     <tbody id="ordersTable"></tbody>
@@ -196,7 +215,7 @@ select {
 
 <script>
 
-// ================= FIREBASE CONFIG =================
+// ================= FIREBASE =================
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp9mESjEcVQ_PX-Jv31JFTSFA0omcjfJs",
@@ -209,19 +228,32 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
-// ================= ADMIN EMAIL =================
+// ================= ADMIN =================
 
-const ADMIN_EMAIL = "reliatechdigitalsolutions@gmail.com";
+const ADMIN_EMAIL =
+  "reliatechdigitalsolutions@gmail.com";
+
+// MUST MATCH APPS SCRIPT
+
+const ADMIN_TOKEN =
+  "CHANGE_THIS_SECRET_TOKEN";
 
 // ================= API =================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
 // ================= STATE =================
 
 let ordersCache = [];
+
 let itemsCache = [];
+
 let lastCount = 0;
+
+let refreshInterval = null;
+
+let isLoading = false;
 
 let expandedOrders = new Set();
 
@@ -233,11 +265,16 @@ const sound = new Audio(
 
 function login() {
 
-  const provider = new firebase.auth.GoogleAuthProvider();
+  const provider =
+    new firebase.auth.GoogleAuthProvider();
 
-  auth.signInWithPopup(provider)
+  auth
+    .signInWithPopup(provider)
     .catch(err => {
-      document.getElementById("error").innerText = err.message;
+
+      document.getElementById("error").innerText =
+        err.message;
+
     });
 
 }
@@ -245,7 +282,17 @@ function login() {
 // ================= LOGOUT =================
 
 function logout() {
+
+  if (refreshInterval) {
+
+    clearInterval(refreshInterval);
+
+    refreshInterval = null;
+
+  }
+
   auth.signOut();
+
 }
 
 // ================= AUTH =================
@@ -261,19 +308,34 @@ auth.onAuthStateChanged(user => {
       auth.signOut();
 
       return;
+
     }
 
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("loginScreen").style.display =
+      "none";
+
+    document.getElementById("dashboard").style.display =
+      "block";
 
     loadAll();
 
-    setInterval(loadAll, 10000);
+    if (!refreshInterval) {
+
+      refreshInterval = setInterval(() => {
+
+        loadAll();
+
+      }, 10000);
+
+    }
 
   } else {
 
-    document.getElementById("loginScreen").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginScreen").style.display =
+      "block";
+
+    document.getElementById("dashboard").style.display =
+      "none";
 
   }
 
@@ -281,28 +343,46 @@ auth.onAuthStateChanged(user => {
 
 // ================= LOAD DATA =================
 
-function loadAll() {
+async function loadAll() {
 
-  Promise.all([
+  if (isLoading) return;
 
-    fetch(API_URL + "?t=" + Date.now())
-      .then(r => r.json()),
+  isLoading = true;
 
-    fetch(API_URL + "?action=items&t=" + Date.now())
-      .then(r => r.json())
+  try {
 
-  ])
-  .then(([orders, items]) => {
+    const [ordersRes, itemsRes] =
+      await Promise.all([
+
+        fetch(API_URL + "?t=" + Date.now()),
+
+        fetch(
+          API_URL +
+          "?action=items&t=" +
+          Date.now()
+        )
+
+      ]);
+
+    const orders = await ordersRes.json();
+
+    const items = await itemsRes.json();
 
     ordersCache = orders;
+
     itemsCache = items;
 
     render();
 
-  })
-  .catch(err => {
+  } catch (err) {
+
     console.error(err);
-  });
+
+  } finally {
+
+    isLoading = false;
+
+  }
 
 }
 
@@ -311,21 +391,29 @@ function loadAll() {
 function getProgress(orderId) {
 
   const items = itemsCache.filter(
+
     i => i["Order ID"] === orderId
+
   );
 
   const done = items.filter(
+
     i => i.Status === "Done"
+
   ).length;
 
   const total = items.length;
 
   return {
+
     done,
+
     total,
+
     percent: total
       ? (done / total) * 100
       : 0
+
   };
 
 }
@@ -335,10 +423,22 @@ function getProgress(orderId) {
 function render() {
 
   let html = "";
+
   let revenue = 0;
 
-  if (lastCount && ordersCache.length > lastCount) {
-    sound.play();
+  // NEW ORDER SOUND
+
+  if (
+
+    lastCount &&
+    ordersCache.length > lastCount
+
+  ) {
+
+    sound.currentTime = 0;
+
+    sound.play().catch(() => {});
+
   }
 
   lastCount = ordersCache.length;
@@ -350,20 +450,28 @@ function render() {
 
     revenue += Number(order.Total || 0);
 
-    const p = getProgress(order["Order ID"]);
+    const orderId =
+      String(order["Order ID"]);
+
+    const p =
+      getProgress(orderId);
 
     html += `
+
       <tr class="order-row"
-          onclick="toggle('${order["Order ID"]}')">
+          onclick="toggle('${escapeQuotes(orderId)}')">
 
         <td>
 
-          ${order["Order ID"]}
+          ${orderId}
 
           <div class="progress-wrap">
+
             <div class="progress-bar"
                  style="width:${p.percent}%">
+
             </div>
+
           </div>
 
           <div class="small">
@@ -372,33 +480,52 @@ function render() {
 
         </td>
 
-        <td>${order.Date}</td>
+        <td>${order.Date || ""}</td>
 
-        <td>${order.Name}</td>
+        <td>${order.Name || ""}</td>
 
-        <td>$${order.Total}</td>
+        <td>
+          $${Number(order.Total || 0).toFixed(2)}
+        </td>
 
         <td onclick="event.stopPropagation()">
 
-          <select onchange="
-            updateStatus(
-              '${order["Order ID"]}',
-              this.value
-            )
-          ">
+          <select
+
+            onchange="
+              updateStatus(
+                '${escapeQuotes(orderId)}',
+                this.value,
+                this
+              )
+            "
+
+          >
 
             <option
-              ${order.Status==="Pending"?"selected":""}>
+              value="Pending"
+              ${order.Status==="Pending"
+                ? "selected"
+                : ""
+              }>
               Pending
             </option>
 
             <option
-              ${order.Status==="Shipped"?"selected":""}>
+              value="Shipped"
+              ${order.Status==="Shipped"
+                ? "selected"
+                : ""
+              }>
               Shipped
             </option>
 
             <option
-              ${order.Status==="Done"?"selected":""}>
+              value="Done"
+              ${order.Status==="Done"
+                ? "selected"
+                : ""
+              }>
               Done
             </option>
 
@@ -407,21 +534,31 @@ function render() {
         </td>
 
       </tr>
+
     `;
 
     const items = itemsCache.filter(
-      i => i["Order ID"] === order["Order ID"]
+
+      i => i["Order ID"] === orderId
+
     );
 
     items.forEach(item => {
 
       html += `
-        <tr class="item-row item-${order["Order ID"]}"
-            style="display:${
-              expandedOrders.has(order["Order ID"])
-              ? "table-row"
-              : "none"
-            };">
+
+        <tr
+          class="item-row item-${cssSafe(orderId)}"
+
+          style="
+            display:${
+              expandedOrders.has(orderId)
+                ? "table-row"
+                : "none"
+            };
+          "
+
+        >
 
           <td colspan="5">
 
@@ -430,27 +567,31 @@ function render() {
               <label>
 
                 <input
+
                   type="checkbox"
 
-                  data-order="${item["Order ID"]}"
+                  data-order="${orderId}"
 
-                  data-item="${item.Item}"
+                  data-item="${escapeQuotes(item.Item)}"
 
-                  data-color="${item.Color}"
+                  data-color="${escapeQuotes(item.Color)}"
 
                   onchange="
                     toggleItem(
-                      '${item["Order ID"]}',
-                      '${item.Item}',
-                      '${item.Color}',
-                      this.checked
+                      '${escapeQuotes(orderId)}',
+                      '${escapeQuotes(item.Item)}',
+                      '${escapeQuotes(item.Color)}',
+                      this.checked,
+                      this
                     )
                   "
 
-                  ${item.Status==="Done"
-                    ? "checked"
-                    : ""
+                  ${
+                    item.Status === "Done"
+                      ? "checked"
+                      : ""
                   }
+
                 >
 
                 ${item.Item}
@@ -464,7 +605,9 @@ function render() {
               </label>
 
               <span class="small">
-                $${item.Subtotal}
+
+                $${Number(item.Subtotal || 0).toFixed(2)}
+
               </span>
 
             </div>
@@ -472,26 +615,33 @@ function render() {
           </td>
 
         </tr>
+
       `;
+
     });
 
   });
 
-  document.getElementById("ordersTable").innerHTML = html;
+  document.getElementById("ordersTable").innerHTML =
+    html;
 
   document.getElementById("revenue").innerText =
-    revenue;
+    revenue.toFixed(2);
 
 }
 
-// ================= TOGGLE ORDER =================
+// ================= TOGGLE =================
 
 function toggle(orderId) {
 
   if (expandedOrders.has(orderId)) {
+
     expandedOrders.delete(orderId);
+
   } else {
+
     expandedOrders.add(orderId);
+
   }
 
   render();
@@ -500,55 +650,120 @@ function toggle(orderId) {
 
 // ================= UPDATE STATUS =================
 
-function updateStatus(orderId, status) {
+async function updateStatus(
+  orderId,
+  status,
+  selectElement
+) {
 
-  fetch(API_URL, {
+  if (selectElement) {
 
-    method:"POST",
+    selectElement.disabled = true;
 
-    body: JSON.stringify({
+  }
 
-      action:"updateStatus",
-      orderId,
-      status
+  try {
 
-    })
+    await fetch(API_URL, {
 
-  })
-  .then(() => loadAll());
+      method:"POST",
+
+      body: JSON.stringify({
+
+        token: ADMIN_TOKEN,
+
+        action:"updateStatus",
+
+        orderId,
+
+        status
+
+      })
+
+    });
+
+    await loadAll();
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert("Failed to update status");
+
+  } finally {
+
+    if (selectElement) {
+
+      selectElement.disabled = false;
+
+    }
+
+  }
 
 }
 
 // ================= TOGGLE ITEM =================
 
-function toggleItem(orderId, item, color, checked) {
+async function toggleItem(
+  orderId,
+  item,
+  color,
+  checked,
+  checkbox
+) {
 
-  fetch(API_URL, {
+  if (checkbox) {
 
-    method:"POST",
+    checkbox.disabled = true;
 
-    body: JSON.stringify({
+  }
 
-      action:"updateItem",
+  try {
 
-      orderId,
-      item,
-      color,
+    await fetch(API_URL, {
 
-      status: checked
-        ? "Done"
-        : "Pending"
+      method:"POST",
 
-    })
+      body: JSON.stringify({
 
-  })
-  .then(() => {
+        token: ADMIN_TOKEN,
 
-    loadAll();
+        action:"updateItem",
+
+        orderId,
+
+        item,
+
+        color,
+
+        status:
+          checked
+            ? "Done"
+            : "Pending"
+
+      })
+
+    });
+
+    await loadAll();
 
     checkComplete(orderId);
 
-  });
+  } catch (err) {
+
+    console.error(err);
+
+    alert("Failed to update item");
+
+  } finally {
+
+    if (checkbox) {
+
+      checkbox.disabled = false;
+
+    }
+
+  }
 
 }
 
@@ -557,14 +772,16 @@ function toggleItem(orderId, item, color, checked) {
 function checkComplete(orderId) {
 
   const items = itemsCache.filter(
+
     i => i["Order ID"] === orderId
+
   );
 
-  const allDone = items.every(i =>
+  if (!items.length) return;
 
-    document.querySelector(
-      `input[data-order="${orderId}"][data-item="${i.Item}"][data-color="${i.Color}"]:checked`
-    )
+  const allDone = items.every(
+
+    i => i.Status === "Done"
 
   );
 
@@ -573,6 +790,26 @@ function checkComplete(orderId) {
     updateStatus(orderId, "Done");
 
   }
+
+}
+
+// ================= HELPERS =================
+
+function escapeQuotes(str) {
+
+  return String(str)
+
+    .replace(/'/g, "\\'")
+
+    .replace(/"/g, "&quot;");
+
+}
+
+function cssSafe(str) {
+
+  return String(str)
+
+    .replace(/[^a-zA-Z0-9_-]/g, "");
 
 }
 

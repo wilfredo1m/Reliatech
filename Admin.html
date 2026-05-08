@@ -26,10 +26,6 @@ body {
   border-radius:12px;
 }
 
-#loginScreen h2 {
-  margin-top:0;
-}
-
 #loginBtn,
 #logoutBtn {
   background:#28a745;
@@ -62,6 +58,7 @@ body {
   align-items:center;
   margin-bottom:10px;
   gap:10px;
+  flex-wrap:wrap;
 }
 
 .card {
@@ -120,6 +117,7 @@ tr.order-row:hover {
   height:6px;
   background:#28a745;
   width:0%;
+  transition:0.3s;
 }
 
 /* STATUS */
@@ -201,17 +199,17 @@ select {
 // ================= FIREBASE CONFIG =================
 
 const firebaseConfig = {
-   apiKey: "AIzaSyCp9mESjEcVQ_PX-Jv31JFTSFA0omcjfJs",
-   authDomain: "admindashboard-e7190.firebaseapp.com",
-   projectId: "admindashboard-e7190",
-   appId: "1:729683991497:web:ea1f4358fdfd9bc87c6618"
+  apiKey: "AIzaSyCp9mESjEcVQ_PX-Jv31JFTSFA0omcjfJs",
+  authDomain: "admindashboard-e7190.firebaseapp.com",
+  projectId: "admindashboard-e7190",
+  appId: "1:729683991497:web:ea1f4358fdfd9bc87c6618"
 };
 
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
-// ================= YOUR ADMIN EMAIL =================
+// ================= ADMIN EMAIL =================
 
 const ADMIN_EMAIL = "reliatechdigitalsolutions@gmail.com";
 
@@ -219,13 +217,19 @@ const ADMIN_EMAIL = "reliatechdigitalsolutions@gmail.com";
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
+// ================= STATE =================
+
 let ordersCache = [];
 let itemsCache = [];
 let lastCount = 0;
 
-const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+let expandedOrders = new Set();
 
-// ================= GOOGLE LOGIN =================
+const sound = new Audio(
+  "https://actions.google.com/sounds/v1/cartoon/pop.ogg"
+);
+
+// ================= LOGIN =================
 
 function login() {
 
@@ -244,13 +248,12 @@ function logout() {
   auth.signOut();
 }
 
-// ================= AUTH CHECK =================
+// ================= AUTH =================
 
 auth.onAuthStateChanged(user => {
 
   if (user) {
 
-    // ONLY ALLOW YOUR EMAIL
     if (user.email !== ADMIN_EMAIL) {
 
       alert("Access denied");
@@ -311,10 +314,8 @@ function getProgress(orderId) {
     i => i["Order ID"] === orderId
   );
 
-  const done = items.filter(i =>
-    document.querySelector(
-      `input[data-order="${orderId}"][data-item="${i.Item}"]:checked`
-    )
+  const done = items.filter(
+    i => i.Status === "Done"
   ).length;
 
   const total = items.length;
@@ -322,8 +323,11 @@ function getProgress(orderId) {
   return {
     done,
     total,
-    percent: total ? (done / total) * 100 : 0
+    percent: total
+      ? (done / total) * 100
+      : 0
   };
+
 }
 
 // ================= RENDER =================
@@ -339,16 +343,18 @@ function render() {
 
   lastCount = ordersCache.length;
 
-  document.getElementById("orderCount").innerText = ordersCache.length;
+  document.getElementById("orderCount").innerText =
+    ordersCache.length;
 
-  ordersCache.reverse().forEach(order => {
+  [...ordersCache].reverse().forEach(order => {
 
     revenue += Number(order.Total || 0);
 
     const p = getProgress(order["Order ID"]);
 
     html += `
-      <tr class="order-row" onclick="toggle('${order["Order ID"]}')">
+      <tr class="order-row"
+          onclick="toggle('${order["Order ID"]}')">
 
         <td>
 
@@ -367,22 +373,32 @@ function render() {
         </td>
 
         <td>${order.Date}</td>
+
         <td>${order.Name}</td>
+
         <td>$${order.Total}</td>
 
         <td onclick="event.stopPropagation()">
 
-          <select onchange="updateStatus('${order["Order ID"]}',this.value)">
+          <select onchange="
+            updateStatus(
+              '${order["Order ID"]}',
+              this.value
+            )
+          ">
 
-            <option ${order.Status==="Pending"?"selected":""}>
+            <option
+              ${order.Status==="Pending"?"selected":""}>
               Pending
             </option>
 
-            <option ${order.Status==="Shipped"?"selected":""}>
+            <option
+              ${order.Status==="Shipped"?"selected":""}>
               Shipped
             </option>
 
-            <option ${order.Status==="Done"?"selected":""}>
+            <option
+              ${order.Status==="Done"?"selected":""}>
               Done
             </option>
 
@@ -401,7 +417,11 @@ function render() {
 
       html += `
         <tr class="item-row item-${order["Order ID"]}"
-            style="display:none;">
+            style="display:${
+              expandedOrders.has(order["Order ID"])
+              ? "table-row"
+              : "none"
+            };">
 
           <td colspan="5">
 
@@ -416,16 +436,25 @@ function render() {
 
                   data-item="${item.Item}"
 
-                  onchange="toggleItem(
-                    '${item["Order ID"]}',
-                    '${item.Item}',
-                    this.checked
-                  )"
+                  data-color="${item.Color}"
 
-                  ${item.Status==="Done"?"checked":""}
+                  onchange="
+                    toggleItem(
+                      '${item["Order ID"]}',
+                      '${item.Item}',
+                      '${item.Color}',
+                      this.checked
+                    )
+                  "
+
+                  ${item.Status==="Done"
+                    ? "checked"
+                    : ""
+                  }
                 >
 
                 ${item.Item}
+
                 <span class="small">
                   (${item.Color})
                 </span>
@@ -449,7 +478,9 @@ function render() {
   });
 
   document.getElementById("ordersTable").innerHTML = html;
-  document.getElementById("revenue").innerText = revenue;
+
+  document.getElementById("revenue").innerText =
+    revenue;
 
 }
 
@@ -457,15 +488,13 @@ function render() {
 
 function toggle(orderId) {
 
-  document.querySelectorAll(".item-" + orderId)
-    .forEach(r => {
+  if (expandedOrders.has(orderId)) {
+    expandedOrders.delete(orderId);
+  } else {
+    expandedOrders.add(orderId);
+  }
 
-      r.style.display =
-        r.style.display === "none"
-        ? "table-row"
-        : "none";
-
-    });
+  render();
 
 }
 
@@ -473,20 +502,26 @@ function toggle(orderId) {
 
 function updateStatus(orderId, status) {
 
-  fetch(API_URL + "?action=updateStatus", {
+  fetch(API_URL, {
+
     method:"POST",
+
     body: JSON.stringify({
+
+      action:"updateStatus",
       orderId,
       status
+
     })
+
   })
-  .then(loadAll);
+  .then(() => loadAll());
 
 }
 
 // ================= TOGGLE ITEM =================
 
-function toggleItem(orderId, item, checked) {
+function toggleItem(orderId, item, color, checked) {
 
   fetch(API_URL, {
 
@@ -495,8 +530,10 @@ function toggleItem(orderId, item, checked) {
     body: JSON.stringify({
 
       action:"updateItem",
+
       orderId,
       item,
+      color,
 
       status: checked
         ? "Done"
@@ -505,7 +542,13 @@ function toggleItem(orderId, item, checked) {
     })
 
   })
-  .then(() => checkComplete(orderId));
+  .then(() => {
+
+    loadAll();
+
+    checkComplete(orderId);
+
+  });
 
 }
 
@@ -520,13 +563,15 @@ function checkComplete(orderId) {
   const allDone = items.every(i =>
 
     document.querySelector(
-      `input[data-order="${orderId}"][data-item="${i.Item}"]:checked`
+      `input[data-order="${orderId}"][data-item="${i.Item}"][data-color="${i.Color}"]:checked`
     )
 
   );
 
   if (allDone) {
+
     updateStatus(orderId, "Done");
+
   }
 
 }

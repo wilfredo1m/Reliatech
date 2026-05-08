@@ -567,39 +567,53 @@ function submitOrder(){
 
  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
   body: JSON.stringify(order)
 })
-.then(res => res.text())
-.then(text => {
-  console.log("RAW RESPONSE:", text);
+.then(res => res.json())
+.then(data => {
 
-  let data = JSON.parse(text);
+  if(data.success){
 
-  if (data.success) {
     status.style.color = "lightgreen";
-    status.innerText = "✔ Order received! ID: " + data.orderId;
+    status.innerText = `✔ Order received! ID: ${data.orderId}`;
+
+    successSound.play().catch(()=>{});
 
     cart = [];
     update();
 
-    btn.disabled = false;
+    document.getElementById("custName").value = "";
+    document.getElementById("custEmail").value = "";
+    document.getElementById("custPhone").value = "";
+
     btn.innerHTML = "Submit Order";
+    btn.disabled = false;
+
+    setTimeout(() => {
+      closeCheckout();
+      status.innerText = "";
+    }, 1200);
+
   } else {
+
     status.style.color = "red";
     status.innerText = data.error || "Server error";
-    btn.disabled = false;
+
     btn.innerHTML = "Submit Order";
+    btn.disabled = false;
   }
+
 })
 .catch(err => {
+
   console.error(err);
+
   status.style.color = "red";
-  status.innerText = "Network error. Check Apps Script deployment.";
-  btn.disabled = false;
+  status.innerText = "Network error";
+
   btn.innerHTML = "Submit Order";
+  btn.disabled = false;
+
 });
 }
 

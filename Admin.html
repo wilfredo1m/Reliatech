@@ -17,6 +17,10 @@ h1 {
   text-align:center;
 }
 
+button {
+  cursor:pointer;
+}
+
 table {
   width:100%;
   border-collapse:collapse;
@@ -38,12 +42,20 @@ tr:nth-child(even) {
 }
 
 .status {
-  padding:4px 8px;
+  padding:6px 10px;
   border-radius:5px;
+  border:none;
 }
 
-.pending { background:orange; color:black; }
-.shipped { background:green; }
+.pending {
+  background:orange;
+  color:black;
+}
+
+.done {
+  background:green;
+  color:white;
+}
 </style>
 </head>
 
@@ -82,7 +94,8 @@ function loadOrders() {
 
       data.reverse().forEach(order => {
 
-        let statusClass = (order.Status || "Pending").toLowerCase();
+        let status = order["Status"] || "Pending";
+        let statusClass = status.toLowerCase() === "done" ? "done" : "pending";
 
         html += `
           <tr>
@@ -92,7 +105,15 @@ function loadOrders() {
             <td>${order["Email"]}</td>
             <td>${order["Phone"]}</td>
             <td>$${order["Total"]}</td>
-            <td><span class="status ${statusClass}">${order["Status"]}</span></td>
+
+            <td>
+              <button 
+                class="status ${statusClass}"
+                onclick="markDone('${order["Order ID"]}')"
+              >
+                ${status}
+              </button>
+            </td>
           </tr>
         `;
       });
@@ -116,7 +137,8 @@ function markDone(orderId) {
     loadOrders(); // refresh table
   });
 }
- 
+
+// initial load
 loadOrders();
 
 </script>

@@ -101,6 +101,22 @@ function loadOrders() {
     });
 }
 
+
+// ================= MARK AS DONE =================
+function markDone(orderId) {
+  fetch(API_URL + "?action=updateStatus", {
+    method: "POST",
+    body: JSON.stringify({
+      orderId: orderId,
+      status: "Done"
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    loadOrders(); // refresh table
+  });
+}
+ 
 loadOrders();
 
 </script>

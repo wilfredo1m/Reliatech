@@ -41,7 +41,6 @@ tr:nth-child(even) {
   background:#1a1a1a;
 }
 
-/* Status button styles */
 .status-btn {
   padding:6px 10px;
   border:none;
@@ -87,9 +86,14 @@ tr:nth-child(even) {
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
+let isUpdating = false;
+
 
 // ================= LOAD ORDERS =================
 function loadOrders() {
+
+  if (isUpdating) return; // prevents flicker during updates
+
   fetch(API_URL + "?t=" + Date.now())
     .then(res => res.json())
     .then(data => {
@@ -130,12 +134,13 @@ function loadOrders() {
 // ================= INSTANT STATUS UPDATE =================
 function markDone(orderId, btn) {
 
-  // ⚡ INSTANT UI UPDATE (no waiting)
+  isUpdating = true;
+
+  // instant UI update
   btn.innerText = "Done";
   btn.classList.remove("pending");
   btn.classList.add("done");
 
-  // 🔄 send update in background
   fetch(API_URL + "?t=" + Date.now() + "&action=updateStatus", {
     method: "POST",
     body: JSON.stringify({
@@ -144,15 +149,25 @@ function markDone(orderId, btn) {
     })
   })
   .then(() => {
-    // small delayed sync (smooth UX)
-    setTimeout(loadOrders, 300);
+    setTimeout(() => {
+      isUpdating = false;
+      loadOrders();
+    }, 300);
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.log(err);
+    isUpdating = false;
+  });
 }
 
 
-// initial load
-loadOrders();
+// ================= AUTO LOAD ON PAGE OPEN =================
+window.addEventListener("load", () => {
+  loadOrders(); // initial load
+
+  // auto refresh every 10 seconds
+  setInterval(loadOrders, 10000);
+});
 
 </script>
 

@@ -13,58 +13,73 @@ body {
   padding:20px;
 }
 
-h1 {
-  text-align:center;
+/* TOP BAR */
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
 }
 
-button {
-  cursor:pointer;
+.card {
+  background:#222;
+  padding:10px 15px;
+  border-radius:8px;
 }
 
+/* TABLE */
 table {
   width:100%;
   border-collapse:collapse;
-  margin-top:20px;
+  margin-top:10px;
 }
 
 th, td {
   border:1px solid #333;
   padding:10px;
-  text-align:left;
 }
 
-th {
-  background:#222;
-}
+th { background:#222; }
 
-tr:nth-child(even) {
-  background:#1a1a1a;
-}
+tr:nth-child(even) { background:#1a1a1a; }
 
-.status-btn {
-  padding:6px 10px;
-  border:none;
+/* STATUS */
+select {
+  padding:5px;
   border-radius:5px;
+}
+
+/* POPUP */
+.popup {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+}
+
+.popup-content {
+  background:#222;
+  padding:20px;
+  width:400px;
+  border-radius:10px;
+}
+
+.close {
+  float:right;
   cursor:pointer;
-}
-
-.pending {
-  background:orange;
-  color:black;
-}
-
-.done {
-  background:green;
-  color:white;
+  color:red;
 }
 </style>
 </head>
 
 <body>
 
-<h1>📦 Admin Orders Dashboard</h1>
-
-<button onclick="loadOrders()">Refresh</button>
+<div class="topbar">
+  <div class="card">📦 Orders: <span id="orderCount">0</span></div>
+  <div class="card">💰 Revenue: $<span id="revenue">0</span></div>
+</div>
 
 <table>
   <thead>
@@ -72,102 +87,124 @@ tr:nth-child(even) {
       <th>Order ID</th>
       <th>Date</th>
       <th>Name</th>
-      <th>Email</th>
-      <th>Phone</th>
       <th>Total</th>
       <th>Status</th>
     </tr>
   </thead>
-
   <tbody id="ordersTable"></tbody>
 </table>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">X</span>
+    <h3>Order Items</h3>
+    <div id="popupItems"></div>
+  </div>
+</div>
 
 <script>
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
-let isUpdating = false;
+let lastOrderCount = 0;
+
+const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 
 
 // ================= LOAD ORDERS =================
 function loadOrders() {
-
-  if (isUpdating) return; // prevents flicker during updates
-
   fetch(API_URL + "?t=" + Date.now())
     .then(res => res.json())
     .then(data => {
 
       let html = "";
+      let revenue = 0;
+
+      // NEW ORDER ALERT
+      if (lastOrderCount && data.length > lastOrderCount) {
+        sound.play();
+      }
+      lastOrderCount = data.length;
+
+      document.getElementById("orderCount").innerText = data.length;
 
       data.reverse().forEach(order => {
 
-        let status = order["Status"] || "Pending";
-        let isDone = status.toLowerCase() === "done";
+        revenue += Number(order["Total"] || 0);
 
         html += `
           <tr>
-            <td>${order["Order ID"]}</td>
+            <td onclick="viewOrder('${order["Order ID"]}')"
+                style="cursor:pointer; text-decoration:underline;">
+              ${order["Order ID"]}
+            </td>
+
             <td>${order["Date"]}</td>
             <td>${order["Name"]}</td>
-            <td>${order["Email"]}</td>
-            <td>${order["Phone"]}</td>
             <td>$${order["Total"]}</td>
 
             <td>
-              <button 
-                class="status-btn ${isDone ? "done" : "pending"}"
-                onclick="markDone('${order["Order ID"]}', this)"
-              >
-                ${status}
-              </button>
+              <select onchange="updateStatus('${order["Order ID"]}', this.value)">
+                <option ${order["Status"]=="Pending"?"selected":""}>Pending</option>
+                <option ${order["Status"]=="Shipped"?"selected":""}>Shipped</option>
+                <option ${order["Status"]=="Done"?"selected":""}>Done</option>
+              </select>
             </td>
           </tr>
         `;
       });
 
       document.getElementById("ordersTable").innerHTML = html;
+      document.getElementById("revenue").innerText = revenue;
+
     });
 }
 
 
-// ================= INSTANT STATUS UPDATE =================
-function markDone(orderId, btn) {
-
-  isUpdating = true;
-
-  // instant UI update
-  btn.innerText = "Done";
-  btn.classList.remove("pending");
-  btn.classList.add("done");
-
-  fetch(API_URL + "?t=" + Date.now() + "&action=updateStatus", {
+// ================= STATUS UPDATE =================
+function updateStatus(orderId, status) {
+  fetch(API_URL + "?action=updateStatus", {
     method: "POST",
     body: JSON.stringify({
-      orderId: orderId,
-      status: "Done"
+      orderId,
+      status
     })
-  })
-  .then(() => {
-    setTimeout(() => {
-      isUpdating = false;
-      loadOrders();
-    }, 300);
-  })
-  .catch(err => {
-    console.log(err);
-    isUpdating = false;
-  });
+  }).then(() => loadOrders());
 }
 
 
-// ================= AUTO LOAD ON PAGE OPEN =================
-window.addEventListener("load", () => {
-  loadOrders(); // initial load
+// ================= VIEW ITEMS POPUP =================
+function viewOrder(orderId) {
 
-  // auto refresh every 10 seconds
+  fetch(API_URL + "?t=" + Date.now())
+    .then(res => res.json())
+    .then(orders => {
+
+      const order = orders.find(o => o["Order ID"] === orderId);
+
+      if (!order) return;
+
+      document.getElementById("popupItems").innerHTML = `
+        <p><b>Name:</b> ${order.Name}</p>
+        <p><b>Email:</b> ${order.Email}</p>
+        <p><b>Total:</b> $${order.Total}</p>
+      `;
+
+      document.getElementById("popup").style.display = "flex";
+    });
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+
+// ================= AUTO REFRESH =================
+window.onload = () => {
+  loadOrders();
   setInterval(loadOrders, 10000);
-});
+};
 
 </script>
 

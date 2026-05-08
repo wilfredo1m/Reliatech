@@ -565,56 +565,51 @@ function submitOrder(){
   drawer.classList.remove("open");
   overlay.classList.remove("show");
 
- fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
-  method: "POST",
-  body: JSON.stringify(order)
-})
-.then(res => res.json())
-.then(data => {
+  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
+    method: "POST",
+    body: JSON.stringify(order)
+  })
+  .then(res => res.text())
+  .then(data => {
 
-  if(data.success){
+    console.log(data);
 
+    // 🎉 success UI
     status.style.color = "lightgreen";
-    status.innerText = `✔ Order received! ID: ${data.orderId}`;
+    status.innerText = "✔ Order received!";
 
-    successSound.play().catch(()=>{});
-
-    cart = [];
-    update();
-
-    document.getElementById("custName").value = "";
-    document.getElementById("custEmail").value = "";
-    document.getElementById("custPhone").value = "";
+    successSound.play().catch(()=>{}); // 🔊 sound
 
     btn.innerHTML = "Submit Order";
     btn.disabled = false;
 
+    cart = [];
+    update();
+
+    // reset form
+    document.getElementById("custName").value = "";
+    document.getElementById("custEmail").value = "";
+    document.getElementById("custPhone").value = "";
+
+    // auto close modal after short delay
     setTimeout(() => {
       closeCheckout();
       status.innerText = "";
     }, 1200);
 
-  } else {
+  })
+  .catch(err => {
+
+    console.error(err);
 
     status.style.color = "red";
-    status.innerText = data.error || "Server error";
+    status.innerText = "Error submitting order. Try again.";
 
     btn.innerHTML = "Submit Order";
     btn.disabled = false;
-  }
 
-})
-.catch(err => {
+  });
 
-  console.error(err);
-
-  status.style.color = "red";
-  status.innerText = "Network error";
-
-  btn.innerHTML = "Submit Order";
-  btn.disabled = false;
-
-});
 }
 
 </script>

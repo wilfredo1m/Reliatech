@@ -10,8 +10,8 @@
 
 <style>
 
-body {
-  font-family: Arial;
+body{
+  font-family:Arial;
   background:#111;
   color:#fff;
   margin:0;
@@ -20,7 +20,7 @@ body {
 
 /* LOGIN */
 
-#loginScreen {
+#loginScreen{
   max-width:400px;
   margin:100px auto;
   background:#1a1a1a;
@@ -29,7 +29,7 @@ body {
 }
 
 #loginBtn,
-#logoutBtn {
+#logoutBtn{
   background:#28a745;
   color:white;
   border:none;
@@ -39,24 +39,24 @@ body {
   font-size:16px;
 }
 
-#logoutBtn {
+#logoutBtn{
   background:#dc3545;
 }
 
-#error {
+#error{
   color:#ff5c5c;
   margin-top:15px;
 }
 
 /* DASHBOARD */
 
-#dashboard {
+#dashboard{
   display:none;
 }
 
-/* TOPBAR */
+/* TOP BAR */
 
-.topbar {
+.topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -65,7 +65,7 @@ body {
   flex-wrap:wrap;
 }
 
-.card {
+.card{
   background:#222;
   padding:10px 15px;
   border-radius:8px;
@@ -73,37 +73,37 @@ body {
 
 /* TABLE */
 
-table {
+table{
   width:100%;
   border-collapse:collapse;
 }
 
 th,
-td {
+td{
   border:1px solid #333;
   padding:10px;
 }
 
-th {
+th{
   background:#222;
 }
 
-tr.order-row {
+tr.order-row{
   cursor:pointer;
   background:#151515;
 }
 
-tr.order-row:hover {
+tr.order-row:hover{
   background:#1d1d1d;
 }
 
 /* ITEMS */
 
-.item-row {
+.item-row{
   background:#0f0f0f;
 }
 
-.item-box {
+.item-box{
   padding-left:30px;
   font-size:14px;
   display:flex;
@@ -113,7 +113,7 @@ tr.order-row:hover {
 
 /* PROGRESS */
 
-.progress-wrap {
+.progress-wrap{
   margin-top:6px;
   background:#333;
   height:6px;
@@ -121,7 +121,7 @@ tr.order-row:hover {
   overflow:hidden;
 }
 
-.progress-bar {
+.progress-bar{
   height:6px;
   background:#28a745;
   width:0%;
@@ -130,7 +130,7 @@ tr.order-row:hover {
 
 /* STATUS */
 
-select {
+select{
   padding:5px;
   border-radius:5px;
   background:#222;
@@ -140,14 +140,14 @@ select {
 
 /* CHECKBOX */
 
-.item-box input {
-  transform: scale(1.2);
+.item-box input{
+  transform:scale(1.2);
   margin-right:10px;
 }
 
 /* SMALL */
 
-.small {
+.small{
   opacity:0.7;
   font-size:12px;
 }
@@ -246,7 +246,6 @@ const API_URL =
 // ================= STATE =================
 
 let ordersCache = [];
-
 let itemsCache = [];
 
 let lastCount = 0;
@@ -263,7 +262,7 @@ const sound = new Audio(
 
 // ================= LOGIN =================
 
-function login() {
+function login(){
 
   const provider =
     new firebase.auth.GoogleAuthProvider();
@@ -281,9 +280,9 @@ function login() {
 
 // ================= LOGOUT =================
 
-function logout() {
+function logout(){
 
-  if (refreshInterval) {
+  if(refreshInterval){
 
     clearInterval(refreshInterval);
 
@@ -299,9 +298,9 @@ function logout() {
 
 auth.onAuthStateChanged(user => {
 
-  if (user) {
+  if(user){
 
-    if (user.email !== ADMIN_EMAIL) {
+    if(user.email !== ADMIN_EMAIL){
 
       alert("Access denied");
 
@@ -319,13 +318,13 @@ auth.onAuthStateChanged(user => {
 
     loadAll();
 
-    if (!refreshInterval) {
+    if(!refreshInterval){
 
       refreshInterval = setInterval(() => {
 
         loadAll();
 
-      }, 10000);
+      },10000);
 
     }
 
@@ -341,11 +340,11 @@ auth.onAuthStateChanged(user => {
 
 });
 
-// ================= LOAD DATA =================
+// ================= LOAD =================
 
-async function loadAll() {
+async function loadAll(){
 
-  if (isLoading) return;
+  if(isLoading) return;
 
   isLoading = true;
 
@@ -354,19 +353,53 @@ async function loadAll() {
     const [ordersRes, itemsRes] =
       await Promise.all([
 
-        fetch(API_URL + "?t=" + Date.now()),
+        fetch(
+
+          API_URL +
+
+          "?token=" + ADMIN_TOKEN +
+
+          "&t=" + Date.now()
+
+        ),
 
         fetch(
+
           API_URL +
-          "?action=items&t=" +
-          Date.now()
+
+          "?action=items" +
+
+          "&token=" + ADMIN_TOKEN +
+
+          "&t=" + Date.now()
+
         )
 
       ]);
 
-    const orders = await ordersRes.json();
+    const orders =
+      await ordersRes.json();
 
-    const items = await itemsRes.json();
+    const items =
+      await itemsRes.json();
+
+    // BLOCK UNAUTHORIZED
+
+    if(
+
+      orders.error === "Unauthorized" ||
+
+      items.error === "Unauthorized"
+
+    ){
+
+      alert("Unauthorized");
+
+      logout();
+
+      return;
+
+    }
 
     ordersCache = orders;
 
@@ -374,7 +407,7 @@ async function loadAll() {
 
     render();
 
-  } catch (err) {
+  } catch(err){
 
     console.error(err);
 
@@ -388,7 +421,7 @@ async function loadAll() {
 
 // ================= PROGRESS =================
 
-function getProgress(orderId) {
+function getProgress(orderId){
 
   const items = itemsCache.filter(
 
@@ -420,7 +453,7 @@ function getProgress(orderId) {
 
 // ================= RENDER =================
 
-function render() {
+function render(){
 
   let html = "";
 
@@ -428,12 +461,12 @@ function render() {
 
   // NEW ORDER SOUND
 
-  if (
+  if(
 
     lastCount &&
     ordersCache.length > lastCount
 
-  ) {
+  ){
 
     sound.currentTime = 0;
 
@@ -632,9 +665,9 @@ function render() {
 
 // ================= TOGGLE =================
 
-function toggle(orderId) {
+function toggle(orderId){
 
-  if (expandedOrders.has(orderId)) {
+  if(expandedOrders.has(orderId)){
 
     expandedOrders.delete(orderId);
 
@@ -654,9 +687,9 @@ async function updateStatus(
   orderId,
   status,
   selectElement
-) {
+){
 
-  if (selectElement) {
+  if(selectElement){
 
     selectElement.disabled = true;
 
@@ -684,7 +717,7 @@ async function updateStatus(
 
     await loadAll();
 
-  } catch (err) {
+  } catch(err){
 
     console.error(err);
 
@@ -692,7 +725,7 @@ async function updateStatus(
 
   } finally {
 
-    if (selectElement) {
+    if(selectElement){
 
       selectElement.disabled = false;
 
@@ -710,9 +743,9 @@ async function toggleItem(
   color,
   checked,
   checkbox
-) {
+){
 
-  if (checkbox) {
+  if(checkbox){
 
     checkbox.disabled = true;
 
@@ -749,7 +782,7 @@ async function toggleItem(
 
     checkComplete(orderId);
 
-  } catch (err) {
+  } catch(err){
 
     console.error(err);
 
@@ -757,7 +790,7 @@ async function toggleItem(
 
   } finally {
 
-    if (checkbox) {
+    if(checkbox){
 
       checkbox.disabled = false;
 
@@ -769,7 +802,7 @@ async function toggleItem(
 
 // ================= AUTO COMPLETE =================
 
-function checkComplete(orderId) {
+function checkComplete(orderId){
 
   const items = itemsCache.filter(
 
@@ -777,7 +810,7 @@ function checkComplete(orderId) {
 
   );
 
-  if (!items.length) return;
+  if(!items.length) return;
 
   const allDone = items.every(
 
@@ -785,9 +818,9 @@ function checkComplete(orderId) {
 
   );
 
-  if (allDone) {
+  if(allDone){
 
-    updateStatus(orderId, "Done");
+    updateStatus(orderId,"Done");
 
   }
 
@@ -795,21 +828,21 @@ function checkComplete(orderId) {
 
 // ================= HELPERS =================
 
-function escapeQuotes(str) {
+function escapeQuotes(str){
 
   return String(str)
 
-    .replace(/'/g, "\\'")
+    .replace(/'/g,"\\'")
 
-    .replace(/"/g, "&quot;");
+    .replace(/"/g,'&quot;');
 
 }
 
-function cssSafe(str) {
+function cssSafe(str){
 
   return String(str)
 
-    .replace(/[^a-zA-Z0-9_-]/g, "");
+    .replace(/[^a-zA-Z0-9_-]/g,"");
 
 }
 

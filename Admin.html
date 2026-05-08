@@ -41,10 +41,12 @@ tr:nth-child(even) {
   background:#1a1a1a;
 }
 
-.status {
+/* Status button styles */
+.status-btn {
   padding:6px 10px;
-  border-radius:5px;
   border:none;
+  border-radius:5px;
+  cursor:pointer;
 }
 
 .pending {
@@ -85,8 +87,10 @@ tr:nth-child(even) {
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
+
+// ================= LOAD ORDERS =================
 function loadOrders() {
-  fetch(API_URL)
+  fetch(API_URL + "?t=" + Date.now())
     .then(res => res.json())
     .then(data => {
 
@@ -95,7 +99,7 @@ function loadOrders() {
       data.reverse().forEach(order => {
 
         let status = order["Status"] || "Pending";
-        let statusClass = status.toLowerCase() === "done" ? "done" : "pending";
+        let isDone = status.toLowerCase() === "done";
 
         html += `
           <tr>
@@ -108,8 +112,8 @@ function loadOrders() {
 
             <td>
               <button 
-                class="status ${statusClass}"
-                onclick="markDone('${order["Order ID"]}')"
+                class="status-btn ${isDone ? "done" : "pending"}"
+                onclick="markDone('${order["Order ID"]}', this)"
               >
                 ${status}
               </button>
@@ -123,20 +127,29 @@ function loadOrders() {
 }
 
 
-// ================= MARK AS DONE =================
-function markDone(orderId) {
-  fetch(API_URL + "?action=updateStatus", {
+// ================= INSTANT STATUS UPDATE =================
+function markDone(orderId, btn) {
+
+  // ⚡ INSTANT UI UPDATE (no waiting)
+  btn.innerText = "Done";
+  btn.classList.remove("pending");
+  btn.classList.add("done");
+
+  // 🔄 send update in background
+  fetch(API_URL + "?t=" + Date.now() + "&action=updateStatus", {
     method: "POST",
     body: JSON.stringify({
       orderId: orderId,
       status: "Done"
     })
   })
-  .then(res => res.json())
   .then(() => {
-    loadOrders(); // refresh table
-  });
+    // small delayed sync (smooth UX)
+    setTimeout(loadOrders, 300);
+  })
+  .catch(err => console.log(err));
 }
+
 
 // initial load
 loadOrders();

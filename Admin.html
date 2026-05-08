@@ -17,11 +17,51 @@ body {
   padding:20px;
 }
 
+/* LOGIN SCREEN */
+#loginScreen {
+  max-width:400px;
+  margin:100px auto;
+  background:#1a1a1a;
+  padding:40px;
+  border-radius:12px;
+}
+
+#loginScreen h2 {
+  margin-top:0;
+}
+
+#loginBtn,
+#logoutBtn {
+  background:#28a745;
+  color:white;
+  border:none;
+  padding:12px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+#logoutBtn {
+  background:#dc3545;
+}
+
+#error {
+  color:#ff5c5c;
+  margin-top:15px;
+}
+
+/* DASHBOARD */
+#dashboard {
+  display:none;
+}
+
 /* TOP BAR */
 .topbar {
   display:flex;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:10px;
+  gap:10px;
 }
 
 .card {
@@ -101,50 +141,6 @@ select {
   opacity:0.7;
   font-size:12px;
 }
-
-/* LOGIN SCREEN */
-#loginScreen {
-  display:none;
-  max-width:350px;
-  margin:100px auto;
-  background:#1a1a1a;
-  padding:30px;
-  border-radius:10px;
-}
-
-#loginScreen input {
-  width:100%;
-  padding:12px;
-  margin-bottom:10px;
-  border:none;
-  border-radius:6px;
-  background:#222;
-  color:#fff;
-}
-
-#loginScreen button,
-#logoutBtn {
-  padding:10px 15px;
-  border:none;
-  border-radius:6px;
-  background:#28a745;
-  color:white;
-  cursor:pointer;
-}
-
-#logoutBtn {
-  background:#dc3545;
-}
-
-#error {
-  color:#ff6b6b;
-  margin-top:10px;
-}
-
-/* DASHBOARD */
-#dashboard {
-  display:none;
-}
 </style>
 </head>
 
@@ -155,10 +151,9 @@ select {
 
   <h2>Admin Login</h2>
 
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-
-  <button onclick="login()">Login</button>
+  <button id="loginBtn" onclick="login()">
+    Sign in with Google
+  </button>
 
   <div id="error"></div>
 
@@ -177,11 +172,14 @@ select {
       💰 Revenue: $<span id="revenue">0</span>
     </div>
 
-    <button id="logoutBtn" onclick="logout()">Logout</button>
+    <button id="logoutBtn" onclick="logout()">
+      Logout
+    </button>
 
   </div>
 
   <table>
+
     <thead>
       <tr>
         <th>Order</th>
@@ -193,6 +191,7 @@ select {
     </thead>
 
     <tbody id="ordersTable"></tbody>
+
   </table>
 
 </div>
@@ -212,6 +211,10 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
+// ================= YOUR ADMIN EMAIL =================
+
+const ADMIN_EMAIL = "reliatechdigitalsolutions@gmail.com";
+
 // ================= API =================
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
@@ -222,11 +225,40 @@ let lastCount = 0;
 
 const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 
-// ================= AUTH STATE =================
+// ================= GOOGLE LOGIN =================
+
+function login() {
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  auth.signInWithPopup(provider)
+    .catch(err => {
+      document.getElementById("error").innerText = err.message;
+    });
+
+}
+
+// ================= LOGOUT =================
+
+function logout() {
+  auth.signOut();
+}
+
+// ================= AUTH CHECK =================
 
 auth.onAuthStateChanged(user => {
 
   if (user) {
+
+    // ONLY ALLOW YOUR EMAIL
+    if (user.email !== ADMIN_EMAIL) {
+
+      alert("Access denied");
+
+      auth.signOut();
+
+      return;
+    }
 
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
@@ -243,26 +275,6 @@ auth.onAuthStateChanged(user => {
   }
 
 });
-
-// ================= LOGIN =================
-
-function login() {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .catch(err => {
-      document.getElementById("error").innerText = err.message;
-    });
-
-}
-
-// ================= LOGOUT =================
-
-function logout() {
-  auth.signOut();
-}
 
 // ================= LOAD DATA =================
 

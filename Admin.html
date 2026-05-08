@@ -13,6 +13,7 @@ body {
   padding:20px;
 }
 
+/* TOP BAR */
 .topbar {
   display:flex;
   justify-content:space-between;
@@ -25,10 +26,10 @@ body {
   border-radius:8px;
 }
 
+/* TABLE */
 table {
   width:100%;
   border-collapse:collapse;
-  margin-top:10px;
 }
 
 th, td {
@@ -36,47 +37,47 @@ th, td {
   padding:10px;
 }
 
-th { background:#222; }
-
-tr:nth-child(even) { background:#1a1a1a; }
-
-select {
-  padding:5px;
-  border-radius:5px;
-}
-
-/* POPUP */
-.popup {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.8);
-  justify-content:center;
-  align-items:center;
-}
-
-.popup-box {
+th {
   background:#222;
-  padding:20px;
-  width:420px;
-  border-radius:10px;
 }
 
-.close {
-  float:right;
+tr.order-row {
   cursor:pointer;
-  color:red;
+  background:#151515;
 }
 
+tr.order-row:hover {
+  background:#1d1d1d;
+}
+
+/* ITEM ROWS */
 .item-row {
-  margin:8px 0;
+  background:#0f0f0f;
+}
+
+.item-box {
+  padding-left:30px;
+  font-size:14px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-button {
-  cursor:pointer;
+/* STATUS */
+select {
+  padding:5px;
+  border-radius:5px;
+}
+
+/* CHECKBOX */
+.item-box input {
+  transform: scale(1.2);
+  margin-right:10px;
+}
+
+.small {
+  opacity:0.7;
+  font-size:12px;
 }
 </style>
 </head>
@@ -91,7 +92,7 @@ button {
 <table>
   <thead>
     <tr>
-      <th>Order ID</th>
+      <th>Order</th>
       <th>Date</th>
       <th>Name</th>
       <th>Total</th>
@@ -102,71 +103,107 @@ button {
   <tbody id="ordersTable"></tbody>
 </table>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <span class="close" onclick="closePopup()">X</span>
-    <h3>Order Items</h3>
-    <div id="itemsBox"></div>
-  </div>
-</div>
-
 <script>
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
+let ordersCache = [];
+let itemsCache = [];
 let lastCount = 0;
+
 const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 
-let currentItems = [];
+
+// ================= LOAD EVERYTHING =================
+function loadAll() {
+
+  Promise.all([
+    fetch(API_URL + "?t=" + Date.now()).then(r => r.json()),
+    fetch(API_URL + "?action=items&t=" + Date.now()).then(r => r.json())
+  ])
+  .then(([orders, items]) => {
+
+    ordersCache = orders;
+    itemsCache = items;
+
+    render();
+
+  });
+}
 
 
-// ================= LOAD ORDERS =================
-function loadOrders() {
+// ================= RENDER TABLE =================
+function render() {
 
-  fetch(API_URL + "?t=" + Date.now())
-    .then(res => res.json())
-    .then(data => {
+  let html = "";
+  let revenue = 0;
 
-      let html = "";
-      let revenue = 0;
+  if (lastCount && ordersCache.length > lastCount) {
+    sound.play();
+  }
+  lastCount = ordersCache.length;
 
-      if (lastCount && data.length > lastCount) {
-        sound.play();
-      }
-      lastCount = data.length;
+  document.getElementById("orderCount").innerText = ordersCache.length;
 
-      document.getElementById("orderCount").innerText = data.length;
+  ordersCache.reverse().forEach(order => {
 
-      data.reverse().forEach(order => {
+    revenue += Number(order.Total || 0);
 
-        revenue += Number(order.Total || 0);
+    html += `
+      <tr class="order-row" onclick="toggle('${order["Order ID"]}')">
+        <td>${order["Order ID"]}</td>
+        <td>${order.Date}</td>
+        <td>${order.Name}</td>
+        <td>$${order.Total}</td>
+        <td onclick="event.stopPropagation()">
+          <select onchange="updateStatus('${order["Order ID"]}',this.value)">
+            <option ${order.Status==="Pending"?"selected":""}>Pending</option>
+            <option ${order.Status==="Shipped"?"selected":""}>Shipped</option>
+            <option ${order.Status==="Done"?"selected":""}>Done</option>
+          </select>
+        </td>
+      </tr>
+    `;
 
-        html += `
-          <tr>
-            <td onclick="openOrder('${order["Order ID"]}')" style="cursor:pointer; text-decoration:underline;">
-              ${order["Order ID"]}
-            </td>
+    // ITEMS (hidden by default using class)
+    const items = itemsCache.filter(i => i["Order ID"] === order["Order ID"]);
 
-            <td>${order.Date}</td>
-            <td>${order.Name}</td>
-            <td>$${order.Total}</td>
+    items.forEach(item => {
+      html += `
+        <tr class="item-row item-${order["Order ID"]}" style="display:none;">
+          <td colspan="5">
+            <div class="item-box">
+              
+              <label>
+                <input type="checkbox"
+                  onchange="toggleItem('${item["Order ID"]}','${item.Item}',this.checked)"
+                  ${item.Status==="Done"?"checked":""}>
+                
+                ${item.Item} <span class="small">(${item.Color})</span>
+                x${item.Qty}
+              </label>
 
-            <td>
-              <select onchange="updateStatus('${order["Order ID"]}', this.value)">
-                <option ${order.Status==="Pending"?"selected":""}>Pending</option>
-                <option ${order.Status==="Shipped"?"selected":""}>Shipped</option>
-                <option ${order.Status==="Done"?"selected":""}>Done</option>
-              </select>
-            </td>
-          </tr>
-        `;
-      });
+              <span class="small">$${item.Subtotal}</span>
 
-      document.getElementById("ordersTable").innerHTML = html;
-      document.getElementById("revenue").innerText = revenue;
-
+            </div>
+          </td>
+        </tr>
+      `;
     });
+
+  });
+
+  document.getElementById("ordersTable").innerHTML = html;
+  document.getElementById("revenue").innerText = revenue;
+}
+
+
+// ================= EXPAND / COLLAPSE =================
+function toggle(orderId) {
+
+  document.querySelectorAll(".item-" + orderId).forEach(row => {
+    row.style.display = row.style.display === "none" ? "table-row" : "none";
+  });
 }
 
 
@@ -176,42 +213,11 @@ function updateStatus(orderId, status) {
   fetch(API_URL + "?action=updateStatus", {
     method:"POST",
     body: JSON.stringify({ orderId, status })
-  }).then(()=>loadOrders());
+  }).then(loadAll);
 }
 
 
-// ================= OPEN ORDER ITEMS =================
-function openOrder(orderId) {
-
-  fetch(API_URL + "?action=items&t=" + Date.now())
-    .then(res => res.json())
-    .then(items => {
-
-      currentItems = items.filter(i => i["Order ID"] === orderId);
-
-      let html = "";
-
-      currentItems.forEach(i => {
-
-        html += `
-          <div class="item-row">
-            <label>
-              <input type="checkbox"
-                onchange="toggleItem('${i["Order ID"]}','${i.Item}',this.checked)"
-                ${i.Status==="Done"?"checked":""}>
-              ${i.Item} (${i.Color}) x${i.Qty}
-            </label>
-          </div>
-        `;
-      });
-
-      document.getElementById("itemsBox").innerHTML = html;
-      document.getElementById("popup").style.display = "flex";
-    });
-}
-
-
-// ================= ITEM TOGGLE =================
+// ================= UPDATE ITEM =================
 function toggleItem(orderId, item, checked) {
 
   fetch(API_URL, {
@@ -223,38 +229,31 @@ function toggleItem(orderId, item, checked) {
       status: checked ? "Done" : "Pending"
     })
   })
-  .then(()=>checkOrderComplete(orderId));
+  .then(()=>checkComplete(orderId));
 }
 
 
 // ================= AUTO COMPLETE ORDER =================
-function checkOrderComplete(orderId) {
+function checkComplete(orderId) {
 
-  fetch(API_URL + "?action=items")
-    .then(res => res.json())
-    .then(items => {
+  const items = itemsCache.filter(i => i["Order ID"] === orderId);
 
-      const list = items.filter(i => i["Order ID"] === orderId);
+  const allDone = items.every(i => {
+    return document.querySelector(
+      `input[onchange*="${i.Item}"]:checked`
+    );
+  });
 
-      const allDone = list.every(i => i.Status === "Done");
-
-      if (allDone) {
-        updateStatus(orderId, "Done");
-      }
-    });
-}
-
-
-// ================= POPUP CLOSE =================
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
+  if (allDone) {
+    updateStatus(orderId,"Done");
+  }
 }
 
 
 // ================= AUTO REFRESH =================
 window.onload = () => {
-  loadOrders();
-  setInterval(loadOrders, 10000);
+  loadAll();
+  setInterval(loadAll, 10000);
 };
 
 </script>

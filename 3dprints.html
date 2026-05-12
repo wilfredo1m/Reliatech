@@ -118,64 +118,104 @@ header {
 
 /* ================= PRODUCTS ================= */
 
+/* ================= ETSY STYLE PRODUCTS ================= */
+
 .products {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:2rem;
-  padding:2rem;
-  max-width:1200px;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:28px;
+  padding:40px 30px;
+  max-width:1400px;
   margin:auto;
 }
 
 .product-card {
   background:var(--card-bg);
-  border-radius:10px;
-  text-align:center;
+  border-radius:18px;
   overflow:hidden;
-  padding-bottom:1rem;
+  transition:0.25s ease;
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 6px 20px rgba(0,0,0,0.25);
+}
+
+.product-card:hover {
+  transform:translateY(-6px);
+  box-shadow:0 16px 40px rgba(0,0,0,0.45);
 }
 
 .product-card img {
   width:100%;
-  height:220px;
-  object-fit:contain;
+  height:320px;
+  object-fit:cover;
   background:#000;
-  padding:10px;
+  transition:0.3s ease;
   cursor:zoom-in;
 }
 
+.product-card:hover img {
+  transform:scale(1.03);
+}
+
+.product-info {
+  padding:18px;
+}
+
 .product-card h3 {
-  margin:0.5rem 0;
+  margin:0;
+  font-size:1.25rem;
+}
+
+.price {
+  color:#28a745;
+  font-size:1.4rem;
+  font-weight:bold;
+  margin-top:8px;
 }
 
 .product-card p {
-  font-size:0.9rem;
+  font-size:0.95rem;
   opacity:0.85;
-  padding:0 10px;
+  line-height:1.5;
+  margin-top:10px;
 }
 
 /* ================= CONTROLS ================= */
 
 .controls {
   display:flex;
-  justify-content:center;
-  gap:8px;
   flex-wrap:wrap;
-  margin-top:10px;
+  gap:10px;
+  margin-top:18px;
 }
 
-.qty, .color {
-  width:80px;
+.qty,
+.color {
+  flex:1;
+  min-width:90px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  background:#222;
+  color:#fff;
 }
 
 .order-btn {
-  background:var(--button-bg);
+  flex:1;
+  min-width:120px;
+  background:linear-gradient(135deg,#28a745,#1e7e34);
   border:none;
   color:white;
-  padding:6px 10px;
+  padding:12px;
+  border-radius:10px;
   cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
 }
 
+.order-btn:hover {
+  transform:scale(1.03);
+  opacity:0.95;
+}
 /* ================= CART ================= */
 
 .cart-button {
@@ -334,51 +374,214 @@ header {
 <!-- PRODUCTS -->
 <section class="products">
 
+  <!-- EAR MOUNT -->
   <div class="product-card">
+
     <img src="Images/Disney Ear Wall Mount.jpeg">
-    <h3>Disney Ear Wall Mount</h3>
-    <p>Wall-mounted Disney ear display holder.</p>
 
-    <div class="controls">
-      <input class="qty" type="number" value="1">
-      <select class="color">
-        <option>Red</option><option>Blue</option>
-        <option>White</option><option>Black</option>
-        <option>Yellow</option><option>Green</option>
-        <option>Pink</option><option>Hot Pink</option>
-        <option>Purple</option>
-      </select>
-      <button class="order-btn" data-name="Ear Mount" data-price="6">Add</button>
+    <div class="product-info">
+
+      <h3>Disney Ear Wall Mount</h3>
+
+      <div class="price">$6</div>
+
+      <p>
+        Wall-mounted Disney ear display holder.
+      </p>
+
+      <div class="controls">
+
+        <input class="qty" type="number" value="1">
+
+        <select class="color">
+          <option>Red</option>
+          <option>Blue</option>
+          <option>White</option>
+          <option>Black</option>
+          <option>Yellow</option>
+          <option>Green</option>
+          <option>Pink</option>
+          <option>Hot Pink</option>
+          <option>Purple</option>
+        </select>
+
+        <button class="order-btn"
+          data-name="Ear Mount"
+          data-price="6">
+          Add to Cart
+        </button>
+
+      </div>
+
     </div>
+
   </div>
 
+  <!-- LITHOPHANE -->
   <div class="product-card">
+
     <img src="Images/Lithophane.jpeg">
-    <h3>Lithophane</h3>
-    <p>Custom backlit photo lithophanes.</p>
 
-    <div class="controls">
-      <input class="qty" type="number" value="1">
-      <button class="order-btn" data-name="Lithophane" data-price="60">Add</button>
+    <div class="product-info">
+
+      <h3>Lithophane</h3>
+
+      <div class="price">$60</div>
+
+      <p>
+        Custom backlit photo lithophanes.
+      </p>
+
+      <div class="controls">
+
+        <input class="qty" type="number" value="1">
+
+        <button class="order-btn"
+          data-name="Lithophane"
+          data-price="60">
+          Add to Cart
+        </button>
+
+      </div>
+
     </div>
+
   </div>
 
+  <!-- TAP STAR -->
   <div class="product-card">
-    <img src="Images/Tap To Pay Star.jpeg">
-    <h3>Tap To Pay Star</h3>
-    <p>Stylized NFC tap-to-pay stand.</p>
 
-    <div class="controls">
-      <input class="qty" type="number" value="1">
-      <select class="color">
-        <option>Red</option><option>Blue</option>
-        <option>White</option><option>Black</option>
-        <option>Yellow</option><option>Green</option>
-        <option>Pink</option><option>Hot Pink</option>
-        <option>Purple</option>
-      </select>
-      <button class="order-btn" data-name="Tap Star" data-price="10">Add</button>
+    <img src="Images/Tap To Pay Star.jpeg">
+
+    <div class="product-info">
+
+      <h3>Tap To Pay Star</h3>
+
+      <div class="price">$10</div>
+
+      <p>
+        Stylized NFC tap-to-pay stand.
+      </p>
+
+      <div class="controls">
+
+        <input class="qty" type="number" value="1">
+
+        <select class="color">
+          <option>Red</option>
+          <option>Blue</option>
+          <option>White</option>
+          <option>Black</option>
+          <option>Yellow</option>
+          <option>Green</option>
+          <option>Pink</option>
+          <option>Hot Pink</option>
+          <option>Purple</option>
+        </select>
+
+        <button class="order-btn"
+          data-name="Tap Star"
+          data-price="10">
+          Add to Cart
+        </button>
+
+      </div>
+
     </div>
+
+  </div>
+
+  <!-- LORD OF THE RINGS -->
+  <div class="product-card">
+
+    <img src="Images/LordOfTheRings.jpeg">
+
+    <div class="product-info">
+
+      <h3>Lord of the Rings Wall Art</h3>
+
+      <div class="price">$20</div>
+
+      <p>
+        Dimensions 6x7". Great for home or office decor.
+      </p>
+
+      <div class="controls">
+
+        <input class="qty" type="number" value="1">
+
+        <button class="order-btn"
+          data-name="Lord Of The Rings Wall Art"
+          data-price="20">
+          Add to Cart
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- PIKACHU -->
+  <div class="product-card">
+
+    <img src="Images/Pikachu.jpeg">
+
+    <div class="product-info">
+
+      <h3>Pikachu Wall Art</h3>
+
+      <div class="price">$65</div>
+
+      <p>
+        Dimensions 7.87 x 15.75". Very detailed wall art for home or office. Great for any Pokémon fan.
+      </p>
+
+      <div class="controls">
+
+        <input class="qty" type="number" value="1">
+
+        <button class="order-btn"
+          data-name="Pikachu Wall Art"
+          data-price="65">
+          Add to Cart
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- KPOP DEMON HUNTERS -->
+  <div class="product-card">
+
+    <img src="Images/KpopDemonHunters.jpeg">
+
+    <div class="product-info">
+
+      <h3>Kpop Demon Hunters Wall Art</h3>
+
+      <div class="price">$20</div>
+
+      <p>
+        Dimensions 6.53 x 7.87".
+      </p>
+
+      <div class="controls">
+
+        <input class="qty" type="number" value="1">
+
+        <button class="order-btn"
+          data-name="Kpop Demon Hunters Wall Art"
+          data-price="20">
+          Add to Cart
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
 
 </section>

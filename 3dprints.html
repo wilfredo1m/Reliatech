@@ -115,40 +115,55 @@ header {
   padding:0.5rem 1rem;
   cursor:pointer;
 }
+.shop-hero{
+  background:#f1641e;
+  color:white;
+  text-align:center;
+  padding:50px 20px;
+}
 
+.shop-hero h1{
+  font-size:3rem;
+  margin-bottom:10px;
+}
+
+.shop-hero p{
+  max-width:700px;
+  margin:auto;
+  font-size:1.1rem;
+}
 /* ================= PRODUCTS ================= */
 
 /* ================= ETSY STYLE PRODUCTS ================= */
 
 .products {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:28px;
-  padding:40px 30px;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:24px;
+  padding:40px;
   max-width:1400px;
   margin:auto;
 }
 
 .product-card {
   background:var(--card-bg);
-  border-radius:18px;
+  border-radius:16px;
   overflow:hidden;
-  transition:0.25s ease;
-  border:1px solid rgba(255,255,255,0.05);
-  box-shadow:0 6px 20px rgba(0,0,0,0.25);
+  border:1px solid rgba(255,255,255,0.06);
+  transition:all .25s ease;
+  box-shadow:0 4px 14px rgba(0,0,0,.15);
 }
 
-.product-card:hover {
-  transform:translateY(-6px);
-  box-shadow:0 16px 40px rgba(0,0,0,0.45);
+.product-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
-
+  
 .product-card img {
   width:100%;
-  height:320px;
+  height:300px;
   object-fit:cover;
-  background:#000;
-  transition:0.3s ease;
+  display:block;
   cursor:zoom-in;
 }
 
@@ -166,9 +181,9 @@ header {
 }
 
 .price {
-  color:#28a745;
-  font-size:1.4rem;
-  font-weight:bold;
+  color:#f1641e;
+  font-size:1.5rem;
+  font-weight:700;
   margin-top:8px;
 }
 
@@ -200,21 +215,19 @@ header {
 }
 
 .order-btn {
-  flex:1;
-  min-width:120px;
-  background:linear-gradient(135deg,#28a745,#1e7e34);
-  border:none;
+  width:100%;
+  background:#222;
   color:white;
+  border:none;
   padding:12px;
-  border-radius:10px;
+  border-radius:30px;
   cursor:pointer;
   font-weight:bold;
-  transition:0.2s ease;
+  transition:.2s;
 }
 
-.order-btn:hover {
-  transform:scale(1.03);
-  opacity:0.95;
+.order-btn:hover{
+  background:#000;
 }
 /* ================= CART ================= */
 
@@ -371,6 +384,21 @@ header {
   </div>
 </header>
 
+<section class="shop-hero">
+  <div class="hero-content">
+
+    <h1>RELIATECH 3D Prints</h1>
+
+    <p>
+      Unique 3D printed decor, wall art, gifts, and custom creations.
+      Designed and printed locally.
+    </p>
+
+  </div>
+</section>
+
+  
+  
 <!-- PRODUCTS -->
 <section class="products">
 

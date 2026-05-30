@@ -132,6 +132,38 @@ header {
   margin:auto;
   font-size:1.1rem;
 }
+
+
+/* ================= FILTER BAR ================= */
+
+.filter-bar{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:25px;
+}
+
+.filter-btn{
+  background:#fff;
+  color:#222;
+  border:none;
+  border-radius:30px;
+  padding:10px 20px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.2s;
+}
+
+.filter-btn:hover{
+  transform:translateY(-2px);
+}
+
+.filter-btn.active{
+  background:#f1641e;
+  color:white;
+}
+  
 /* ================= PRODUCTS ================= */
 
 /* ================= ETSY STYLE PRODUCTS ================= */
@@ -400,27 +432,35 @@ header {
   
   
 <!-- PRODUCTS -->
+<!-- FILTERS -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">
+    All Products
+  </button>
+  <button class="filter-btn" data-filter="wallart">
+    Wall Art
+  </button>
+  <button class="filter-btn" data-filter="display">
+    Display Items
+  </button>
+  <button class="filter-btn" data-filter="custom">
+    Custom Prints
+  </button>
+</div>
+
+<!-- PRODUCTS -->
 <section class="products">
-
   <!-- EAR MOUNT -->
-  <div class="product-card">
-
+<div class="product-card" data-category="Disney">
     <img src="Images/Disney Ear Wall Mount.jpeg">
-
     <div class="product-info">
-
       <h3>Disney Ear Wall Mount</h3>
-
       <div class="price">$6</div>
-
       <p>
         Wall-mounted Disney ear display holder.
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <select class="color">
           <option>Red</option>
           <option>Blue</option>
@@ -432,69 +472,46 @@ header {
           <option>Hot Pink</option>
           <option>Purple</option>
         </select>
-
         <button class="order-btn"
           data-name="Ear Mount"
           data-price="6">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- LITHOPHANE -->
-  <div class="product-card">
-
+  <div class="product-card" data-category="wall-art">
     <img src="Images/Lithophane.jpeg">
-
     <div class="product-info">
-
       <h3>Lithophane</h3>
-
       <div class="price">$60</div>
-
       <p>
         Custom backlit photo lithophanes.
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <button class="order-btn"
           data-name="Lithophane"
           data-price="60">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- TAP STAR -->
-  <div class="product-card">
-
+  <div class="product-card" data-category="toy">
     <img src="Images/Tap To Pay Star.jpeg">
-
     <div class="product-info">
-
       <h3>Tap To Pay Star</h3>
-
       <div class="price">$10</div>
-
       <p>
         Stylized NFC tap-to-pay stand.
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <select class="color">
           <option>Red</option>
           <option>Blue</option>
@@ -506,143 +523,94 @@ header {
           <option>Hot Pink</option>
           <option>Purple</option>
         </select>
-
         <button class="order-btn"
           data-name="Tap Star"
           data-price="10">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- LORD OF THE RINGS -->
-  <div class="product-card">
-
+  <div class="product-card" data-category="wall-art">
     <img src="Images/lord of the rings.jpeg">
-
     <div class="product-info">
-
       <h3>Lord of the Rings Wall Art</h3>
-
       <div class="price">$20</div>
-
       <p>
         Dimensions 6x7". Great for home or office decor.
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <button class="order-btn"
           data-name="Lord Of The Rings Wall Art"
           data-price="20">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- PIKACHU -->
-  <div class="product-card">
-
+  <div class="product-card" data-category="wall-art">
     <img src="Images/pikachu.jpeg">
-
     <div class="product-info">
-
       <h3>Pikachu Wall Art</h3>
-
       <div class="price">$65</div>
-
       <p>
         Dimensions 7.87 x 15.75". Very detailed wall art for home or office. Great for any Pokémon fan.
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <button class="order-btn"
           data-name="Pikachu Wall Art"
           data-price="65">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- Wall mount -->
-  <div class="product-card">
-
+  <div class="product-card" data-category="Accesory">
     <img src="Images/Wall Mount.jpeg">
-
     <div class="product-info">
-
       <h3>Wall Art Mount</h3>
-
       <div class="price">$5</div>
-
       <p>
         A mounting feature to mount any of the wall decor available.
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <button class="order-btn"
           data-name="Wall Art Mount"
           data-price="5">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
   
   <!-- KPOP DEMON HUNTERS -->
-  <div class="product-card">
-
+  <div class="product-card" data-category="wall-art">
     <img src="Images/kpop demon hunters.jpeg">
-
     <div class="product-info">
-
       <h3>Kpop Demon Hunters Wall Art</h3>
-
       <div class="price">$20</div>
-
       <p>
         Dimensions 6.53 x 7.87".
       </p>
-
       <div class="controls">
-
         <input class="qty" type="number" value="1">
-
         <button class="order-btn"
           data-name="Kpop Demon Hunters Wall Art"
           data-price="20">
           Add to Cart
         </button>
-
       </div>
-
     </div>
-
   </div>
-
 </section>
 
 <!-- LIGHTBOX -->
@@ -683,6 +651,32 @@ header {
 <script>
 
 /* ================= THEME ================= */
+/* ================= FILTERS ================= */
+const filterButtons =
+document.querySelectorAll(".filter-btn");
+const products =
+document.querySelectorAll(".product-card");
+filterButtons.forEach(button=>{
+  button.addEventListener("click",()=>{
+    filterButtons.forEach(btn=>
+      btn.classList.remove("active")
+    );
+    button.classList.add("active");
+    const filter =
+    button.dataset.filter;
+    products.forEach(product=>{
+      if(
+        filter==="all" ||
+        product.dataset.category===filter
+      ){
+        product.style.display="block";
+      }else{
+        product.style.display="none";
+      }
+    });
+  });
+});
+  
 document.getElementById("themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
 });

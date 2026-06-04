@@ -6,9 +6,7 @@
 <title>3D Printing Services</title>
 
 <style>
-
 /* ================= THEME ================= */
-
 :root {
   --bg-color:#000;
   --text-color:#fff;
@@ -39,8 +37,7 @@ body {
   transition:0.3s ease;
 }
 
-/* ================= HEADER (UNCHANGED STRUCTURE) ================= */
-
+/* ================= HEADER ================= */
 header {
   background:var(--header-bg);
   color:var(--text-color);
@@ -70,8 +67,7 @@ header {
   font-weight:bold;
 }
 
-/* ================= DROPDOWNS (RESTORED) ================= */
-
+/* ================= DROPDOWNS ================= */
 .dropdown {
   position:relative;
   cursor:pointer;
@@ -115,28 +111,27 @@ header {
   padding:0.5rem 1rem;
   cursor:pointer;
 }
-.shop-hero{
+
+.shop-hero {
   background:#f1641e;
   color:white;
   text-align:center;
   padding:50px 20px;
 }
 
-.shop-hero h1{
+.shop-hero h1 {
   font-size:3rem;
   margin-bottom:10px;
 }
 
-.shop-hero p{
+.shop-hero p {
   max-width:700px;
   margin:auto;
   font-size:1.1rem;
 }
 
-
 /* ================= FILTER BAR ================= */
-
-.filter-bar{
+.filter-bar {
   display:flex;
   justify-content:center;
   flex-wrap:wrap;
@@ -144,7 +139,7 @@ header {
   padding:25px;
 }
 
-.filter-btn{
+.filter-btn {
   background:#fff;
   color:#222;
   border:none;
@@ -155,19 +150,16 @@ header {
   transition:.2s;
 }
 
-.filter-btn:hover{
+.filter-btn:hover {
   transform:translateY(-2px);
 }
 
-.filter-btn.active{
+.filter-btn.active {
   background:#f1641e;
   color:white;
 }
-  
-/* ================= PRODUCTS ================= */
 
 /* ================= ETSY STYLE PRODUCTS ================= */
-
 .products {
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -184,19 +176,23 @@ header {
   border:1px solid rgba(255,255,255,0.06);
   transition:all .25s ease;
   box-shadow:0 4px 14px rgba(0,0,0,.15);
+  display: flex;         /* Optimized: Keeps cards stable heights */
+  flex-direction: column;
+  height: 100%;
 }
 
-.product-card:hover{
+.product-card:hover {
   transform:translateY(-4px);
   box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
-  
+
 .product-card img {
   width:100%;
   height:300px;
   object-fit:cover;
   display:block;
   cursor:zoom-in;
+  transition: transform 0.25s ease;
 }
 
 .product-card:hover img {
@@ -205,6 +201,10 @@ header {
 
 .product-info {
   padding:18px;
+  display:flex;
+          /* Optimized: Dynamic vertical stretching */
+  flex-direction:column;
+  flex-grow:1;
 }
 
 .product-card h3 {
@@ -224,15 +224,15 @@ header {
   opacity:0.85;
   line-height:1.5;
   margin-top:10px;
+  flex-grow:1;          /* Optimized: Keeps descriptions aligned uniformly */
 }
 
 /* ================= CONTROLS ================= */
-
 .controls {
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin-top:18px;
+  margin-top:auto;      /* Optimized: Pins purchase buttons cleanly to bottom */
 }
 
 .qty,
@@ -258,11 +258,11 @@ header {
   transition:.2s;
 }
 
-.order-btn:hover{
+.order-btn:hover {
   background:#000;
 }
-/* ================= CART ================= */
 
+/* ================= CART ================= */
 .cart-button {
   position:fixed;
   top:20px;
@@ -309,11 +309,11 @@ header {
   align-items:center;
 }
 
-.qty-btn {
+.qty-controls button {
   background:#333;
   color:#fff;
   border:none;
-  padding:2px 8px;
+  padding:4px 10px;
   cursor:pointer;
 }
 
@@ -323,7 +323,6 @@ header {
 }
 
 /* ================= LIGHTBOX ================= */
-
 .lightbox {
   display:none;
   position:fixed;
@@ -340,7 +339,6 @@ header {
 }
 
 /* ================= TOAST ================= */
-
 .toast {
   position:fixed;
   bottom:30px;
@@ -357,8 +355,8 @@ header {
 
 .toast.show { opacity:1; }
 
-  /* spinning animation */
-  .spinner {
+/* Spinning Animation */
+.spinner {
   width: 14px;
   height: 14px;
   border: 2px solid rgba(255,255,255,0.3);
@@ -378,13 +376,10 @@ header {
 
 <body>
 
-<!-- ================= HEADER (UNCHANGED) ================= -->
 <header>
   <div class="header-container">
-
     <div class="nav-section">
       <a href="index.html" class="logo-link">Home</a>
-
       <div class="dropdown">
         <span>Service Types ▾</span>
         <div class="dropdown-content">
@@ -397,7 +392,7 @@ header {
 
     <div class="center-image">
       <a href="index.html">
-        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png">
+        <img src="https://img1.wsimg.com/isteam/ip/882cb672-c9c5-4723-bab3-057ae57079f0/blob-f3ababb.png" alt="Reliatech Logo">
       </a>
     </div>
 
@@ -409,404 +404,292 @@ header {
           <a href="contact.html">Contact</a>
         </div>
       </div>
-
       <button id="themeToggle">Toggle Theme</button>
     </div>
-
   </div>
 </header>
 
 <section class="shop-hero">
   <div class="hero-content">
-
     <h1>RELIATECH 3D Prints</h1>
-
     <p>
       Unique 3D printed decor, wall art, gifts, and custom creations.
       Designed and printed locally.
     </p>
-
   </div>
 </section>
 
-  
-  
-<!-- PRODUCTS -->
-<!-- FILTERS -->
 <div class="filter-bar">
-  <button class="filter-btn active" data-filter="all">
-    All Products
-  </button>
-  <button class="filter-btn" data-filter="wall-art">
-    Wall Art
-  </button>
-  <button class="filter-btn" data-filter="disney">
-    Disney Collection
-  </button>
-  <button class="filter-btn" data-filter="toy">
-    Toys
-  </button>
-    <button class="filter-btn" data-filter="accessory">
-    Accessories
-  </button>
+  <button class="filter-btn active" data-filter="all">All Products</button>
+  <button class="filter-btn" data-filter="wall-art">Wall Art</button>
+  <button class="filter-btn" data-filter="disney">Disney Collection</button>
+  <button class="filter-btn" data-filter="toy">Toys</button>
+  <button class="filter-btn" data-filter="accessory">Accessories</button>
 </div>
 
-<!-- PRODUCTS -->
-<section class="products">
-  <!-- EAR MOUNT -->
-<div class="product-card" data-category="disney">
-    <img src="Images/Disney Ear Wall Mount.jpeg">
-    <div class="product-info">
-      <h3>Disney Ear Wall Mount</h3>
-      <div class="price">$6</div>
-      <p>
-        Wall-mounted Disney ear display holder.
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <select class="color">
-          <option>Red</option>
-          <option>Blue</option>
-          <option>White</option>
-          <option>Black</option>
-          <option>Yellow</option>
-          <option>Green</option>
-          <option>Pink</option>
-          <option>Hot Pink</option>
-          <option>Purple</option>
-        </select>
-        <button class="order-btn"
-          data-name="Ear Mount"
-          data-price="6">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- LITHOPHANE -->
-  <div class="product-card" data-category="wall-art">
-    <img src="Images/Lithophane.jpeg">
-    <div class="product-info">
-      <h3>Lithophane</h3>
-      <div class="price">$60</div>
-      <p>
-        Custom backlit photo lithophanes.
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <button class="order-btn"
-          data-name="Lithophane"
-          data-price="60">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAP STAR -->
-  <div class="product-card" data-category="toy">
-    <img src="Images/Tap To Pay Star.jpeg">
-    <div class="product-info">
-      <h3>Tap To Pay Star</h3>
-      <div class="price">$10</div>
-      <p>
-        Stylized NFC tap-to-pay stand.
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <select class="color">
-          <option>Red</option>
-          <option>Blue</option>
-          <option>White</option>
-          <option>Black</option>
-          <option>Yellow</option>
-          <option>Green</option>
-          <option>Pink</option>
-          <option>Hot Pink</option>
-          <option>Purple</option>
-        </select>
-        <button class="order-btn"
-          data-name="Tap Star"
-          data-price="10">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- LORD OF THE RINGS -->
-  <div class="product-card" data-category="wall-art">
-    <img src="Images/lord of the rings.jpeg">
-    <div class="product-info">
-      <h3>Lord of the Rings Wall Art</h3>
-      <div class="price">$20</div>
-      <p>
-        Dimensions 6x7". Great for home or office decor.
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <button class="order-btn"
-          data-name="Lord Of The Rings Wall Art"
-          data-price="20">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PIKACHU -->
-  <div class="product-card" data-category="wall-art">
-    <img src="Images/pikachu.jpeg">
-    <div class="product-info">
-      <h3>Pikachu Wall Art</h3>
-      <div class="price">$65</div>
-      <p>
-        Dimensions 7.87 x 15.75". Very detailed wall art for home or office. Great for any Pokémon fan.
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <button class="order-btn"
-          data-name="Pikachu Wall Art"
-          data-price="65">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Wall mount -->
-  <div class="product-card" data-category="accessory">
-    <img src="Images/Wall Mount.jpeg">
-    <div class="product-info">
-      <h3>Wall Art Mount</h3>
-      <div class="price">$5</div>
-      <p>
-        A mounting feature to mount any of the wall decor available.
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <button class="order-btn"
-          data-name="Wall Art Mount"
-          data-price="5">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- KPOP DEMON HUNTERS -->
-  <div class="product-card" data-category="wall-art">
-    <img src="Images/kpop demon hunters.jpeg">
-    <div class="product-info">
-      <h3>Kpop Demon Hunters Wall Art</h3>
-      <div class="price">$20</div>
-      <p>
-        Dimensions 6.53 x 7.87".
-      </p>
-      <div class="controls">
-        <input class="qty" type="number" value="1">
-        <button class="order-btn"
-          data-name="Kpop Demon Hunters Wall Art"
-          data-price="20">
-          Add to Cart
-        </button>
-      </div>
-    </div>
+<section class="products" id="productsContainer">
+  <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+    <span class="spinner" style="border-top-color: #f1641e; width: 32px; height: 32px;"></span>
+    <p style="margin-top: 10px;">Loading catalog items...</p>
   </div>
 </section>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
-  <img id="lightbox-img">
+  <img id="lightbox-img" alt="Enlarged View">
 </div>
 
-<!-- CART -->
 <div class="cart-button" id="cartBtn">🛒 <span id="count">0</span></div>
 <div class="overlay" id="overlay"></div>
 
 <div class="cart-drawer" id="drawer"></div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- CHECKOUT MODAL -->
 <div id="checkoutModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100000; justify-content:center; align-items:center;">
   <div style="background:var(--card-bg); padding:20px; border-radius:10px; width:300px; color:var(--text-color);">
-
     <h3>Checkout</h3>
-
-    <input id="custName" placeholder="Full Name" style="width:100%; margin:5px 0; padding:8px;">
-    <input id="custEmail" placeholder="Email" style="width:100%; margin:5px 0; padding:8px;">
-    <input id="custPhone" placeholder="Phone Number" style="width:100%; margin:5px 0; padding:8px;">
+    <input id="custName" placeholder="Full Name" style="width:100%; margin:5px 0; padding:8px; box-sizing: border-box;">
+    <input id="custEmail" type="email" placeholder="Email" style="width:100%; margin:5px 0; padding:8px; box-sizing: border-box;">
+    <input id="custPhone" placeholder="Phone Number" style="width:100%; margin:5px 0; padding:8px; box-sizing: border-box;">
     <p id="orderStatus" style="margin-top:10px; font-size:0.9rem;"></p>
-    <button id="submitBtn" onclick="submitOrder()" style="margin-top:10px; width:100%; padding:10px; background:#28a745; color:white; border:none;">
+    
+    <button id="submitBtn" onclick="submitOrder()" style="margin-top:10px; width:100%; padding:10px; background:#28a745; color:white; border:none; font-weight:bold; cursor:pointer;">
       Submit Order
     </button>
-
-    <button onclick="closeCheckout()" style="margin-top:5px; width:100%; padding:8px;">
+    <button onclick="closeCheckout()" style="margin-top:5px; width:100%; padding:8px; cursor:pointer;">
       Cancel
     </button>
-
   </div>
 </div>
   
 <script>
+/* ================= CONFIGURATION ================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec";
 
-/* ================= THEME ================= */
-/* ================= FILTERS ================= */
-const filterButtons =
-document.querySelectorAll(".filter-btn");
-const products =
-document.querySelectorAll(".product-card");
-filterButtons.forEach(button=>{
-  button.addEventListener("click",()=>{
-    filterButtons.forEach(btn=>
-      btn.classList.remove("active")
-    );
+let catalogItems = [];
+let cart = [];
+
+/* ================= FETCH DYNAMIC CATALOG ON INITIAL LOAD ================= */
+document.addEventListener("DOMContentLoaded", () => {
+  fetch(`${API_URL}?action=catalog`)
+    .then(res => res.json())
+    .then(data => {
+      catalogItems = data;
+      renderCatalog(catalogItems);
+    })
+    .catch(err => {
+      console.error("Error accessing catalog:", err);
+      document.getElementById("productsContainer").innerHTML = `
+        <p style="color:red; text-align:center; grid-column:1/-1;">
+          Failed to load catalog. Please check your network connection and reload.
+        </p>`;
+    });
+});
+
+/* ================= DYNAMIC INVENTORY RENDER ENGINE ================= */
+function renderCatalog(items) {
+  const container = document.getElementById("productsContainer");
+  container.innerHTML = ""; // Clear loader animation
+
+  if(items.length === 0) {
+    container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">No items found in active catalog.</p>`;
+    return;
+  }
+
+  items.forEach(item => {
+    // Determine whether a color dropdown is required
+    const hasColors = item.Colors && item.Colors.toString().toLowerCase() !== "n/a" && item.Colors.toString().trim() !== "";
+    let colorOptionsHTML = "";
+
+    if (hasColors) {
+      const colorList = item.Colors.split(",").map(c => c.trim());
+      colorOptionsHTML = `<select class="color">`;
+      colorList.forEach(color => {
+        colorOptionsHTML += `<option>${color}</option>`;
+      });
+      colorOptionsHTML += `</select>`;
+    }
+
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.dataset.category = item.Category;
+
+    card.innerHTML = `
+      <img src="${item.Image}" loading="lazy" alt="${item.Name}">
+      <div class="product-info">
+        <h3>${item.Name}</h3>
+        <div class="price">$${item.Price}</div>
+        <p>${item.Description}</p>
+        <div class="controls">
+          <input class="qty" type="number" value="1" min="1" oninput="this.value = Math.max(1, this.value)">
+          ${colorOptionsHTML}
+          <button class="order-btn" onclick="addToCart('${escapeHtml(item.Name)}', ${item.Price}, this)">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Re-link zoom modules for lightboxes
+  initLightbox();
+}
+
+/* ================= FILTER LOGIC ================= */
+const filterButtons = document.querySelectorAll(".filter-btn");
+filterButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    filterButtons.forEach(btn => btn.classList.remove("active"));
     button.classList.add("active");
-    const filter =
-    button.dataset.filter;
-    products.forEach(product=>{
-      if(
-        filter==="all" ||
-        product.dataset.category===filter
-      ){
-        product.style.display="block";
-      }else{
-        product.style.display="none";
+    
+    const filter = button.dataset.filter;
+    const cards = document.querySelectorAll(".product-card");
+    
+    cards.forEach(card => {
+      if (filter === "all" || card.dataset.category === filter) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
       }
     });
   });
 });
-  
+
+/* ================= THEME TOGGLE ================= */
 document.getElementById("themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
 });
 
-/* ================= LIGHTBOX ================= */
-const lightbox=document.getElementById("lightbox");
-const lightImg=document.getElementById("lightbox-img");
+/* ================= LIGHTBOX MANAGEMENT ================= */
+const lightbox = document.getElementById("lightbox");
+const lightImg = document.getElementById("lightbox-img");
 
-document.querySelectorAll(".product-card img").forEach(img=>{
-  img.onclick=()=>{
-    lightbox.style.display="flex";
-    lightImg.src=img.src;
-  };
-});
-lightbox.onclick=()=>lightbox.style.display="none";
+function initLightbox() {
+  document.querySelectorAll(".product-card img").forEach(img => {
+    img.onclick = () => {
+      lightbox.style.display = "flex";
+      lightImg.src = img.src;
+    };
+  });
+}
+lightbox.onclick = () => lightbox.style.display = "none";
 
-/* ================= TOAST ================= */
-const toast=document.getElementById("toast");
+/* ================= TOAST SYSTEM ================= */
+const toast = document.getElementById("toast");
 const successSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+
 function showToast(msg){
-  toast.textContent=msg;
+  toast.textContent = msg;
   toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),1200);
+  setTimeout(() => toast.classList.remove("show"), 1200);
 }
 
-/* ================= CART ================= */
-let cart=[];
-const drawer=document.getElementById("drawer");
-const overlay=document.getElementById("overlay");
+/* ================= SHOPPING CART BUSINESS LOGIC ================= */
+const drawer = document.getElementById("drawer");
+const overlay = document.getElementById("overlay");
 
-document.getElementById("cartBtn").onclick=()=>{
+document.getElementById("cartBtn").onclick = () => {
   drawer.classList.add("open");
   overlay.classList.add("show");
 };
 
-overlay.onclick=()=>{
+overlay.onclick = () => {
   drawer.classList.remove("open");
   overlay.classList.remove("show");
 };
 
-/* ADD TO CART */
-document.querySelectorAll(".order-btn").forEach(btn=>{
-  btn.onclick=()=>{
-    cart.push({
-      name:btn.dataset.name,
-      price:+btn.dataset.price,
-      qty:+btn.parentElement.querySelector(".qty").value,
-      color:btn.parentElement.querySelector(".color")?.value || "N/A"
-    });
-    showToast("Added to cart");
-    update();
-  };
-});
+function addToCart(name, price, buttonEl) {
+  const controlsDiv = buttonEl.parentElement;
+  const qtyInput = controlsDiv.querySelector(".qty");
+  const colorSelect = controlsDiv.querySelector(".color");
+  
+  let qty = Math.max(1, parseInt(qtyInput.value) || 1);
+  let color = colorSelect ? colorSelect.value : "N/A";
 
-/* UPDATE CART UI */
-function update(){
-  let box=document.getElementById("drawer");
-  let total=0;
+  // Optimized Check: If structural duplicate parameters are met, stack quantities instead of adding lines
+  const existingItem = cart.find(item => item.name === name && item.color === color);
+  
+  if (existingItem) {
+    existingItem.qty += qty;
+  } else {
+    cart.push({ name, price: +price, qty, color });
+  }
 
-  box.innerHTML=`
+  showToast("Added to cart");
+  updateCartUI();
+  qtyInput.value = 1; // Reset product view input field
+}
+
+function updateCartUI(){
+  let box = document.getElementById("drawer");
+  let total = 0;
+
+  box.innerHTML = `
     <h3>Cart</h3>
-    <hr>
+    <hr style="border-color:#333;">
   `;
 
-  cart.forEach((item,i)=>{
-    let t=item.price*item.qty;
-    total+=t;
+  cart.forEach((item, i) => {
+    let t = item.price * item.qty;
+    total += t;
 
-    box.innerHTML+=`
+    box.innerHTML += `
       <div class="cart-item">
-        <p><b>${item.name}</b></p>
-        <p>Color: ${item.color}</p>
-
-        <div class="qty-controls">
+        <p style="margin:4px 0;"><b>${item.name}</b></p>
+        <p style="margin:4px 0; font-size:0.9rem; opacity:0.7;">Color: ${item.color}</p>
+        <div class="qty-controls" style="margin:8px 0;">
           <button onclick="dec(${i})">-</button>
           <span>${item.qty}</span>
           <button onclick="inc(${i})">+</button>
         </div>
-
-        <p>$${t}</p>
+        <p style="margin:4px 0; color:#f1641e;"><b>$${t}</b></p>
         <span class="remove" onclick="removeItem(${i})">Remove</span>
       </div>
     `;
   });
 
-  box.innerHTML+=`
-    <hr>
+  box.innerHTML += `
+    <hr style="border-color:#333; margin-top:15px;">
     <h3>Total: $${total}</h3>
-    <button onclick="openCheckout()" style="width:100%; padding:10px; background:#28a745; color:white; border:none;">
+    <button onclick="openCheckout()" style="width:100%; padding:12px; background:#28a745; color:white; border:none; font-weight:bold; border-radius:4px; cursor:pointer; margin-top:10px;">
       Checkout
     </button>
   `;
 
-  document.getElementById("count").innerText=cart.length;
+  // Display absolute physical item counts inside the top tracker bubble badge
+  document.getElementById("count").innerText = cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
-function inc(i){cart[i].qty++;update();}
-function dec(i){if(cart[i].qty>1){cart[i].qty--;update();}}
-function removeItem(i){cart.splice(i,1);update();}
+function inc(i) { cart[i].qty++; updateCartUI(); }
+function dec(i) { if(cart[i].qty > 1){ cart[i].qty--; updateCartUI(); } }
+function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 
-/* ================= CHECKOUT MODAL ================= */
-
+/* ================= CONTROL MODAL ================= */
 function openCheckout(){
-  document.getElementById("checkoutModal").style.display="flex";
+  if(cart.length === 0) { alert("Your cart is empty!"); return; }
+  document.getElementById("checkoutModal").style.display = "flex";
 }
 
 function closeCheckout(){
-  document.getElementById("checkoutModal").style.display="none";
+  document.getElementById("checkoutModal").style.display = "none";
 }
 
-/* ================= SEND TO GOOGLE SHEETS ================= */
-
+/* ================= ORDER TRANSACTION PIPELINE ================= */
 function submitOrder(){
-
   const btn = document.getElementById("submitBtn");
   const status = document.getElementById("orderStatus");
 
-  let name = document.getElementById("custName").value;
-  let email = document.getElementById("custEmail").value;
-  let phone = document.getElementById("custPhone").value;
+  let name = document.getElementById("custName").value.trim();
+  let email = document.getElementById("custEmail").value.trim();
+  let phone = document.getElementById("custPhone").value.trim();
 
   if(!name || !email || !phone){
     alert("Please fill all fields");
     return;
   }
 
-  // 🔒 lock UI immediately
+  // Freeze user action controls immediately
   btn.disabled = true;
   btn.innerHTML = `<span class="spinner"></span> Processing...`;
   status.style.color = "#ccc";
@@ -817,60 +700,56 @@ function submitOrder(){
     email,
     phone,
     items: cart,
-    total: cart.reduce((sum,i)=>sum+i.price*i.qty,0)
+    total: cart.reduce((sum, i) => sum + i.price * i.qty, 0)
   };
 
-  // 🚀 auto-close cart immediately (requested)
+  // Immediate UI layout cleanup
   drawer.classList.remove("open");
   overlay.classList.remove("show");
 
-  fetch("https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVeFImOh-8gYPjFE0tYLqV9AyiknmiWka9lKcl0WSM6cN88nA/exec", {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify(order)
   })
-  .then(res => res.text())
+  .then(res => res.json())
   .then(data => {
+    if(data.success) {
+      status.style.color = "lightgreen";
+      status.innerText = "✔ Order received!";
+      successSound.play().catch(() => {});
 
-    console.log(data);
+      btn.innerHTML = "Submit Order";
+      btn.disabled = false;
 
-    // 🎉 success UI
-    status.style.color = "lightgreen";
-    status.innerText = "✔ Order received!";
+      cart = [];
+      updateCartUI();
 
-    successSound.play().catch(()=>{}); // 🔊 sound
+      // Wipe client inputs clean
+      document.getElementById("custName").value = "";
+      document.getElementById("custEmail").value = "";
+      document.getElementById("custPhone").value = "";
 
-    btn.innerHTML = "Submit Order";
-    btn.disabled = false;
-
-    cart = [];
-    update();
-
-    // reset form
-    document.getElementById("custName").value = "";
-    document.getElementById("custEmail").value = "";
-    document.getElementById("custPhone").value = "";
-
-    // auto close modal after short delay
-    setTimeout(() => {
-      closeCheckout();
-      status.innerText = "";
-    }, 1200);
-
+      setTimeout(() => {
+        closeCheckout();
+        status.innerText = "";
+      }, 1200);
+    } else {
+      throw new Error(data.error || "Server rejected transaction processing.");
+    }
   })
   .catch(err => {
-
     console.error(err);
-
     status.style.color = "red";
     status.innerText = "Error submitting order. Try again.";
-
     btn.innerHTML = "Submit Order";
     btn.disabled = false;
-
   });
-
 }
 
+/* ================= ESCAPE UTILITIES (Anti-Injection Protection) ================= */
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
 </script>
 
 </body>

@@ -167,8 +167,8 @@ header {
   padding:40px;
   max-width:1400px;
   margin: auto;
-  width: 100%;             /* ➔ Ensure full horizontal allocation */
-  box-sizing: border-box;  /* ➔ Keeps padding from pushing grid out of bounds */
+  width: 100%;              /* Ensure full horizontal allocation */
+  box-sizing: border-box;   /* Keeps padding from pushing grid out of bounds */
 }
 
 .product-card {
@@ -476,7 +476,7 @@ header {
     <input type="text" id="customProjectName" placeholder="e.g., Star Wars Helmet / Cable Management Box">
   </div>
   
-<div class="custom-form-group">
+  <div class="custom-form-group">
     <label for="customFileUrl">3D Model File Link (.STL, .OBJ, or Design Link) (Optional)</label>
     <input type="url" id="customFileUrl" placeholder="Optional: Paste link from Google Drive, Thingiverse, Dropbox, etc.">
   </div>
@@ -504,8 +504,8 @@ header {
   </div>
 
   <div class="custom-form-group">
-    <label for="customNotes">Custom Notes</label>
-    <textarea id="customNotes" placeholder="e.g., Scale to 150mm total width, 20% high infill density for structural stability..."></textarea>
+    <label for="customNotes">Custom Notes / Project Description</label>
+    <textarea id="customNotes" placeholder="Please describe what you want printed, sizing requirements, or structural preferences..."></textarea>
   </div>
 
   <hr style="border-color: rgba(255,255,255,0.06); margin:25px 0;">
@@ -566,20 +566,40 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzE3ClMRXPtySMu-NoTJsVe
 let catalogItems = [];
 let cart = [];
 
-/* ================= FETCH DYNAMIC CATALOG ON INITIAL LOAD ================= */
+/* ================= FETCH DYNAMIC CATALOG WITH CACHE COLD START SPEED UP ================= */
 document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("productsContainer");
+  
+  // 🏎️ Try parsing locally saved device copy first for a 0.01 second page snap
+  const cachedCatalog = localStorage.getItem("reliatech_catalog");
+  if (cachedCatalog) {
+    try {
+      catalogItems = JSON.parse(cachedCatalog);
+      renderCatalog(catalogItems); 
+    } catch(e) {
+      console.error("Local storage sync bypassed:", e);
+    }
+  }
+
+  // 📡 Query server backdrop for live inventory modifications
   fetch(`${API_URL}?action=catalog`)
     .then(res => res.json())
     .then(data => {
-      catalogItems = data;
-      renderCatalog(catalogItems);
+      // Re-render UI elements only if backend metrics do not match cached local state
+      if (JSON.stringify(catalogItems) !== JSON.stringify(data)) {
+        catalogItems = data;
+        renderCatalog(catalogItems);
+      }
+      localStorage.setItem("reliatech_catalog", JSON.stringify(data));
     })
     .catch(err => {
       console.error("Error accessing catalog:", err);
-      document.getElementById("productsContainer").innerHTML = `
-        <p style="color:red; text-align:center; grid-column:1/-1;">
-          Failed to load catalog. Please check your network connection and reload.
-        </p>`;
+      if (!cachedCatalog) {
+        container.innerHTML = `
+          <p style="color:red; text-align:center; grid-column:1/-1;">
+            Failed to load catalog. Please check your network connection and reload.
+          </p>`;
+      }
     });
 });
 
@@ -644,17 +664,15 @@ filterButtons.forEach(button => {
     const productsContainer = document.getElementById("productsContainer");
     
     if (filter === "custom-request") {
-      // Show custom form, hide shopping catalog
       customSection.style.display = "block";
       productsContainer.style.display = "none";
     } else {
-      // Show normal categories, hide custom form block
       customSection.style.display = "none";
-      productsContainer.style.display = "grid"; // ➔ Ensure container stays a grid layout
+      productsContainer.style.display = "grid"; 
       
       cards.forEach(card => {
         if (filter === "all" || card.dataset.category === filter) {
-          card.style.display = ""; // ➔ Crucial Fix: Falls back naturally to original CSS styles
+          card.style.display = ""; 
         } else {
           card.style.display = "none";
         }
@@ -852,7 +870,6 @@ function submitCustomRequest() {
   const btn = document.getElementById("customSubmitBtn");
   const status = document.getElementById("customOrderStatus");
 
-  // Fetch Form Specific Values
   let projectName = document.getElementById("customProjectName").value.trim();
   let fileUrl = document.getElementById("customFileUrl").value.trim();
   let qty = parseInt(document.getElementById("customQty").value) || 1;
@@ -863,8 +880,9 @@ function submitCustomRequest() {
   let email = document.getElementById("customCustEmail").value.trim();
   let phone = document.getElementById("customCustPhone").value.trim();
 
-  if (!projectName || !fileUrl || !name || !email || !phone) {
-    alert("Please fill in all core contact fields, file links, and project names.");
+  // Strict structural field verification check (fileUrl is intentionally allowed blank)
+  if (!projectName || !notes || !name || !email || !phone) {
+    alert("Please fill in all core fields (Project Name, Description, and Contact Details). Only the file link is optional.");
     return;
   }
 
@@ -879,7 +897,7 @@ function submitCustomRequest() {
     email,
     phone,
     projectName,
-    fileUrl,
+    fileUrl: fileUrl || "No link provided", 
     qty,
     color,
     notes
@@ -893,13 +911,12 @@ function submitCustomRequest() {
   .then(data => {
     if (data.success) {
       status.style.color = "lightgreen";
-      status.innerText = `✔ Quote Request Submitted Successfully! ID: ${data.orderId}`;
+      status.innerText = `✔ Quote Request Submitted Successfully!`;
       successSound.play().catch(() => {});
 
       btn.innerHTML = "Submit Custom Quote Request";
       btn.disabled = false;
 
-      // Reset Input Fields
       document.getElementById("customProjectName").value = "";
       document.getElementById("customFileUrl").value = "";
       document.getElementById("customQty").value = 1;

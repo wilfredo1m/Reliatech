@@ -159,7 +159,7 @@ header {
   color:white;
 }
 
-/* ================= ETSY STYLE PRODUCTS ================= */
+/* ================= PRODUCTS ================= */
 .products {
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -176,7 +176,7 @@ header {
   border:1px solid rgba(255,255,255,0.06);
   transition:all .25s ease;
   box-shadow:0 4px 14px rgba(0,0,0,.15);
-  display: flex;         /* Optimized: Keeps cards stable heights */
+  display: flex;
   flex-direction: column;
   height: 100%;
 }
@@ -202,7 +202,6 @@ header {
 .product-info {
   padding:18px;
   display:flex;
-          /* Optimized: Dynamic vertical stretching */
   flex-direction:column;
   flex-grow:1;
 }
@@ -224,7 +223,7 @@ header {
   opacity:0.85;
   line-height:1.5;
   margin-top:10px;
-  flex-grow:1;          /* Optimized: Keeps descriptions aligned uniformly */
+  flex-grow:1;
 }
 
 /* ================= CONTROLS ================= */
@@ -232,7 +231,7 @@ header {
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin-top:auto;      /* Optimized: Pins purchase buttons cleanly to bottom */
+  margin-top:auto;
 }
 
 .qty,
@@ -260,6 +259,45 @@ header {
 
 .order-btn:hover {
   background:#000;
+}
+
+/* ================= CUSTOM REQUEST STYLES ================= */
+.custom-request-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 14px rgba(0,0,0,.15);
+}
+
+.custom-form-group {
+  margin-bottom: 20px;
+}
+
+.custom-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.custom-form-group input, 
+.custom-form-group select, 
+.custom-form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #222;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.custom-form-group textarea {
+  resize: vertical;
+  height: 100px;
 }
 
 /* ================= CART ================= */
@@ -355,7 +393,6 @@ header {
 
 .toast.show { opacity:1; }
 
-/* Spinning Animation */
 .spinner {
   width: 14px;
   height: 14px;
@@ -425,7 +462,65 @@ header {
   <button class="filter-btn" data-filter="disney">Disney Collection</button>
   <button class="filter-btn" data-filter="toy">Toys</button>
   <button class="filter-btn" data-filter="accessory">Accessories</button>
+  <button class="filter-btn" data-filter="custom-request" style="background: #222; color: #fff; border: 1px solid #f1641e;">✨ Custom Print Request</button>
 </div>
+
+<section id="customRequestSection" class="custom-request-container" style="display: none;">
+  <h2 style="margin-top:0; color:#f1641e;">Request a Custom 3D Print Quote</h2>
+  <p style="font-size:0.9rem; opacity:0.8; margin-bottom:25px;">Have an STL file or a design from Thingiverse/Printables? Fill out the details below and we will get back to you with a direct pricing quote.</p>
+  
+  <div class="custom-form-group">
+    <label for="customProjectName">Project / Model Name</label>
+    <input type="text" id="customProjectName" placeholder="e.g., Star Wars Helmet / Cable Management Box">
+  </div>
+  
+  <div class="custom-form-group">
+    <label for="customFileUrl">3D Model File Link (.STL, .OBJ, or Design Link)</label>
+    <input type="url" id="customFileUrl" placeholder="Paste link from Google Drive, Thingiverse, Dropbox, etc.">
+  </div>
+
+  <div style="display:flex; gap:15px;">
+    <div class="custom-form-group" style="flex:1;">
+      <label for="customQty">Quantity</label>
+      <input type="number" id="customQty" value="1" min="1" oninput="this.value = Math.max(1, this.value)">
+    </div>
+    <div class="custom-form-group" style="flex:2;">
+      <label for="customColor">Preferred Color Filament</label>
+      <select id="customColor">
+        <option>Surprise Me / Any Color</option>
+        <option>Black</option>
+        <option>White</option>
+        <option>Red</option>
+        <option>Blue</option>
+        <option>Yellow</option>
+        <option>Green</option>
+        <option>Pink</option>
+        <option>Hot Pink</option>
+        <option>Purple</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="custom-form-group">
+    <label for="customNotes">Sizing Requirements or Custom Notes (Optional)</label>
+    <textarea id="customNotes" placeholder="e.g., Scale to 150mm total width, 20% high infill density for structural stability..."></textarea>
+  </div>
+
+  <hr style="border-color: rgba(255,255,255,0.06); margin:25px 0;">
+  
+  <h3 style="margin-top:0;">Contact Details</h3>
+  <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+    <input id="customCustName" placeholder="Your Full Name" style="width:100%; padding:12px; border-radius:8px; border:none; background:#222; color:#fff;">
+    <input id="customCustEmail" type="email" placeholder="Your Email Address" style="width:100%; padding:12px; border-radius:8px; border:none; background:#222; color:#fff;">
+    <input id="customCustPhone" placeholder="Your Phone Number" style="width:100%; padding:12px; border-radius:8px; border:none; background:#222; color:#fff;">
+  </div>
+
+  <p id="customOrderStatus" style="margin-top:15px; font-size:0.9rem; text-align:center;"></p>
+
+  <button id="customSubmitBtn" onclick="submitCustomRequest()" style="margin-top:15px; width:100%; padding:14px; background:#f1641e; color:white; border:none; border-radius:30px; font-weight:bold; font-size:1rem; cursor:pointer; transition:0.2s;">
+    Submit Custom Quote Request
+  </button>
+</section>
 
 <section class="products" id="productsContainer">
   <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
@@ -489,7 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ================= DYNAMIC INVENTORY RENDER ENGINE ================= */
 function renderCatalog(items) {
   const container = document.getElementById("productsContainer");
-  container.innerHTML = ""; // Clear loader animation
+  container.innerHTML = ""; 
 
   if(items.length === 0) {
     container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">No items found in active catalog.</p>`;
@@ -497,7 +592,6 @@ function renderCatalog(items) {
   }
 
   items.forEach(item => {
-    // Determine whether a color dropdown is required
     const hasColors = item.Colors && item.Colors.toString().toLowerCase() !== "n/a" && item.Colors.toString().trim() !== "";
     let colorOptionsHTML = "";
 
@@ -532,11 +626,10 @@ function renderCatalog(items) {
     container.appendChild(card);
   });
 
-  // Re-link zoom modules for lightboxes
   initLightbox();
 }
 
-/* ================= FILTER LOGIC ================= */
+/* ================= FILTER & TOGGLE ENGINE ================= */
 const filterButtons = document.querySelectorAll(".filter-btn");
 filterButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -545,14 +638,26 @@ filterButtons.forEach(button => {
     
     const filter = button.dataset.filter;
     const cards = document.querySelectorAll(".product-card");
+    const customSection = document.getElementById("customRequestSection");
+    const productsContainer = document.getElementById("productsContainer");
     
-    cards.forEach(card => {
-      if (filter === "all" || card.dataset.category === filter) {
-        card.style.display = "flex";
-      } else {
-        card.style.display = "none";
-      }
-    });
+    if (filter === "custom-request") {
+      // Show custom form, hide shopping catalog
+      customSection.style.display = "block";
+      productsContainer.style.display = "none";
+    } else {
+      // Show normal categories, hide custom form block
+      customSection.style.display = "none";
+      productsContainer.style.display = "flex";
+      
+      cards.forEach(card => {
+        if (filter === "all" || card.dataset.category === filter) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
   });
 });
 
@@ -607,7 +712,6 @@ function addToCart(name, price, buttonEl) {
   let qty = Math.max(1, parseInt(qtyInput.value) || 1);
   let color = colorSelect ? colorSelect.value : "N/A";
 
-  // Optimized Check: If structural duplicate parameters are met, stack quantities instead of adding lines
   const existingItem = cart.find(item => item.name === name && item.color === color);
   
   if (existingItem) {
@@ -618,7 +722,7 @@ function addToCart(name, price, buttonEl) {
 
   showToast("Added to cart");
   updateCartUI();
-  qtyInput.value = 1; // Reset product view input field
+  qtyInput.value = 1; 
 }
 
 function updateCartUI(){
@@ -657,7 +761,6 @@ function updateCartUI(){
     </button>
   `;
 
-  // Display absolute physical item counts inside the top tracker bubble badge
   document.getElementById("count").innerText = cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
@@ -665,7 +768,7 @@ function inc(i) { cart[i].qty++; updateCartUI(); }
 function dec(i) { if(cart[i].qty > 1){ cart[i].qty--; updateCartUI(); } }
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 
-/* ================= CONTROL MODAL ================= */
+/* ================= NORMAL ORDER CHECKOUT ================= */
 function openCheckout(){
   if(cart.length === 0) { alert("Your cart is empty!"); return; }
   document.getElementById("checkoutModal").style.display = "flex";
@@ -675,7 +778,6 @@ function closeCheckout(){
   document.getElementById("checkoutModal").style.display = "none";
 }
 
-/* ================= ORDER TRANSACTION PIPELINE ================= */
 function submitOrder(){
   const btn = document.getElementById("submitBtn");
   const status = document.getElementById("orderStatus");
@@ -689,7 +791,6 @@ function submitOrder(){
     return;
   }
 
-  // Freeze user action controls immediately
   btn.disabled = true;
   btn.innerHTML = `<span class="spinner"></span> Processing...`;
   status.style.color = "#ccc";
@@ -703,7 +804,6 @@ function submitOrder(){
     total: cart.reduce((sum, i) => sum + i.price * i.qty, 0)
   };
 
-  // Immediate UI layout cleanup
   drawer.classList.remove("open");
   overlay.classList.remove("show");
 
@@ -724,7 +824,6 @@ function submitOrder(){
       cart = [];
       updateCartUI();
 
-      // Wipe client inputs clean
       document.getElementById("custName").value = "";
       document.getElementById("custEmail").value = "";
       document.getElementById("custPhone").value = "";
@@ -746,7 +845,82 @@ function submitOrder(){
   });
 }
 
-/* ================= ESCAPE UTILITIES (Anti-Injection Protection) ================= */
+/* ================= SPECIALIZED CUSTOM PRINT REQUEST SUBMISSION ================= */
+function submitCustomRequest() {
+  const btn = document.getElementById("customSubmitBtn");
+  const status = document.getElementById("customOrderStatus");
+
+  // Fetch Form Specific Values
+  let projectName = document.getElementById("customProjectName").value.trim();
+  let fileUrl = document.getElementById("customFileUrl").value.trim();
+  let qty = parseInt(document.getElementById("customQty").value) || 1;
+  let color = document.getElementById("customColor").value;
+  let notes = document.getElementById("customNotes").value.trim();
+  
+  let name = document.getElementById("customCustName").value.trim();
+  let email = document.getElementById("customCustEmail").value.trim();
+  let phone = document.getElementById("customCustPhone").value.trim();
+
+  if (!projectName || !fileUrl || !name || !email || !phone) {
+    alert("Please fill in all core contact fields, file links, and project names.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> Processing Quote Request...`;
+  status.style.color = "#ccc";
+  status.innerText = "Sending details to Reliatech makers...";
+
+  const customPayload = {
+    isCustom: true,
+    name,
+    email,
+    phone,
+    projectName,
+    fileUrl,
+    qty,
+    color,
+    notes
+  };
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(customPayload)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      status.style.color = "lightgreen";
+      status.innerText = `✔ Quote Request Submitted Successfully! ID: ${data.orderId}`;
+      successSound.play().catch(() => {});
+
+      btn.innerHTML = "Submit Custom Quote Request";
+      btn.disabled = false;
+
+      // Reset Input Fields
+      document.getElementById("customProjectName").value = "";
+      document.getElementById("customFileUrl").value = "";
+      document.getElementById("customQty").value = 1;
+      document.getElementById("customNotes").value = "";
+      document.getElementById("customCustName").value = "";
+      document.getElementById("customCustEmail").value = "";
+      document.getElementById("customCustPhone").value = "";
+
+      setTimeout(() => { status.innerText = ""; }, 5000);
+    } else {
+      throw new Error(data.error || "Server rejected request.");
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    status.style.color = "red";
+    status.innerText = "Error sending request. Please try again.";
+    btn.innerHTML = "Submit Custom Quote Request";
+    btn.disabled = false;
+  });
+}
+
+/* ================= ESCAPE UTILITIES ================= */
 function escapeHtml(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }

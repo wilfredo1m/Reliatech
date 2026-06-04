@@ -650,11 +650,11 @@ filterButtons.forEach(button => {
     } else {
       // Show normal categories, hide custom form block
       customSection.style.display = "none";
-      productsContainer.style.display = "flex";
+      productsContainer.style.display = "grid"; // ➔ Ensure container stays a grid layout
       
       cards.forEach(card => {
         if (filter === "all" || card.dataset.category === filter) {
-          card.style.display = "flex";
+          card.style.display = ""; // ➔ Crucial Fix: Falls back naturally to original CSS styles
         } else {
           card.style.display = "none";
         }
@@ -662,7 +662,7 @@ filterButtons.forEach(button => {
     }
   });
 });
-
+  
 /* ================= THEME TOGGLE ================= */
 document.getElementById("themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("light-theme");

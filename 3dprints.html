@@ -449,23 +449,29 @@ body.light-theme .order-btn {
   font-size: 0.95rem;
 }
 
+/* ================= MODERN TEXT INPUTS & INPUT GLOWS ================= */
 .custom-form-group input, 
 .custom-form-group select, 
-.custom-form-group textarea {
+.custom-form-group textarea,
+#checkoutModal input {
   width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  background: #222;
+  padding: 12px 16px;
+  border-radius: 12px;                    /* Cleaner, softer edge structure */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
   color: #fff;
   box-sizing: border-box;
+  font-size: 0.95rem;
+  transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 body.light-theme .custom-form-group input, 
 body.light-theme .custom-form-group select, 
-body.light-theme .custom-form-group textarea {
-  background: #e6e6e6;
+body.light-theme .custom-form-group textarea,
+body.light-theme #checkoutModal input {
+  background: rgba(0, 0, 0, 0.03);
   color: #000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .custom-form-group textarea {
@@ -473,54 +479,104 @@ body.light-theme .custom-form-group textarea {
   height: 100px;
 }
 
-/* ================= OVERLAYS & MODALS ================= */
+/* Interactive focus glow state when clicking fields */
+.custom-form-group input:focus, 
+.custom-form-group select:focus, 
+.custom-form-group textarea:focus,
+#checkoutModal input:focus {
+  outline: none;
+  border-color: #f1641e;                  /* Transitions border to theme orange */
+  background: rgba(241, 100, 30, 0.02);
+  box-shadow: 0 0 12px rgba(241, 100, 30, 0.25); /* Gorgeous glowing ambient backdrop halo */
+}
+
+/* ================= OVERLAYS & GLASSMORPHIC MODALS ================= */
 .overlay {
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.5);
+  background:rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display:none;
   z-index:9998;
 }
 
 .cart-drawer {
-  position:fixed;
-  top:0;
-  right:-360px;
-  width:340px;
-  height:100%;
-  background:#111;
-  padding:15px;
-  transition:0.3s;
-  z-index:9999;
-  overflow-y:auto;
-  color:#fff;
+  position: fixed;
+  top: 0;
+  right: -360px;
+  width: 340px;
+  height: 100%;
+  background: rgba(17, 17, 17, 0.75);     /* Semi-transparent blur baseline */
+  backdrop-filter: blur(20px);            /* Deep premium software blur */
+  -webkit-backdrop-filter: blur(20px);
+  padding: 24px;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Apple-smooth glide */
+  z-index: 9999;
+  overflow-y: auto;
+  color: #fff;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+  box-sizing: border-box;
 }
 
-.cart-drawer.open { right:0; }
+/* Switches to hardware accelerated translate for zero-lag mobile transitions */
+.cart-drawer.open { 
+  transform: translateX(-360px); 
+}
 .overlay.show { display:block; }
 
 .cart-item {
-  border-bottom:1px solid #333;
-  padding:10px 0;
-}
-
-.qty-controls {
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.qty-controls button {
-  background:#333;
-  color:#fff;
-  border:none;
-  padding:4px 10px;
-  cursor:pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 0;
 }
 
 .remove {
-  color:red;
-  cursor:pointer;
+  color: #ff4d4d;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+.remove:hover { opacity: 0.8; }
+
+/* COMPACT GLOWING QUANTITY PILLS */
+.qty-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background: rgba(255,255,255,0.06);
+  padding: 4px;
+  border-radius: 30px;
+  max-width: fit-content;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.qty-controls button {
+  background: transparent;
+  color: #fff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-controls button:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.qty-controls span {
+  font-weight: 600;
+  min-width: 22px;
+  text-align: center;
+  font-size: 0.9rem;
 }
 
 .lightbox {

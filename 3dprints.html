@@ -166,7 +166,9 @@ header {
   gap:24px;
   padding:40px;
   max-width:1400px;
-  margin:auto;
+  margin: auto;
+  width: 100%;             /* ➔ Ensure full horizontal allocation */
+  box-sizing: border-box;  /* ➔ Keeps padding from pushing grid out of bounds */
 }
 
 .product-card {

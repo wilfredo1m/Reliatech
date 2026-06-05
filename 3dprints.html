@@ -101,14 +101,14 @@ body.light-theme .dropdown-trigger {
 .master-dropdown-content {
   display:none;
   position:absolute;
-  top:110%;
+  top: 100%;               /* ➔ Change from 110% to 100% to close the hover gap */
   left:0;
   background:var(--dropdown-bg);
   min-width:220px;
   border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,0.4);
   z-index:2000;
-  padding:8px 0;
+  padding: 12px 0 8px 0;   /* ➔ Added slightly more top padding for visual breathing room */
   border:1px solid rgba(255,255,255,0.05);
 }
 
